@@ -1,13 +1,9 @@
-import {Box, Button, TextareaAutosize, TextField} from "@mui/material";
+import {Box, TextareaAutosize, TextField} from "@mui/material";
 import { Formik } from "formik";
-import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import Header from "../../components/Header";
 import React, { useContext, useState } from "react";
-import { auth_login } from "../../services/auth.service";
 import UserContext from "../../store/context";
 import BrandService from "../../services/brandService";
-import api from "../../services/api";
 import Sidebar from "../global/Sidebar";
 import Topbar from "../global/Topbar";
 import {useNavigate} from "react-router-dom";
@@ -18,10 +14,10 @@ const CreateBrand = () => {
 
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const { state, dispatch } = useContext(UserContext);
-  const [img, setFile] = useState(null);
+  const [file,setFile] = useState(null);
   const [brand, setBrand] = useState({
-    name: "",
-    description: "",
+    name: '',
+    description: '',
     hotline: '',
     email: '',
     img: ''
@@ -38,13 +34,11 @@ const CreateBrand = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(brand);
     BrandService.createBrand(brand)
         .then((res) => {
           navigate("/brands");
         })
         .catch((error) => {
-          console.error("Error saving employee: ", error);
           alert("Please Provided valid information");
         });
   };

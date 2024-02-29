@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/api/carts";
 const headers = {
-    // 'Authorization': `Bearer ${JSON.parse(localStorage.getItem('state')).userlogin.jwt}`,
+    'Authorization': `Bearer ${JSON.parse(localStorage.getItem('state')).userlogin.jwt}`,
     // 'Content-Type': 'multipart/form-data'
 };
 

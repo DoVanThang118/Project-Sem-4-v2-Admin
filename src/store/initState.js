@@ -4,7 +4,7 @@ const INIT_STATE = {
     isLoading:false,
     token:null,
     userlogin:{
-        jwt:"",
+
     }
 
 }

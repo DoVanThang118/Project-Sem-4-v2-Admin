@@ -27,6 +27,8 @@ const ActionBrand = (props) => {
     img: ""
   });
 
+  console.log(brandDetails)
+
   useEffect(() => {
     BrandService.findBrands(req)
           .then((res) => {

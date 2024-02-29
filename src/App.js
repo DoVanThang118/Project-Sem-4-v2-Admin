@@ -16,6 +16,11 @@ import ActionBrand from "./scenes/brand/actionBrand";
 
 import './css/sb-admin-2.min.css';
 import ListRestaurant from "./scenes/restaurant/listRestaurant";
+import CreateRestaurant from "./scenes/restaurant/createRestaurant";
+import ListCategory from "./scenes/Category/listCategory";
+import CreateCategory from "./scenes/Category/createCategory";
+import ListProduct from "./scenes/product/listProduct";
+import CreateProduct from "./scenes/product/createProduct";
 
 
 // Hàm kiểm tra thời hạn của token
@@ -110,8 +115,33 @@ function App() {
 
                     {/*Restaurant*/}
                     <Route path="/restaurants" element={<PrivateRoute element={<ListRestaurant />} />} />
-                    {/*<Route path="/restaurants/create" element={<PrivateRoute element={<CreateRestaurant />} />} />*/}
+                    <Route path="/restaurants/create" element={<PrivateRoute element={<CreateRestaurant />} />} />
                     {/*<Route path='/restaurants/detail/:id' element={<PrivateRoute element={<ActionRestaurant />} />} />*/}
+
+                    {/*Category*/}
+                    <Route path="/categories" element={<PrivateRoute element={<ListCategory />} />} />
+                    <Route path="/categories/create" element={<PrivateRoute element={<CreateCategory />} />} />
+                    {/*<Route path='/categories/detail/:id' element={<PrivateRoute element={<ActionCategory />} />} />*/}
+
+                    {/*Product*/}
+                    <Route path="/products" element={<PrivateRoute element={<ListProduct />} />} />
+                    <Route path="/products/create" element={<PrivateRoute element={<CreateProduct />} />} />
+                    {/*<Route path='/products/detail/:id' element={<PrivateRoute element={<ActionProduct />} />} />*/}
+
+                    {/*Order*/}
+                    {/*<Route path="/orders" element={<PrivateRoute element={<ListOrder />} />} />*/}
+                    {/*<Route path="/orders/create" element={<PrivateRoute element={<CreateOrder />} />} />*/}
+                    {/*<Route path='/orders/detail/:id' element={<PrivateRoute element={<ActionOrder />} />} />*/}
+
+                    {/*Feedback*/}
+                    {/*<Route path="/feedbacks" element={<PrivateRoute element={<ListFeedback />} />} />*/}
+                    {/*<Route path="/feedbacks/create" element={<PrivateRoute element={<CreateFeedback />} />} />*/}
+                    {/*<Route path='/feedbacks/detail/:id' element={<PrivateRoute element={<ActionFeedback />} />} />*/}
+
+                    {/*User*/}
+                    {/*<Route path="/users" element={<PrivateRoute element={<ListUser />} />} />*/}
+                    {/*<Route path="/users/create" element={<PrivateRoute element={<CreateUser />} />} />*/}
+                    {/*<Route path='/users/detail/:id' element={<PrivateRoute element={<ActionUser />} />} />*/}
 
                     {/*default*/}
                     <Route path="/" element={<Navigate to="/dashboard" />} />

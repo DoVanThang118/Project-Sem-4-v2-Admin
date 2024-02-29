@@ -13,7 +13,6 @@ const ListBrand = (props) => {
   const colors = tokens(theme.palette.mode)
   const { state, dispatch } = useContext(UserContext);
   const [brand, setBrand] = useState([]);
-  console.log("cvssdfsd" ,brand)
 
   useEffect(() => {
     BrandService.getBrands()
@@ -44,13 +43,13 @@ const ListBrand = (props) => {
             <table className="table" style={{}}>
               <thead>
                 <tr>
-                  <th style={{}}>STT</th>
-                  <th style={{}}>Logo</th>
-                  <th style={{}}>Name</th>
-                  <th style={{}}>Hotline</th>
-                  <th style={{}}>Email</th>
-                  <th style={{ width: '40%'}}>Description</th>
-                  <th style={{}}>Action</th>
+                  <th style={{textAlign: 'center'}}>STT</th>
+                  <th style={{textAlign: 'center'}}>Logo</th>
+                  <th style={{textAlign: 'center'}}>Name</th>
+                  <th style={{textAlign: 'center'}}>Hotline</th>
+                  <th style={{textAlign: 'center'}}>Email</th>
+                  <th style={{ textAlign: 'center', width: '30%'}}>Description</th>
+                  <th style={{textAlign: 'center'}}>Action</th>
                 </tr>
               </thead>
               <tbody>

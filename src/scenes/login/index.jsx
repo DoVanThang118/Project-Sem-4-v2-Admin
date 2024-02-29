@@ -27,16 +27,17 @@ const Login = () => {
     const handleSubmit = async (e)=>{
         e.preventDefault();
         const u = await AuthService.login(user);
+        console.log(u);
+
         if(u!=null){
             dispatch({type:"UPDATE_USER",payload:u});
         state.userlogin = u;
         setTimeout(()=>{dispatch({type:"HIDE_LOADING"})},1000);
         localStorage.setItem("state",JSON.stringify(state));
-        api.defaults.headers.common["Authorization"] = `Bearer ${u.token}`;
+        api.defaults.headers.common["Authorization"] = `Bearer ${u}`;
         console.log(state.userlogin);
         }
         if(state.userlogin != null){
-            console.log("chạy vào đây r");
             return  navigate("/dashboard");
         }
 

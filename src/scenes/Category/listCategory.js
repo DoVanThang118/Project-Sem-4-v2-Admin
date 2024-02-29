@@ -1,19 +1,23 @@
-import { Box} from "@mui/material";
-import React, {useState, useEffect } from "react";
+import { Box, Typography, useTheme } from "@mui/material";
+import { tokens } from "../../theme";
+import UserContext from "../../store/context";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../global/Sidebar";
 import Topbar from "../global/Topbar";
 import '../../css/product.css';
-import RestaurantService from "../../services/restaurantService";
+import CategoryService from "../../services/categoryService";
 
-const ListRestaurant = (props) => {
-    const [restaurant, setRestaurant] = useState([]);
+const ListCategory = (props) => {
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode)
+    const { state, dispatch } = useContext(UserContext);
+    const [category, setCategory] = useState([]);
 
     useEffect(() => {
-        RestaurantService.getRestaurants()
+        CategoryService.getCategories()
             .then((res) => {
-                console.log(res.data)
-                setRestaurant(res.data);
+                setCategory(res.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -29,10 +33,10 @@ const ListRestaurant = (props) => {
                 <Box m="20px">
 
                     <div className="container shadow" style={{ display: 'grid' }}>
-                        <h1 style={{ margin: 'auto', marginTop: '24px' }}>RESTAURANT</h1>
-                        <Link to={"/restaurants/create"} style={{ margin: '24px 0' }}>
+                        <h1 style={{ margin: 'auto', marginTop: '24px' }}>CATEGORIES</h1>
+                        <Link to={"/categories/create"} style={{ margin: '24px 0' }}>
                             <button style={{}} className="btn btn-success">
-                                Create New Restaurant
+                                Create New Category
                             </button>
                         </Link>
 
@@ -42,16 +46,13 @@ const ListRestaurant = (props) => {
                                 <th style={{textAlign: 'center'}}>STT</th>
                                 <th style={{textAlign: 'center'}}>Logo</th>
                                 <th style={{textAlign: 'center'}}>Name</th>
-                                <th style={{textAlign: 'center'}}>Brand</th>
-                                <th style={{textAlign: 'center'}}>Telephone</th>
-                                <th style={{textAlign: 'center'}}>Address</th>
                                 <th style={{ textAlign: 'center', width: '30%'}}>Description</th>
                                 <th style={{textAlign: 'center'}}>Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             {
-                                restaurant.map((e, k) => {
+                                category.map((e, k) => {
                                     return (
                                         <tr key={k}>
                                             <td >{k + 1}</td>
@@ -67,12 +68,9 @@ const ListRestaurant = (props) => {
                                                 ))}
                                             </td>
                                             <td >{e.name}</td>
-                                            <td >{e.brand.name}</td>
-                                            <td >{e.tel}</td>
-                                            <td >{e.address}</td>
                                             <td >{e.description}</td>
                                             <td style={{}}>
-                                                <Link to={"/restaurants/detail/" + e.id}>
+                                                <Link to={"/categories/detail/" + e.id}>
                                                     <button className="btn btn-outline-info">
                                                         Detail
                                                     </button>
@@ -91,4 +89,4 @@ const ListRestaurant = (props) => {
     )
 }
 
-export default ListRestaurant;
+export default ListCategory;

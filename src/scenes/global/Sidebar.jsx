@@ -12,7 +12,11 @@ import UserContext from "../../store/context";
 import { useContext } from "react";
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import TableRestaurantIcon from '@mui/icons-material/TableRestaurant';
-
+import CategoryIcon from '@mui/icons-material/Category';
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -148,68 +152,41 @@ const Sidebar = () => {
                 setSelected={setSelected}
             />
               <Item
-                  title={"Devices"}
-                  to={"/listthietbi"}
-                  icon={<TimelineOutlinedIcon  />}
+                  title={"Category"}
+                  to={"/categories"}
+                  icon={<CategoryIcon  />}
                   selected={selected}
                   setSelected={setSelected}
               />
               <Item
-                  title={"Devices"}
-                  to={"/listthietbi"}
-                  icon={<TimelineOutlinedIcon  />}
+                  title={"Product"}
+                  to={"/products"}
+                  icon={<ProductionQuantityLimitsIcon  />}
                   selected={selected}
                   setSelected={setSelected}
               />
               <Item
-                  title={"Devices"}
-                  to={"/listthietbi"}
-                  icon={<TimelineOutlinedIcon  />}
+                  title={"Order"}
+                  to={"/orders"}
+                  icon={<AssignmentIcon  />}
                   selected={selected}
                   setSelected={setSelected}
               />
               <Item
-                  title={"Devices"}
-                  to={"/listthietbi"}
-                  icon={<TimelineOutlinedIcon  />}
+                  title={"Feedback"}
+                  to={"/feedbacks"}
+                  icon={<QuestionAnswerIcon  />}
                   selected={selected}
                   setSelected={setSelected}
               />
               <Item
-                  title={"Devices"}
-                  to={"/listthietbi"}
-                  icon={<TimelineOutlinedIcon  />}
+                  title={"User"}
+                  to={"/users"}
+                  icon={<PeopleAltIcon  />}
                   selected={selected}
                   setSelected={setSelected}
               />
-              <Item
-                  title={"Devices"}
-                  to={"/listthietbi"}
-                  icon={<TimelineOutlinedIcon  />}
-                  selected={selected}
-                  setSelected={setSelected}
-              />
-              <Item
-                  title={"Devices"}
-                  to={"/listthietbi"}
-                  icon={<TimelineOutlinedIcon  />}
-                  selected={selected}
-                  setSelected={setSelected}
-              />
-              <Item
-                  title={"Devices"}
-                  to={"/listthietbi"}
-                  icon={<TimelineOutlinedIcon  />}
-                  selected={selected}
-                  setSelected={setSelected}
-              />
-              <Item
-                  title={"Devices"}
-                  to={"/listthietbi"}
-                  icon={<TimelineOutlinedIcon  />}
-                  selected={selected}
-                  setSelected={setSelected}
-              />
+
           </Box>
         </Menu>
       </ProSidebar>

@@ -1,19 +1,23 @@
-import { Box} from "@mui/material";
-import React, {useState, useEffect } from "react";
+import { Box, Typography, useTheme } from "@mui/material";
+import { tokens } from "../../theme";
+import UserContext from "../../store/context";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../global/Sidebar";
 import Topbar from "../global/Topbar";
 import '../../css/product.css';
-import RestaurantService from "../../services/restaurantService";
+import ProductService from "../../services/productService";
 
-const ListRestaurant = (props) => {
-    const [restaurant, setRestaurant] = useState([]);
+const ListProduct = (props) => {
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode)
+    const { state, dispatch } = useContext(UserContext);
+    const [product, setProduct] = useState([]);
 
     useEffect(() => {
-        RestaurantService.getRestaurants()
+        ProductService.getProducts()
             .then((res) => {
-                console.log(res.data)
-                setRestaurant(res.data);
+                setProduct(res.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -29,29 +33,32 @@ const ListRestaurant = (props) => {
                 <Box m="20px">
 
                     <div className="container shadow" style={{ display: 'grid' }}>
-                        <h1 style={{ margin: 'auto', marginTop: '24px' }}>RESTAURANT</h1>
-                        <Link to={"/restaurants/create"} style={{ margin: '24px 0' }}>
+                        <h1 style={{ margin: 'auto', marginTop: '24px' }}>PRODUCT</h1>
+                        <Link to={"/products/create"} style={{ margin: '24px 0' }}>
                             <button style={{}} className="btn btn-success">
-                                Create New Restaurant
+                                Create New Product
                             </button>
                         </Link>
 
-                        <table className="table" style={{}}>
+                        <table className="table  table-bordered" style={{}}>
                             <thead>
                             <tr>
                                 <th style={{textAlign: 'center'}}>STT</th>
-                                <th style={{textAlign: 'center'}}>Logo</th>
+                                <th style={{textAlign: 'center'}}>Image</th>
                                 <th style={{textAlign: 'center'}}>Name</th>
-                                <th style={{textAlign: 'center'}}>Brand</th>
-                                <th style={{textAlign: 'center'}}>Telephone</th>
-                                <th style={{textAlign: 'center'}}>Address</th>
-                                <th style={{ textAlign: 'center', width: '30%'}}>Description</th>
+                                <th style={{textAlign: 'center'}}>Price</th>
+                                <th style={{textAlign: 'center'}}>Quantity</th>
+                                <th style={{textAlign: 'center'}}>Type</th>
+                                <th style={{textAlign: 'center'}}>rating</th>
+                                <th style={{textAlign: 'center'}}>Category</th>
+                                <th style={{textAlign: 'center'}}>Restaurant</th>
+                                <th style={{ textAlign: 'center', width: '20%'}}>Description</th>
                                 <th style={{textAlign: 'center'}}>Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             {
-                                restaurant.map((e, k) => {
+                                product.map((e, k) => {
                                     return (
                                         <tr key={k}>
                                             <td >{k + 1}</td>
@@ -67,12 +74,15 @@ const ListRestaurant = (props) => {
                                                 ))}
                                             </td>
                                             <td >{e.name}</td>
-                                            <td >{e.brand.name}</td>
-                                            <td >{e.tel}</td>
-                                            <td >{e.address}</td>
+                                            <td >{e.price}</td>
+                                            <td >{e.qty}</td>
+                                            <td >{e.type}</td>
+                                            <td >{e.rate}</td>
+                                            <td >{e.category.name} </td>
+                                            <td >{e.restaurant.name}</td>
                                             <td >{e.description}</td>
                                             <td style={{}}>
-                                                <Link to={"/restaurants/detail/" + e.id}>
+                                                <Link to={"/products/detail/" + e.id}>
                                                     <button className="btn btn-outline-info">
                                                         Detail
                                                     </button>
@@ -91,4 +101,4 @@ const ListRestaurant = (props) => {
     )
 }
 
-export default ListRestaurant;
+export default ListProduct;
