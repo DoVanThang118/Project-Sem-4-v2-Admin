@@ -14,12 +14,28 @@ const AlertFail = () => {
         'error'
     )
 }
+const headers = {
+    'Content-Type': 'multipart/form-data',
+};
 
+const getAuthorizationHeader = () => {
+    const storedState = localStorage.getItem('state');
+    if (storedState) {
+        const userlogin = JSON.parse(storedState).userlogin;
+        if (userlogin && userlogin.jwt) {
+            return {
+                ...headers,
+                'Authorization': `Bearer ${userlogin.jwt}`,
+            };
+        }
+    }
+    return headers;
+};
 
 export const auth_login = async (user) => {
     const url = "/authenticate";
     try {
-        const rs = await api.post(url, { email: user.email, password: user.password });
+        const rs = await api.post(url, { email: user.email, password: user.password, headers: getAuthorizationHeader()  });
         // const token = rs.data.token;
         //   alert("Đăng nhập thành công");
         console.log("check rs:", rs)
