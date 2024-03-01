@@ -1,4 +1,20 @@
 import axios from "axios";
+import Swal from "sweetalert2";
+
+const Alert = () =>{
+    Swal.fire(
+        'Success!',
+        'You clicked the button!',
+        'success'
+    )
+}
+const AlertFail = () =>{
+    Swal.fire(
+        'Failed!',
+        'Something went wrong!',
+        'error'
+    )
+}
 
 const API_URL = "http://localhost:8080/api/brands";
 const headers = {

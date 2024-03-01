@@ -3,9 +3,7 @@ const INIT_STATE = {
     favorites:[],
     isLoading:false,
     token:null,
-    userlogin:{
-
-    }
-
+    userlogin:null
+    
 }
 export default INIT_STATE;
