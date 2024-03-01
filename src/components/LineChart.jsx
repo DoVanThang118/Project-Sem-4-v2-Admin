@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { mockLineData as data } from "../data/mockData";
 import React, { useContext, useState, useEffect } from "react";
-import { tong_month } from "../services/contractService";
+import { tong_month } from "../services/contract.service";
 
 
 

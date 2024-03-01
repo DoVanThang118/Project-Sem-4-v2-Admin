@@ -1,43 +1,45 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:8080/";
-
-// const register = (username, email, password) => {
-//     return axios.post(API_URL + "register", {
-//         username,
-//         email,
-//         password,
-//     });
-// };
-
-const login = async (user) => {
-    return axios
-        .post(API_URL + "authenticate", {email:user.email,password:user.password})
-        .then((response) => {
-            if (response.data.username) {
-                localStorage.setItem("token", JSON.stringify(response.data));
-            }
-
-            return response.data;
-        });
-};
-
-// const logout = () => {
-//     localStorage.removeItem("user");
-//     return axios.post(API_URL + "signout").then((response) => {
-//         return response.data;
-//     });
-// };
-//
-// const getCurrentUser = () => {
-//     return JSON.parse(localStorage.getItem("user"));
-// };
-
-const AuthService = {
-    // register,
-    login,
-    // logout,
-    // getCurrentUser,
+import api from "./api";
+import Swal from "sweetalert2";
+const Alert = () => {
+    Swal.fire(
+        'Success!',
+        'You clicked the button!',
+        'success'
+    )
+}
+const AlertFail = () => {
+    Swal.fire(
+        'Failed!',
+        'Something went wrong!',
+        'error'
+    )
 }
 
-export default AuthService;
+
+export const auth_login = async (user) => {
+    const url = "/authenticate";
+    try {
+        const rs = await api.post(url, { email: user.email, password: user.password });
+        // const token = rs.data.token;
+        //   alert("Đăng nhập thành công");
+        console.log("check rs:", rs)
+
+        return rs.data;
+    } catch (error) {
+        AlertFail();
+        return null;
+    }
+
+}
+
+export const auth_profile = async () => {
+    const url = "authenticate";
+    try {
+        const rs = await api.get(url);
+        // const token = rs.data.token;
+        return rs.data;
+    } catch (error) {
+        alert("Tài khoản hoặc mật khẩu không đúng");
+        return null;
+    }
+}

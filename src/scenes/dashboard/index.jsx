@@ -16,7 +16,7 @@ import UserContext from "../../store/context";
 import { blueGrey, pink } from "@mui/material/colors";
 import Sidebar from "../global/Sidebar";
 import Topbar from "../global/Topbar";
-import { getactive, getnotactive } from "../../services/contractService";
+import { getactive, getnotactive } from "../../services/contract.service";
 
 
 

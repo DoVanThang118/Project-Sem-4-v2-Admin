@@ -4,7 +4,7 @@ import * as yup  from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import React, { useContext, useState } from "react";
-import AuthService from "../../services/auth.service";
+import { auth_login } from "../../services/auth.service";
 import UserContext from "../../store/context";
 import api from "../../services/api";
 import '../../vendor/fontawesome-free/css/all.min.css'
@@ -18,36 +18,35 @@ const Login = () => {
     const {state,dispatch} = useContext(UserContext);
     const [user,setUser] = useState({email:"",password:""});
     const navigate = useNavigate();
-
+    
     const handleChange = (event)=>{
         user[event.target.name] = event.target.value;
         setUser(user);
     }
-
+   
     const handleSubmit = async (e)=>{
         e.preventDefault();
-        const u = await AuthService.login(user);
-        console.log(u);
-
+        const u = await auth_login(user);
         if(u!=null){
             dispatch({type:"UPDATE_USER",payload:u});
         state.userlogin = u;
         setTimeout(()=>{dispatch({type:"HIDE_LOADING"})},1000);
         localStorage.setItem("state",JSON.stringify(state));
-        api.defaults.headers.common["Authorization"] = `Bearer ${u}`;
+        api.defaults.headers.common["Authorization"] = `Bearer ${u.token}`;
         console.log(state.userlogin);
         }
         if(state.userlogin != null){
-            return  navigate("/dashboard");
+            console.log("chạy vào đây r");
+            return  navigate("/home");
         }
-
-
+        
+        
     }
-
+    
 
     return (
-
-        <div className="bg-gradient-primary">
+        
+        <div className="bg-gradient-primary"> 
                     <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-xl-10 col-lg-12 col-md-9">
@@ -65,26 +64,16 @@ const Login = () => {
                                                 <form className="user" onSubmit={handleSubmit}>
 
                                                     <div className="form-group">
-                                                        <input
-                                                            type="email"
-                                                            className="form-control form-control-user"
-                                                            name="email"
-                                                            id="exampleInputEmail"
-                                                            aria-describedby="emailHelp"
-                                                            onChange={handleChange}
+                                                        <input  type="email" className="form-control form-control-user" name="email"
+                                                            id="exampleInputEmail" aria-describedby="emailHelp" onChange={handleChange}
                                                             placeholder="Email..."/>
                                                     </div>
 
                                                     <div className="form-group">
-                                                        <input
-                                                            type="password"
-                                                            className="form-control form-control-user"
-                                                            name="password"
-                                                            onChange={handleChange}
-                                                            id="exampleInputPassword"
-                                                            placeholder="Password"/>
+                                                        <input type="password" className="form-control form-control-user" name="password" onChange={handleChange}
+                                                            id="exampleInputPassword" placeholder="Password"/>
                                                     </div>
-
+                                                    
                                                     <button type="submit" className="btn btn-primary btn-user btn-block" variant="contained" >
                                                     LOGIN
                                                     </button>
@@ -100,9 +89,9 @@ const Login = () => {
                 </div>
             </div>
 
-
-
-
+  
+        
+       
     )
 }
 

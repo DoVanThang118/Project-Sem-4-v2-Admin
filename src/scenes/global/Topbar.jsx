@@ -49,28 +49,35 @@ const Topbar = () => {
           <SearchOutlinedIcon />
         </IconButton>
       </Box> */}
+
       <div style={{width:'100%'}}>
       <Box className="topBar">
-        {/*<IconButton onClick={colorMode.toggleColorMode} >*/}
-        {/*  {theme.palette.mode === 'dark' ? (*/}
-        {/*    <DarkModeOutlinedIcon />*/}
-        {/*  ) : (*/}
-        {/*    <LightModeOutlinedIcon />*/}
-        {/*  )}*/}
-        {/*</IconButton>*/}
+        {/* <IconButton onClick={colorMode.toggleColorMode} >
+          {theme.palette.mode === 'dark' ? (
+            <DarkModeOutlinedIcon />
+          ) : (
+            <LightModeOutlinedIcon />
+          )}
+        </IconButton> */}
+        
         {(state.userlogin!=null)?(
           <div>
           {/* <IconButton>
           <Link to="/profile"><PersonOutlineOutlinedIcon /></Link> 
          </IconButton> */}
-          <NavLink to="/login" className=" d-flex align-items-center gap-1">
+
+          <NavLink to="/" className=" d-flex align-items-center gap-1">
             <button type="button" onClick={logout} className="btn btn-primary" style={{borderRadius:8, margin:'0 20px'}}> Logout </button>
           </NavLink>
+          
+          
          </div>
+
         ):(
           <IconButton>
-          <NavLink to ="/login">
+          <NavLink to ="/">
            <button type="button" style={{borderRadius:8, backgroundColor:"pink"}} >Login</button> </NavLink>
+         
         </IconButton>
         )
 }
