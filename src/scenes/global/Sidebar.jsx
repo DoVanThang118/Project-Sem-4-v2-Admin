@@ -7,7 +7,7 @@ import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import ava from '../../img/login-admin.jpeg';
+import ava from '../../img/logobrand.png';
 import UserContext from "../../store/context";
 import { useContext } from "react";
 import FastfoodIcon from '@mui/icons-material/Fastfood';
@@ -50,7 +50,7 @@ const Sidebar = () => {
 
             },
             "& .pro-sidebar-inner": {
-                backgroundImage: 'linear-gradient(#A4B6B9, #DBB45A, #C15F3C)',
+                backgroundImage: 'linear-gradient(#ffffff, #ffffff, #ffffff)',
             },
             "& .pro-icon-wrapper": {
                 backgroundColor: "transparent !important"

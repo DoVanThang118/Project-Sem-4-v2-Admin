@@ -32,7 +32,7 @@ const restaurantService = {
 
     findRestaurants: async (restaurant) => {
         try {
-            const response = await axios.post(API_URL + "/list", restaurant, {headers});
+            const response = await axios.post(API_URL + "/list", restaurant, {headers:getAuthorizationHeader()});
             return response.data;
         } catch (error) {
             throw error;
@@ -40,15 +40,15 @@ const restaurantService = {
     },
 
     createRestaurant(restaurant) {
-        return axios.post(API_URL + "/create", restaurant, {headers});
+        return axios.post(API_URL + "/create", restaurant, {headers:getAuthorizationHeader()});
     },
 
     updateRestaurant(restaurant, restaurantId) {
-        return axios.post(API_URL + "/" + restaurantId, restaurant, {headers});
+        return axios.post(API_URL + "/" + restaurantId, restaurant, {headers:getAuthorizationHeader()});
     },
 
     deleteRestaurant(restaurantId) {
-        return axios.delete(API_URL + "/" + restaurantId, {headers});
+        return axios.delete(API_URL + "/" + restaurantId, {headers:getAuthorizationHeader()});
     }
 }
 
