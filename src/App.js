@@ -33,8 +33,9 @@ import ListFeedback from "./scenes/feedback/listfeedback";
 import ActionBrand from "./scenes/brand/actionBrand";
 import CreateRestaurant from "./scenes/restaurant/createRestaurant";
 import ListRestaurant from "./scenes/restaurant/listRestaurant";
-import ListCategory from "./scenes/Category/listCategory";
-import CreateCategory from "./scenes/Category/createCategory";
+import ListCategory from "./scenes/category/listCategory";
+import CreateCategory from "./scenes/category/createCategory";
+import ActionCategory from "./scenes/category/actionCategory";
 
 function PrivateRoute({ element }) {
   const localState = localStorage.getItem("state")?JSON.parse(localStorage.getItem("state")):INIT_STATE;
@@ -217,10 +218,10 @@ function App() {
           <Route path="/restaurants/create" element={<PrivateRoute element={<CreateRestaurant />} />} />
           {/*<Route path='/restaurants/detail/:id' element={<PrivateRoute element={<ActionRestaurant />} />} />*/}
 
-          {/*Category*/}
+          {/*category*/}
           <Route path="/categories" element={<PrivateRoute element={<ListCategory />} />} />
           <Route path="/categories/create" element={<PrivateRoute element={<CreateCategory />} />} />
-          {/*<Route path='/categories/detail/:id' element={<PrivateRoute element={<ActionCategory />} />} />*/}
+          <Route path='/categories/detail/:id' element={<PrivateRoute element={<ActionCategory />} />} />
 
           {/*Product*/}
           <Route path="/products" element={<PrivateRoute element={<ListProduct />} />} />

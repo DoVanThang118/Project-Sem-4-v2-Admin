@@ -152,7 +152,7 @@ const Sidebar = () => {
                             setSelected={setSelected}
                         />
                         <Item
-                            title={"Category"}
+                            title={"category"}
                             to={"/categories"}
                             icon={<CategoryIcon  />}
                             selected={selected}

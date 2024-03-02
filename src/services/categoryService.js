@@ -32,7 +32,7 @@ const categoryService = {
 
     findCategories: async (category) => {
         try {
-            const response = await axios.post(API_URL + "/list", category, {headers});
+            const response = await axios.post(API_URL + "/list", category, {headers:getAuthorizationHeader()});
             return response.data;
         } catch (error) {
             throw error;
@@ -40,15 +40,15 @@ const categoryService = {
     },
 
     createCategory(category) {
-        return axios.post(API_URL + "/create", category, {headers});
+        return axios.post(API_URL + "/create", category, {headers:getAuthorizationHeader()});
     },
 
     updateCategory(category, categoryId) {
-        return axios.post(API_URL + "/" + categoryId, category, {headers});
+        return axios.put(API_URL + "/" + categoryId, category, {headers:getAuthorizationHeader()});
     },
 
     deleteCategory(categoryId) {
-        return axios.delete(API_URL + "/" + categoryId, {headers});
+        return axios.delete(API_URL + "/" + categoryId, {headers:getAuthorizationHeader()});
     }
 }
 

@@ -48,7 +48,7 @@ const brandService = {
 
     findBrands: async (brand) => {
         try {
-            const response = await axios.post(API_URL + "/list", brand, {headers});
+            const response = await axios.post(API_URL + "/list", brand, { headers: getAuthorizationHeader() });
             return response.data;
         } catch (error) {
             throw error;
@@ -56,16 +56,16 @@ const brandService = {
     },
 
     createBrand(brand) {
-        return axios.post(API_URL + "/create", brand, {headers});
+        return axios.post(API_URL + "/create", brand, { headers: getAuthorizationHeader() });
     },
 
     updateBrand(brand, brandId) {
 
-        return axios.put(API_URL + "/" + brandId, brand, {headers});
+        return axios.put(API_URL + "/" + brandId, brand, { headers: getAuthorizationHeader() });
     },
 
     deleteBrand(brandId) {
-        return axios.delete(API_URL + "/" + brandId, {headers});
+        return axios.delete(API_URL + "/" + brandId, { headers: getAuthorizationHeader() });
     }
 }
 

@@ -40,7 +40,7 @@ const ListBrand = (props) => {
               </button>
             </Link>
 
-            <table className="table" style={{}}>
+            <table className="table  table-bordered" style={{}}>
               <thead>
                 <tr>
                   <th style={{textAlign: 'center'}}>STT</th>

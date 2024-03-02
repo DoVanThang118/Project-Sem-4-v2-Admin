@@ -40,13 +40,13 @@ const ListCategory = (props) => {
                             </button>
                         </Link>
 
-                        <table className="table" style={{}}>
+                        <table className="table  table-bordered" style={{}}>
                             <thead>
                             <tr>
                                 <th style={{textAlign: 'center'}}>STT</th>
                                 <th style={{textAlign: 'center'}}>Logo</th>
                                 <th style={{textAlign: 'center'}}>Name</th>
-                                <th style={{ textAlign: 'center', width: '30%'}}>Description</th>
+                                <th style={{ textAlign: 'center', width: '50%'}}>Description</th>
                                 <th style={{textAlign: 'center'}}>Action</th>
                             </tr>
                             </thead>

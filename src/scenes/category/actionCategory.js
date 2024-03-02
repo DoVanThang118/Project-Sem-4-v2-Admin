@@ -9,9 +9,10 @@ import Sidebar from "../global/Sidebar";
 import Topbar from "../global/Topbar";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import CategoryService from "../../services/categoryService";
 
 
-const ActionBrand = (props) => {
+const ActionCategory = (props) => {
     const isNonMobile = useMediaQuery("(min-width: 600px)");
     const navigate = useNavigate();
 
@@ -19,22 +20,23 @@ const ActionBrand = (props) => {
     const [img, setFile] = useState(null);
     const { id } = useParams();
     const [req] = useState({id: id});
-    const [brandDetails, setBrandDetails] = useState({
+    const [categoryDetails, setCategoryDetails] = useState({
         name: "",
         description: "",
-        hotline: "",
-        email: "",
-        img: ""
+        img: null
     });
 
-    console.log(brandDetails)
+    console.log(categoryDetails)
 
     useEffect(() => {
-        BrandService.findBrands(req)
+        CategoryService.findCategories(req)
             .then((res) => {
                 if (Array.isArray(res.data) && res.data.length > 0) {
-                    const firstBrand = res.data[0];
-                    setBrandDetails(firstBrand);
+                    const firstCategory = res.data[0];
+                    setCategoryDetails({
+                        name: firstCategory.name || "",
+                        description: firstCategory.description || ""
+                    });
                 }
             })
             .catch((err) => {
@@ -43,15 +45,17 @@ const ActionBrand = (props) => {
     }, []);
 
     const handleChange = (event) => {
-        setBrandDetails((prevDetails) => ({
+        setCategoryDetails((prevDetails) => ({
             ...prevDetails,
             [event.target.name]: event.target.value,
         }));
     };
 
     const handleFileChange = (event) => {
-        brandDetails.img = event.target.files;
-        setFile(brandDetails);
+        setCategoryDetails((prevDetails) => ({
+            ...prevDetails,
+            img: event.target.files
+        }));
     };
 
     const handleUpdate = async (e) => {
@@ -66,15 +70,15 @@ const ActionBrand = (props) => {
             confirmButtonText: 'Yes, update it!'
         }).then(async (result) => {
             if (result.isConfirmed) {
-                console.log(brandDetails)
-                const t = await BrandService.updateBrand(brandDetails,id);
+                console.log(categoryDetails)
+                const t = await CategoryService.updateCategory(categoryDetails,id);
                 if (t != null) {
                     Swal.fire(
                         'Update Success!',
                         'Your file has been update.',
                         'success'
                     )
-                    return navigate("/brands");
+                    return navigate("/categories");
 
                 }
             }
@@ -92,21 +96,21 @@ const ActionBrand = (props) => {
             confirmButtonText: 'Yes, delete it!'
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const t = await BrandService.deleteBrand(id);
+                const t = await CategoryService.deleteCategory(id);
                 if (t != null) {
                     Swal.fire(
                         'Success!',
                         'Your file has been update.',
                         'success'
                     )
-                    return navigate("/brands");
+                    return navigate("/categories");
                 }
             }
         })
 
     }
     const cancel = () => {
-        navigate("/brands");
+        navigate("/categories");
     };
 
     return (
@@ -116,8 +120,8 @@ const ActionBrand = (props) => {
                 <Topbar />
                 <Box m="20px">
                     <div className="container shadow" style={{ display: 'grid' }}>
-                        <h1 style={{ margin: 'auto', marginTop: '24px' }}>DETAIL BRAND</h1>
-                        <Formik initialValues={brandDetails} onSubmit={handleUpdate}>
+                        <h1 style={{ margin: 'auto', marginTop: '24px' }}>DETAIL CATEGORY</h1>
+                        <Formik initialValues={categoryDetails} onSubmit={handleUpdate}>
                             <Form style={{ padding: "40px 24px" }}>
                                 <div>
                                     <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -128,31 +132,7 @@ const ActionBrand = (props) => {
                                                 type="text"
                                                 onChange={handleChange}
                                                 name="name"
-                                                value={brandDetails.name|| ''}
-                                                sx={{ gridColumn: "span 2" }}
-                                                required
-                                            />
-                                        </Box>
-                                        <Box display="grid" width="30%">
-                                            <label>Hotline: </label>
-                                            <TextField
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="hotline"
-                                                value={brandDetails.hotline|| ''}
-                                                sx={{ gridColumn: "span 2" }}
-                                                required
-                                            />
-                                        </Box>
-                                        <Box display="grid" width="30%">
-                                            <label>Email: </label>
-                                            <TextField
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="email"
-                                                value={brandDetails.email|| ''}
+                                                value={categoryDetails.name|| ''}
                                                 sx={{ gridColumn: "span 2" }}
                                                 required
                                             />
@@ -166,7 +146,7 @@ const ActionBrand = (props) => {
                                                 type="text"
                                                 onChange={handleChange}
                                                 name="description"
-                                                value={brandDetails.description|| ''}
+                                                value={categoryDetails.description|| ''}
                                                 sx={{ gridColumn: "span 2" }}
                                                 required
                                             />
@@ -178,7 +158,7 @@ const ActionBrand = (props) => {
                                                 Image :
                                             </label>
                                             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                {brandDetails.images && brandDetails.images.map((image, index) => (
+                                                {categoryDetails.images && categoryDetails.images.map((image, index) => (
                                                     <img
                                                         key={index}
                                                         src={image.url}
@@ -228,4 +208,4 @@ const ActionBrand = (props) => {
     )
 }
 
-export default ActionBrand;
+export default ActionCategory;
