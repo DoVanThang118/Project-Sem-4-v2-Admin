@@ -18,8 +18,14 @@ const AlertFail = () =>{
 
 const API_URL = "http://localhost:8080/api/brands";
 const headers = {
-    'Content-Type': 'multipart/form-data',
+    // 'Content-Type': 'multipart/form-data',
 };
+
+const getContentType = () => {
+    return {
+        'Content-Type': 'multipart/form-data'
+    }
+}
 
 const getAuthorizationHeader = () => {
     const storedState = localStorage.getItem('state');
@@ -33,6 +39,11 @@ const getAuthorizationHeader = () => {
         }
     }
     return headers;
+};
+
+const combinedHeaders = {
+    ...getAuthorizationHeader(),
+    ...getContentType(),
 };
 
 const brandService = {
@@ -56,12 +67,12 @@ const brandService = {
     },
 
     createBrand(brand) {
-        return axios.post(API_URL + "/create", brand, { headers: getAuthorizationHeader() });
+        return axios.post(API_URL + "/create", brand, { headers: combinedHeaders });
     },
 
     updateBrand(brand, brandId) {
 
-        return axios.put(API_URL + "/" + brandId, brand, { headers: getAuthorizationHeader() });
+        return axios.put(API_URL + "/" + brandId, brand, { headers: combinedHeaders });
     },
 
     deleteBrand(brandId) {
