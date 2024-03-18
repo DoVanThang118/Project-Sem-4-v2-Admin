@@ -24,6 +24,7 @@ const ListBrand = (props) => {
         });
   }, []);
 
+  console.log("brand check:",brand);
 
   return (
     <div className="app">

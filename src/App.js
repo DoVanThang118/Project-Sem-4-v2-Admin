@@ -33,6 +33,8 @@ import ListFeedback from "./scenes/feedback/listfeedback";
 import ActionBrand from "./scenes/brand/actionBrand";
 import CreateRestaurant from "./scenes/restaurant/createRestaurant";
 import ListRestaurant from "./scenes/restaurant/listRestaurant";
+import ActionRestaurant from "./scenes/restaurant/actionRestaurant";
+
 import ListCategory from "./scenes/category/listCategory";
 import CreateCategory from "./scenes/category/createCategory";
 import ActionCategory from "./scenes/category/actionCategory";
@@ -216,7 +218,7 @@ function App() {
           {/*Restaurant*/}
           <Route path="/restaurants" element={<PrivateRoute element={<ListRestaurant />} />} />
           <Route path="/restaurants/create" element={<PrivateRoute element={<CreateRestaurant />} />} />
-          {/*<Route path='/restaurants/detail/:id' element={<PrivateRoute element={<ActionRestaurant />} />} />*/}
+          <Route path='/restaurants/detail/:id' element={<PrivateRoute element={<ActionRestaurant />} />} />
 
           {/*category*/}
           <Route path="/categories" element={<PrivateRoute element={<ListCategory />} />} />

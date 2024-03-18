@@ -20,7 +20,7 @@ const ListRestaurant = (props) => {
             });
     }, []);
 
-
+console.log("restaurant:", restaurant)
     return (
         <div className="app">
             <Sidebar />

@@ -3,7 +3,7 @@ import {Form, Formik} from "formik";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import React, { useContext, useState, useEffect } from "react";
 import UserContext from "../../store/context";
-import BrandService from "../../services/brandService";
+import RestaurantService from "../../services/restaurantService";
 import { useParams } from "react-router-dom";
 import Sidebar from "../global/Sidebar";
 import Topbar from "../global/Topbar";
@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 
-const ActionBrand = (props) => {
+const ActionRestaurant = (props) => {
     const isNonMobile = useMediaQuery("(min-width: 600px)");
     const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ const ActionBrand = (props) => {
     const [img, setFile] = useState(null);
     const { id } = useParams();
     const [req] = useState({id: id});
-    const [brandDetails, setBrandDetails] = useState({
+    const [restaurantDetails, setRestaurantDetails] = useState({
         name: "",
         description: "",
         hotline: "",
@@ -27,14 +27,13 @@ const ActionBrand = (props) => {
         img: ""
     });
 
-    console.log(brandDetails)
+    console.log(restaurantDetails)
 
     useEffect(() => {
-        BrandService.findBrands(req)
+        RestaurantService.findRestaurants(req)
             .then((res) => {
                 if (Array.isArray(res.data) && res.data.length > 0) {
-                    const firstBrand = res.data[0];
-                    setBrandDetails(firstBrand);
+                    setRestaurantDetails(res.data);
                 }
             })
             .catch((err) => {
@@ -43,15 +42,15 @@ const ActionBrand = (props) => {
     }, []);
 
     const handleChange = (event) => {
-        setBrandDetails((prevDetails) => ({
+        setRestaurantDetails((prevDetails) => ({
             ...prevDetails,
             [event.target.name]: event.target.value,
         }));
     };
 
     const handleFileChange = (event) => {
-        brandDetails.img = event.target.files;
-        setFile(brandDetails);
+        restaurantDetails.img = event.target.files;
+        setFile(restaurantDetails);
     };
 
     const handleUpdate = async (e) => {
@@ -66,8 +65,8 @@ const ActionBrand = (props) => {
             confirmButtonText: 'Yes, update it!'
         }).then(async (result) => {
             if (result.isConfirmed) {
-                console.log(brandDetails)
-                const t = await BrandService.updateBrand(brandDetails,id);
+                console.log(restaurantDetails)
+                const t = await RestaurantService.updateRestaurant(restaurantDetails,id);
                 if (t != null) {
                     Swal.fire(
                         'Update Success!',
@@ -92,7 +91,7 @@ const ActionBrand = (props) => {
             confirmButtonText: 'Yes, delete it!'
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const t = await BrandService.deleteBrand(id);
+                const t = await RestaurantService.deleteRestaurant(id);
                 if (t != null) {
                     Swal.fire(
                         'Success!',
@@ -117,7 +116,7 @@ const ActionBrand = (props) => {
                 <Box m="20px">
                     <div className="container shadow" style={{ display: 'grid' }}>
                         <h1 style={{ margin: 'auto', marginTop: '24px' }}>DETAIL BRAND</h1>
-                        <Formik initialValues={brandDetails} onSubmit={handleUpdate}>
+                        <Formik initialValues={restaurantDetails} onSubmit={handleUpdate}>
                             <Form style={{ padding: "40px 24px" }}>
                                 <div>
                                     <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -128,7 +127,7 @@ const ActionBrand = (props) => {
                                                 type="text"
                                                 onChange={handleChange}
                                                 name="name"
-                                                value={brandDetails.name|| ''}
+                                                value={restaurantDetails.name|| ''}
                                                 sx={{ gridColumn: "span 2" }}
                                                 required
                                             />
@@ -140,7 +139,7 @@ const ActionBrand = (props) => {
                                                 type="text"
                                                 onChange={handleChange}
                                                 name="hotline"
-                                                value={brandDetails.hotline|| ''}
+                                                value={restaurantDetails.hotline|| ''}
                                                 sx={{ gridColumn: "span 2" }}
                                                 required
                                             />
@@ -152,7 +151,7 @@ const ActionBrand = (props) => {
                                                 type="text"
                                                 onChange={handleChange}
                                                 name="email"
-                                                value={brandDetails.email|| ''}
+                                                value={restaurantDetails.email|| ''}
                                                 sx={{ gridColumn: "span 2" }}
                                                 required
                                             />
@@ -166,7 +165,7 @@ const ActionBrand = (props) => {
                                                 type="text"
                                                 onChange={handleChange}
                                                 name="description"
-                                                value={brandDetails.description|| ''}
+                                                value={restaurantDetails.description|| ''}
                                                 sx={{ gridColumn: "span 2" }}
                                                 required
                                             />
@@ -178,7 +177,7 @@ const ActionBrand = (props) => {
                                                 Image :
                                             </label>
                                             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                {brandDetails.images && brandDetails.images.map((image, index) => (
+                                                {restaurantDetails.images && restaurantDetails.images.map((image, index) => (
                                                     <img
                                                         key={index}
                                                         src={image.url}
@@ -228,4 +227,4 @@ const ActionBrand = (props) => {
     )
 }
 
-export default ActionBrand;
+export default ActionRestaurant;
