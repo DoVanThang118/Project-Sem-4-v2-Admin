@@ -1,4 +1,4 @@
-import {Box, Select, TextareaAutosize, TextField} from "@mui/material";
+// import {Box, Select, TextareaAutosize, TextField} from "@mui/material";
 import { Formik } from "formik";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import React, {useContext, useEffect, useState} from "react";
@@ -8,23 +8,32 @@ import Sidebar from "../global/Sidebar";
 import Topbar from "../global/Topbar";
 import {useNavigate} from "react-router-dom";
 import RestaurantService from "../../services/restaurantService";
-import {MenuItem} from "react-pro-sidebar";
-
+// import {MenuItem} from "react-pro-sidebar";
+import {TimePicker} from "@mui/x-date-pickers";
+import Swal from "sweetalert2";
+import {Box, MenuItem, Select, TextareaAutosize, TextField} from "@mui/material";
 
 const CreateRestaurant = () => {
 
     const navigate = useNavigate();
     const isNonMobile = useMediaQuery("(min-width: 600px)");
-    const { state, dispatch } = useContext(UserContext);
-    const [file,setFile] = useState(null);
+    const {state, dispatch} = useContext(UserContext);
+    const [file, setFile] = useState(null);
     const [restaurant, setRestaurant] = useState({
         name: '',
         description: '',
         tel: '',
         address: '',
         brandId: '',
-        img: ''
+        cuisines: '',
+        meals: '',
+        hourStart: '',
+        hourEnd: '',
+        rate: '',
+        status: '',
+        img:''
     });
+
     const [brands, setBrands] = useState([]);
 
     useEffect(() => {
@@ -37,6 +46,10 @@ const CreateRestaurant = () => {
             });
     }, []);
 
+    const handleBrandSelect = (event) => {
+        setRestaurant({...restaurant, brandId: event.target.value});
+    };
+
     const handleChange = (event) => {
         restaurant[event.target.name] = event.target.value;
         setRestaurant(restaurant);
@@ -47,15 +60,17 @@ const CreateRestaurant = () => {
         setFile(restaurant);
     };
 
-    const handleBrandSelect = (event) => {
-        setRestaurant({ ...restaurant, brandId: event.target.value });
-    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(restaurant);
         RestaurantService.createRestaurant(restaurant)
-            .then((res) => {
+            .then(async (res) => {
+                await Swal.fire(
+                    'Update Success!',
+                    'Your file has been update.',
+                    'success'
+                )
                 navigate("/restaurants");
             })
             .catch((error) => {
@@ -67,69 +82,165 @@ const CreateRestaurant = () => {
 
     return (
         <div className="app">
-            <Sidebar />
+            <Sidebar/>
             <main className="content">
-                <Topbar />
+                <Topbar/>
                 <Box m="20px">
-                    <div className="container shadow" style={{ display: 'grid' }}>
-                        <h1 style={{ margin: 'auto', marginTop: '24px' }}>CREATE RESTAURANT</h1>
+                    <div className="container shadow" style={{display: 'grid'}}>
+                        <h1 style={{margin: 'auto', marginTop: '24px'}}>CREATE RESTAURANT</h1>
                         <Formik>
-                            <form onSubmit={handleSubmit} style={{ padding: "40px 24px" }}>
-                                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                    <Box display="grid" width="30%">
+                            <form onSubmit={handleSubmit} style={{padding: "40px 24px"}}>
+                                <div style={{display: "flex", flexWrap: "wrap"}}>
+                                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
                                         <label>Name: </label>
                                         <TextField
                                             variant="filled"
                                             type="text"
                                             onChange={handleChange}
                                             name="name"
-                                            sx={{ gridColumn: "span 2" }}
+                                            sx={{gridColumn: "span 2"}}
                                             required
                                         />
                                     </Box>
-                                    <Box display="grid" width="30%">
+                                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
                                         <label>Telephone: </label>
                                         <TextField
                                             variant="filled"
                                             type="text"
                                             onChange={handleChange}
                                             name="tel"
-                                            sx={{ gridColumn: "span 2" }}
+                                            sx={{gridColumn: "span 2"}}
                                             required
                                         />
                                     </Box>
-                                    <Box display="grid" width="30%">
+                                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
                                         <label>Address: </label>
                                         <TextField
                                             variant="filled"
                                             type="text"
                                             onChange={handleChange}
                                             name="address"
-                                            sx={{ gridColumn: "span 2" }}
+                                            sx={{gridColumn: "span 2"}}
                                             required
                                         />
                                     </Box>
-                                </div>
-                                <div style={{marginTop: 40, display: "flex", justifyContent: "space-between" }}>
-                                    <Box display="grid" width="20%">
+                                    <Box></Box>
+                                    {/*<Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">*/}
+                                    {/*    <TimePicker label="Basic time picker" />*/}
+                                    {/*</Box>*/}
+                                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
+                                        <label>Open: </label>
+                                        <TextField
+                                            variant="filled"
+                                            type="text"
+                                            onChange={handleChange}
+                                            name="hourStart"
+                                            sx={{gridColumn: "span 2"}}
+                                            required
+                                        />
+                                    </Box>
+                                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
+                                        <label>Close: </label>
+                                        <TextField
+                                            variant="filled"
+                                            type="text"
+                                            onChange={handleChange}
+                                            name="hourEnd"
+                                            sx={{gridColumn: "span 2"}}
+                                            required
+                                        />
+                                    </Box>
+                                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
+                                        <label>Meals: </label>
+                                        <TextField
+                                            variant="filled"
+                                            type="text"
+                                            onChange={handleChange}
+                                            name="meals"
+                                            sx={{gridColumn: "span 2"}}
+                                            required
+                                        />
+                                    </Box>
+                                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
+                                        <label>Cuisines: </label>
+                                        <TextField
+                                            variant="filled"
+                                            type="text"
+                                            onChange={handleChange}
+                                            name="cuisines"
+                                            sx={{gridColumn: "span 2"}}
+                                            required
+                                        />
+                                    </Box>
+                                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
+                                        <label>Rate: </label>
+                                        <TextField
+                                            variant="filled"
+                                            type="text"
+                                            onChange={handleChange}
+                                            name="rate"
+                                            sx={{gridColumn: "span 2"}}
+                                            required
+                                        />
+                                    </Box>
+                                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
+                                        <label>Status: </label>
+                                        <TextField
+                                            variant="filled"
+                                            type="number"
+                                            onChange={handleChange}
+                                            name="status"
+                                            sx={{gridColumn: "span 2"}}
+                                            required
+                                        />
+                                    </Box>
+                                    <Box display="grid" width="30%" marginRight="1rem">
                                         <label>Brand: </label>
-                                        <select
+                                        <Select
                                             value={restaurant.brandId}
                                             onChange={handleBrandSelect}
                                             variant="filled"
                                             className="form-select form-select-lg mb-3"
                                             required
                                         >
-                                            <option selected disabled value="">Open this select brand</option>
+                                            <MenuItem value="" disabled>Select a restaurant</MenuItem>
                                             {brands.map((brand) => (
-                                                <option key={brand.id} value={brand.id}>
+                                                <MenuItem key={brand.id} value={brand.id}>
                                                     {brand.name}
-                                                </option>
+                                                </MenuItem>
                                             ))}
-                                        </select>
+                                        </Select>
                                     </Box>
+
                                 </div>
-                                <div style={{marginTop: 40, display: "flex", justifyContent: "space-between" }}>
+                                <div style={{marginTop: 10, display: "flex", justifyContent: "space-between"}}>
+                                    {/*<Box display="grid" width="20%">*/}
+                                    {/*    <label htmlFor="brandSelect">Brand: </label>*/}
+                                    {/*    <Select*/}
+                                    {/*        id="brandSelect"*/}
+                                    {/*        value={restaurant.brandId}*/}
+                                    {/*        onChange={handleBrandSelect}*/}
+                                    {/*        variant="filled"*/}
+                                    {/*        className="form-select form-select-lg mb-3"*/}
+                                    {/*        required*/}
+                                    {/*    >*/}
+                                    {/*        <MenuItem value="" disabled>*/}
+                                    {/*            Open this select brand*/}
+                                    {/*        </MenuItem>*/}
+                                    {/*        {brands.map((brand) => (*/}
+                                    {/*            <MenuItem key={brand.id} value={brand.id}>*/}
+                                    {/*                {brand.name}*/}
+                                    {/*            </MenuItem>*/}
+                                    {/*        ))}*/}
+                                    {/*    </Select>*/}
+                                    {/*</Box>*/}
+
+
+
+
+                                </div>
+
+                                <div style={{marginTop: 40, display: "flex", justifyContent: "space-between"}}>
                                     <Box display="grid" width="100%">
                                         <label>Description: </label>
                                         <TextareaAutosize
@@ -137,12 +248,12 @@ const CreateRestaurant = () => {
                                             type="text"
                                             onChange={handleChange}
                                             name="description"
-                                            sx={{ gridColumn: "span 2" }}
+                                            sx={{gridColumn: "span 2"}}
                                             required
                                         />
                                     </Box>
                                 </div>
-                                <div style={{marginTop: 40, display:'flex', alignItems:'flex-end'}}>
+                                <div style={{marginTop: 40, display: 'flex', alignItems: 'flex-end'}}>
                                     <Box display="grid" width="48%">
                                         <label htmlFor="avatar" className="form-label">
                                             Image :
@@ -162,7 +273,7 @@ const CreateRestaurant = () => {
                                     <button type="submit" className="btn btn-success" variant="contained">
                                         CREATE
                                     </button>
-                                    <button className="btn btn-danger" onClick={cancel} style={{ marginLeft: "10px" }}>
+                                    <button className="btn btn-danger" onClick={cancel} style={{marginLeft: "10px"}}>
                                         Cancel
                                     </button>
                                 </Box>

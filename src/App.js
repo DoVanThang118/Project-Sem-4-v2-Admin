@@ -25,7 +25,7 @@ import EditBrand from "./scenes/brand/actionBrand";
 
 import './css/sb-admin-2.min.css'
 import CreateProduct from "./scenes/product/createProduct";
-// import EditProduct from "./scenes/product";
+import ActionProduct from "./scenes/product/actionProduct"
 import ListProduct from "./scenes/product/listProduct";
 import ListFeedback from "./scenes/feedback/listfeedback";
 
@@ -83,71 +83,13 @@ function App() {
           <Routes>
             <Route path="/" element={<Login/>} />
             <Route path="/home" element={<PrivateRoute element={<Dashboard />} />} />
-            {/* <Route path="/team" element={<PrivateRoute element={<Team />} />} /> */}
-            {/*<Route path="/listContract" element={<PrivateRoute element={<Contacts />} />} />*/}
-            {/*<Route path="/create-contract" element={<PrivateRoute element={<CreateContract />} />} />*/}
-            {/*<Route path="/contract-detail/:id" element={<PrivateRoute element={<ContractDevice />} />} />*/}
-
-
-            {/* <Route path="/invoices" element={<PrivateRoute element={<Invoices />} />} /> */}
-            {/*<Route path="/form" element={<PrivateRoute element={<Form />} />} />*/}
-            {/*<Route path="/listbrand" element={<PrivateRoute element={<ListBrand />} />} />*/}
-            {/*<Route path="/listfeedback" element={<PrivateRoute element={<ListFeedback />} />} />*/}
-            {/*<Route path="/listthietbi" element={<PrivateRoute element={<ListThietBi />} />} />*/}
-            {/*<Route path='/thietbi-edit/:id' element={<PrivateRoute element={<EditThietBi />} />} />*/}
-            {/*<Route path="/create-thietbi" element={<PrivateRoute element={<CreateThietBi />} />} />*/}
-            {/*<Route path="/create-check/:id" element={<PrivateRoute element={<CreateCheckInstall />} />} />*/}
-            {/*<Route path="/listCheck" element={<PrivateRoute element={<ListCheck />} />} />*/}
-            {/*<Route path="/edit-check/:id" element={<PrivateRoute element={<EditCheckInstall />} />} />*/}
-
-            {/*<Route path="/listCheckProposed" element={<PrivateRoute element={<ListProposedDevices />} />} />*/}
-            {/*<Route path="/create-proposed/:idd" element={<PrivateRoute element={<CreateProposed />} />} />*/}
-
-            {/*<Route path="/create-pro/:idd" element={<PrivateRoute element={<CreatePro />} />} />*/}
-
-            {/*<Route path="/edit-proposed/:id" element={<PrivateRoute element={<EditProposed />} />} />*/}
-
-            {/*<Route path="/listNVLDCheck" element={<PrivateRoute element={<ListNVLDCheck />} />} />*/}
-
-            {/*<Route path="/listNVLDProposed" element={<PrivateRoute element={<ListNVLDProposed />} />} />*/}
-
-
-
-
-
-
-
-
-
-
-
-
-
-            {/* <Route path="/faq" element={<PrivateRoute element={<FAQ />} />} /> */}
-            {/* <Route path="/bar" element={<PrivateRoute element={<Bar />} />} /> */}
-            {/* <Route path="/pie" element={<PrivateRoute element={<Pie />} />} /> */}
-            {/* <Route path="/line" element={<PrivateRoute element={<Line />} />} /> */}
-            {/* <Route path="/geography" element={<PrivateRoute element={<Geography />} />} /> */}
-            {/* <Route path="/profile" element={<PrivateRoute element={<Profile />} />} /> */}
-            {/*<Route path="/listpackdata" element={<PrivateRoute element={<ListPackData />} />} />*/}
-            {/*<Route path="/create-packdata" element={<PrivateRoute element={<CreatePackData />} />} />*/}
-            {/*<Route path='/packdata-edit/:id' element={<PrivateRoute element={<EditPackData />} />} />*/}
-            {/*<Route path="/create-brands" element={<PrivateRoute element={<CreateBrand />} />} />*/}
-            {/*<Route path='/brand-edit/:id' element={<PrivateRoute element={<EditBrand />} />} />*/}
-
-
-            {/*<Route path='/contract-edit/:id' element={<PrivateRoute element={<EditContract />} />} />*/}
-            {/* <Route path='/contractagree' element={<PrivateRoute element={<Contractagree />} />} /> */}
-            {/* <Route path='/contractdisagree' element={<PrivateRoute element={<Contractdisagree />} />} /> */}
-            {/* <Route path='/contractpayment' element={<PrivateRoute element={<Contractpayment />} />} /> */}
-
 
 
 
             {/*QUICK EAT*/}
-            <Route path="/brands" element={<PrivateRoute element={<ListBrand />} />} />
-            <Route path="/brands/create" element={<PrivateRoute element={<CreateBrand />} />} />
-            <Route path='/brands/detail/:id' element={<PrivateRoute element={<ActionBrand />} />} />
+            {/*<Route path="/brands" element={<PrivateRoute element={<ListBrand />} />} />*/}
+            {/*<Route path="/brands/create" element={<PrivateRoute element={<CreateBrand />} />} />*/}
+            {/*<Route path='/brands/detail/:id' element={<PrivateRoute element={<ActionBrand />} />} />*/}
           </Routes>
 
     </ThemeProvider>
@@ -164,49 +106,7 @@ function App() {
             <Route path="/" element={<Login/>} />
             <Route path="/home" element={<PrivateRoute element={<Dashboard />} />} />
             <Route path="/team" element={<PrivateRoute element={<Team />} />} />
-            {/*<Route path="/listContract" element={<PrivateRoute element={<Contacts />} />} />*/}
-            {/*<Route path="/create-contract" element={<PrivateRoute element={<CreateContract />} />} />*/}
 
-            {/*<Route path="/contract-detail/:id" element={<PrivateRoute element={<ContractDevice />} />} />*/}
-
-
-            {/*/!* <Route path="/invoices" element={<PrivateRoute element={<Invoices />} />} /> *!/*/}
-            {/*<Route path="/form" element={<PrivateRoute element={<Form />} />} />*/}
-            {/*<Route path="/listbrand" element={<PrivateRoute element={<ListBrand />} />} />*/}
-            {/*<Route path="/listfeedback" element={<PrivateRoute element={<ListFeedback />} />} />*/}
-            {/*<Route path="/listthietbi" element={<PrivateRoute element={<ListThietBi />} />} />*/}
-            {/*<Route path='/thietbi-edit/:id' element={<PrivateRoute element={<EditThietBi />} />} />*/}
-            {/*<Route path="/create-thietbi" element={<PrivateRoute element={<CreateThietBi />} />} />*/}
-            {/*<Route path="/create-check/:id" element={<PrivateRoute element={<CreateCheckInstall />} />} />*/}
-            {/*<Route path="/listCheck" element={<PrivateRoute element={<ListCheck />} />} />*/}
-            {/*<Route path="/edit-check/:id" element={<PrivateRoute element={<EditCheckInstall />} />} />*/}
-
-            {/*<Route path="/listCheckProposed" element={<PrivateRoute element={<ListProposedDevices />} />} />*/}
-            {/*<Route path="/create-proposed/:idd" element={<PrivateRoute element={<CreateProposed />} />} />*/}
-            {/*<Route path="/create-pro/:idd" element={<PrivateRoute element={<CreatePro />} />} />*/}
-            {/*<Route path="/edit-proposed/:id" element={<PrivateRoute element={<EditProposed />} />} />*/}
-
-            {/*<Route path="/listNVLDCheck" element={<PrivateRoute element={<ListNVLDCheck />} />} />*/}
-            {/*<Route path="/listNVLDProposed" element={<PrivateRoute element={<ListNVLDProposed />} />} />*/}
-
-
-            {/* <Route path="/faq" element={<PrivateRoute element={<FAQ />} />} /> */}
-            {/* <Route path="/bar" element={<PrivateRoute element={<Bar />} />} /> */}
-            {/* <Route path="/pie" element={<PrivateRoute element={<Pie />} />} /> */}
-            {/* <Route path="/line" element={<PrivateRoute element={<Line />} />} /> */}
-            {/* <Route path="/geography" element={<PrivateRoute element={<Geography />} />} /> */}
-            {/* <Route path="/profile" element={<PrivateRoute element={<Profile />} />} /> */}
-            {/*<Route path="/listpackdata" element={<PrivateRoute element={<ListPackData />} />} />*/}
-            {/*<Route path="/create-packdata" element={<PrivateRoute element={<CreatePackData />} />} />*/}
-            {/*<Route path='/packdata-edit/:id' element={<PrivateRoute element={<EditPackData />} />} />*/}
-            {/*<Route path="/create-brands" element={<PrivateRoute element={<CreateBrand />} />} />*/}
-            {/*<Route path='/brand-edit/:id' element={<PrivateRoute element={<EditBrand />} />} />*/}
-
-
-            {/*<Route path='/contract-edit/:id' element={<PrivateRoute element={<EditContract />} />} />*/}
-            {/* <Route path='/contractagree' element={<PrivateRoute element={<Contractagree />} />} /> */}
-            {/* <Route path='/contractdisagree' element={<PrivateRoute element={<Contractdisagree />} />} /> */}
-            {/* <Route path='/contractpayment' element={<PrivateRoute element={<Contractpayment />} />} /> */}
 
 
 
@@ -228,7 +128,7 @@ function App() {
           {/*Product*/}
           <Route path="/products" element={<PrivateRoute element={<ListProduct />} />} />
           <Route path="/products/create" element={<PrivateRoute element={<CreateProduct />} />} />
-          {/*<Route path='/products/detail/:id' element={<PrivateRoute element={<ActionProduct />} />} />*/}
+          <Route path='/products/detail/:id' element={<PrivateRoute element={<ActionProduct />} />} />
           </Routes>
 
       </ThemeProvider>

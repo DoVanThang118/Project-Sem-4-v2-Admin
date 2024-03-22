@@ -70,10 +70,9 @@ const ActionCategory = (props) => {
             confirmButtonText: 'Yes, update it!'
         }).then(async (result) => {
             if (result.isConfirmed) {
-                console.log(categoryDetails)
                 const t = await CategoryService.updateCategory(categoryDetails,id);
                 if (t != null) {
-                    Swal.fire(
+                    await Swal.fire(
                         'Update Success!',
                         'Your file has been update.',
                         'success'
@@ -98,7 +97,7 @@ const ActionCategory = (props) => {
             if (result.isConfirmed) {
                 const t = await CategoryService.deleteCategory(id);
                 if (t != null) {
-                    Swal.fire(
+                    await Swal.fire(
                         'Success!',
                         'Your file has been update.',
                         'success'

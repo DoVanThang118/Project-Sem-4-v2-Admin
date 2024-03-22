@@ -24,17 +24,22 @@ const ActionBrand = (props) => {
     description: "",
     hotline: "",
     email: "",
-    img: ""
+    img: null
   });
 
-  console.log(brandDetails)
+  console.log("brandDetails",brandDetails)
 
   useEffect(() => {
     BrandService.findBrands(req)
           .then((res) => {
             if (Array.isArray(res.data) && res.data.length > 0) {
               const firstBrand = res.data[0];
-              setBrandDetails(firstBrand);
+              setBrandDetails({
+                name: firstBrand.name || "",
+                description: firstBrand.description || "",
+                hotline: firstBrand.hotline || "",
+                email: firstBrand.email || ""
+              });
             }
           })
           .catch((err) => {
@@ -50,8 +55,10 @@ const ActionBrand = (props) => {
   };
 
   const handleFileChange = (event) => {
-    brandDetails.img = event.target.files;
-    setFile(brandDetails);
+    setBrandDetails((prevDetails) => ({
+      ...prevDetails,
+      img: event.target.files
+    }));
   };
 
   const handleUpdate = async (e) => {

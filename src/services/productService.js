@@ -32,7 +32,9 @@ const productService = {
 
     findProducts: async (product) => {
         try {
-            const response = await axios.post(API_URL + "/list", product, {headers:getAuthorizationHeader()});
+            const headers = getAuthorizationHeader();
+            delete headers['Content-Type'];
+            const response = await axios.post(API_URL + "/list", product, {headers});
             return response.data;
         } catch (error) {
             throw error;
@@ -44,7 +46,7 @@ const productService = {
     },
 
     updateProduct(product, productId) {
-        return axios.post(API_URL + "/" + productId, product, {headers:getAuthorizationHeader()});
+        return axios.put(API_URL + "/" + productId, product, {headers:getAuthorizationHeader()});
     },
 
     deleteProduct(productId) {

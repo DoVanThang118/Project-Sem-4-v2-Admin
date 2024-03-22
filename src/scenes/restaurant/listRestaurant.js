@@ -44,8 +44,14 @@ console.log("restaurant:", restaurant)
                                 <th style={{textAlign: 'center'}}>Name</th>
                                 <th style={{textAlign: 'center'}}>Brand</th>
                                 <th style={{textAlign: 'center'}}>Telephone</th>
+                                <th style={{textAlign: 'center'}}>Cuisines</th>
+                                <th style={{textAlign: 'center'}}>Meals</th>
+                                <th style={{textAlign: 'center'}}>Open</th>
+                                <th style={{textAlign: 'center'}}>Close</th>
+                                <th style={{textAlign: 'center'}}>Rate</th>
                                 <th style={{textAlign: 'center'}}>Address</th>
                                 <th style={{ textAlign: 'center', width: '30%'}}>Description</th>
+                                <th style={{ textAlign: 'center'}}>Status</th>
                                 <th style={{textAlign: 'center'}}>Action</th>
                             </tr>
                             </thead>
@@ -67,12 +73,18 @@ console.log("restaurant:", restaurant)
                                                 ))}
                                             </td>
                                             <td >{e.name}</td>
-                                            <td >{e.brand.name}</td>
+                                            <td>{e.brand ? e.brand.name : ''}</td>
                                             <td >{e.tel}</td>
+                                            <td >{e.cuisines}</td>
+                                            <td >{e.meals}</td>
+                                            <td >{e.hourStart}</td>
+                                            <td >{e.hourEnd}</td>
+                                            <td >{e.rate}</td>
                                             <td >{e.address}</td>
                                             <td >{e.description}</td>
+                                            <td >{e.status}</td>
                                             <td style={{}}>
-                                                <Link to={"/restaurants/detail/" + e.id}>
+                                                <Link to={`/restaurants/detail/${e.id}`}>
                                                     <button className="btn btn-outline-info">
                                                         Detail
                                                     </button>

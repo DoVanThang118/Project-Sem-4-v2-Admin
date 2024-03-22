@@ -24,7 +24,7 @@ const ListProduct = (props) => {
             });
     }, []);
 
-
+console.log(product);
     return (
         <div className="app">
             <Sidebar />

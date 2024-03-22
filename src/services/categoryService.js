@@ -32,7 +32,9 @@ const categoryService = {
 
     findCategories: async (category) => {
         try {
-            const response = await axios.post(API_URL + "/list", category, {headers:getAuthorizationHeader()});
+            const headers = getAuthorizationHeader();
+            delete headers['Content-Type'];
+            const response = await axios.post(API_URL + "/list", category, {headers});
             return response.data;
         } catch (error) {
             throw error;
