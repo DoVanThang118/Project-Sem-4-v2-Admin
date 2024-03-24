@@ -31,20 +31,20 @@ const ActionBrand = (props) => {
 
   useEffect(() => {
     BrandService.findBrands(req)
-          .then((res) => {
-            if (Array.isArray(res.data) && res.data.length > 0) {
-              const firstBrand = res.data[0];
-              setBrandDetails({
-                name: firstBrand.name || "",
-                description: firstBrand.description || "",
-                hotline: firstBrand.hotline || "",
-                email: firstBrand.email || ""
-              });
-            }
-          })
-          .catch((err) => {
-            console.log(err);
+      .then((res) => {
+        if (Array.isArray(res.data) && res.data.length > 0) {
+          const firstBrand = res.data[0];
+          setBrandDetails({
+            name: firstBrand.name || "",
+            description: firstBrand.description || "",
+            hotline: firstBrand.hotline || "",
+            email: firstBrand.email || ""
           });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const handleChange = (event) => {

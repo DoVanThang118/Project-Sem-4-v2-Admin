@@ -37,7 +37,7 @@ const Login = () => {
         }
         if(state.userlogin != null){
             console.log("chạy vào đây r");
-            return  navigate("/home");
+            return  navigate("/dashboard");
         }
         
         

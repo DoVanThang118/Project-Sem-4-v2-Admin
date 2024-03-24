@@ -37,7 +37,7 @@ export const auth_login = async (user) => {
     try {
         const headers = getAuthorizationHeader();
         delete headers['Content-Type'];
-        const rs = await api.post(url, { email: user.email, password: user.password, headers});
+        const rs = await api.post(url, { email: user.email, password: user.password});
         // const token = rs.data.token;
         //   alert("Đăng nhập thành công");
         console.log("check rs:", rs);
