@@ -57,8 +57,8 @@ const CreateRestaurant = () => {
     const navigate = useNavigate();
     const isNonMobile = useMediaQuery("(min-width: 600px)");
     const {state, dispatch} = useContext(UserContext);
-    const [openTime, setOpenTime] = useState(dayjs());
-    const [closeTime, setCloseTime] = useState(dayjs());
+    const [openTime, setOpenTime] = useState(dayjs('0000-00-00'));
+    const [closeTime, setCloseTime] = useState(dayjs('0000-00-00'));
     const [file, setFile] = useState(null);
     const [restaurant, setRestaurant] = useState({
         name: '',

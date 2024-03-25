@@ -32,8 +32,10 @@ import ActionRestaurant from "./scenes/restaurant/actionRestaurant";
 import ListCategory from "./scenes/category/listCategory";
 import CreateCategory from "./scenes/category/createCategory";
 import ActionCategory from "./scenes/category/actionCategory";
-import ListOrder from "./scenes/order/listOrder";
-import ActionOrder from "./scenes/order/actionOrder";
+import WaitOrder from "./scenes/order/waitOrder";
+import ConfirmOrder from "./scenes/order/confirmOrder";
+import EntireOrder from "./scenes/order/entireOrder";
+import DetailOrder from "./scenes/order/detailOrder";
 
 function PrivateRoute({ element }) {
   const localState = localStorage.getItem("state")?JSON.parse(localStorage.getItem("state")):INIT_STATE;
@@ -116,9 +118,10 @@ function App() {
               <Route path='/products/detail/:id' element={<PrivateRoute element={<ActionProduct />} />} />
 
               {/*Order*/}
-              <Route path="/orders" element={<PrivateRoute element={<ListOrder />} />} />
-              <Route path="/orders/create" element={<PrivateRoute element={<CreateProduct />} />} />
-              <Route path='/orders/detail/:id' element={<PrivateRoute element={<ActionOrder />} />} />
+              <Route path="/orders" element={<PrivateRoute element={<WaitOrder />} />} />
+              <Route path='/orders/confirm/:id' element={<PrivateRoute element={<ConfirmOrder />} />} />
+              <Route path="/orders/entire" element={<PrivateRoute element={<EntireOrder />} />} />
+              <Route path='/orders/detail/:id' element={<PrivateRoute element={<DetailOrder />} />} />
 
 
             </Routes>
