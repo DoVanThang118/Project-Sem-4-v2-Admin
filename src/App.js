@@ -36,6 +36,9 @@ import WaitOrder from "./scenes/order/waitOrder";
 import ConfirmOrder from "./scenes/order/confirmOrder";
 import EntireOrder from "./scenes/order/entireOrder";
 import DetailOrder from "./scenes/order/detailOrder";
+import ListUser from "./scenes/users/listUser";
+import CreateUser from "./scenes/users/createUser";
+import ActionUser from "./scenes/users/actionUser";
 
 function PrivateRoute({ element }) {
   const localState = localStorage.getItem("state")?JSON.parse(localStorage.getItem("state")):INIT_STATE;
@@ -70,67 +73,72 @@ function App() {
     display: state.isLoading?"block":"none"
   }
   return (
-    <>
-    {(state.userlogin === null)?
-    <UserProvider value={{state,dispatch}}>
-    <div id='loading' style={styles}></div>
+      <>
+        {(state.userlogin === null)?
+            <UserProvider value={{state,dispatch}}>
+              <div id='loading' style={styles}></div>
 
-  <ColorModeContext.Provider value={colorMode}>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-          <Routes>
-            <Route path="/" element={<Login/>} />
-            <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
-          </Routes>
-    </ThemeProvider>
-  </ColorModeContext.Provider>
-  </UserProvider>
-    :
-    <UserProvider value={{state,dispatch}}>
-      <div id='loading' style={styles}></div>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <ColorModeContext.Provider value={colorMode}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Routes>
-              <Route path="/" element={<Login/>} />
-              <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
-              <Route path="/team" element={<PrivateRoute element={<Team />} />} />
+              <ColorModeContext.Provider value={colorMode}>
+                <ThemeProvider theme={theme}>
+                  <CssBaseline />
+                  <Routes>
+                    <Route path="/" element={<Login/>} />
+                    <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+                  </Routes>
+                </ThemeProvider>
+              </ColorModeContext.Provider>
+            </UserProvider>
+            :
+            <UserProvider value={{state,dispatch}}>
+              <div id='loading' style={styles}></div>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <ColorModeContext.Provider value={colorMode}>
+                  <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <Routes>
+                      <Route path="/" element={<Login/>} />
+                      <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+                      <Route path="/team" element={<PrivateRoute element={<Team />} />} />
 
-              {/*Brand*/}
-              <Route path="/brands" element={<PrivateRoute element={<ListBrand />} />} />
-              <Route path="/brands/create" element={<PrivateRoute element={<CreateBrand />} />} />
-              <Route path='/brands/detail/:id' element={<PrivateRoute element={<ActionBrand />} />} />
+                      {/*Brand*/}
+                      <Route path="/brands" element={<PrivateRoute element={<ListBrand />} />} />
+                      <Route path="/brands/create" element={<PrivateRoute element={<CreateBrand />} />} />
+                      <Route path='/brands/detail/:id' element={<PrivateRoute element={<ActionBrand />} />} />
 
-              {/*Restaurant*/}
-              <Route path="/restaurants" element={<PrivateRoute element={<ListRestaurant />} />} />
-              <Route path="/restaurants/create" element={<PrivateRoute element={<CreateRestaurant />} />} />
-              <Route path='/restaurants/detail/:id' element={<PrivateRoute element={<ActionRestaurant />} />} />
+                      {/*Restaurant*/}
+                      <Route path="/restaurants" element={<PrivateRoute element={<ListRestaurant />} />} />
+                      <Route path="/restaurants/create" element={<PrivateRoute element={<CreateRestaurant />} />} />
+                      <Route path='/restaurants/detail/:id' element={<PrivateRoute element={<ActionRestaurant />} />} />
 
-              {/*category*/}
-              <Route path="/categories" element={<PrivateRoute element={<ListCategory />} />} />
-              <Route path="/categories/create" element={<PrivateRoute element={<CreateCategory />} />} />
-              <Route path='/categories/detail/:id' element={<PrivateRoute element={<ActionCategory />} />} />
+                      {/*category*/}
+                      <Route path="/categories" element={<PrivateRoute element={<ListCategory />} />} />
+                      <Route path="/categories/create" element={<PrivateRoute element={<CreateCategory />} />} />
+                      <Route path='/categories/detail/:id' element={<PrivateRoute element={<ActionCategory />} />} />
 
-              {/*Product*/}
-              <Route path="/products" element={<PrivateRoute element={<ListProduct />} />} />
-              <Route path="/products/create" element={<PrivateRoute element={<CreateProduct />} />} />
-              <Route path='/products/detail/:id' element={<PrivateRoute element={<ActionProduct />} />} />
+                      {/*Product*/}
+                      <Route path="/products" element={<PrivateRoute element={<ListProduct />} />} />
+                      <Route path="/products/create" element={<PrivateRoute element={<CreateProduct />} />} />
+                      <Route path='/products/detail/:id' element={<PrivateRoute element={<ActionProduct />} />} />
 
-              {/*Order*/}
-              <Route path="/orders" element={<PrivateRoute element={<WaitOrder />} />} />
-              <Route path='/orders/confirm/:id' element={<PrivateRoute element={<ConfirmOrder />} />} />
-              <Route path="/orders/entire" element={<PrivateRoute element={<EntireOrder />} />} />
-              <Route path='/orders/detail/:id' element={<PrivateRoute element={<DetailOrder />} />} />
+                      {/*Order*/}
+                      <Route path="/orders" element={<PrivateRoute element={<WaitOrder />} />} />
+                      <Route path='/orders/confirm/:id' element={<PrivateRoute element={<ConfirmOrder />} />} />
+                      <Route path="/orders/entire" element={<PrivateRoute element={<EntireOrder />} />} />
+                      <Route path='/orders/detail/:id' element={<PrivateRoute element={<DetailOrder />} />} />
+
+                      {/*User*/}
+                      <Route path="/users" element={<PrivateRoute element={<ListUser />} />} />
+                      <Route path="/users/create" element={<PrivateRoute element={<CreateUser />} />} />
+                      <Route path='/users/detail/:id' element={<PrivateRoute element={<ActionUser />} />} />
 
 
-            </Routes>
-          </ThemeProvider>
-        </ColorModeContext.Provider>c
-      </LocalizationProvider>
-    </UserProvider>
-    }
-    </>
+                    </Routes>
+                  </ThemeProvider>
+                </ColorModeContext.Provider>c
+              </LocalizationProvider>
+            </UserProvider>
+        }
+      </>
   );
 }
 
