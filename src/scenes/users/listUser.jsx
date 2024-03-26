@@ -90,7 +90,10 @@ const ListUser = (props) => {
                                         {/*<td>{e.restaurant_id}</td>*/}
                                         <td>
                                             {e.roles.map((r, index) => (
-                                                <span key={index}>{r.name}</span>
+                                                <span key={index}>
+                                                    {r.name}
+                                                    {index !== e.roles.length - 1 && ", "}
+                                                </span>
                                             ))}
                                         </td>
 

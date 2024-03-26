@@ -16,7 +16,7 @@ const AlertFail = () =>{
     )
 }
 
-const API_URL = "http://localhost:8080/api/orders";
+const API_URL = "http://localhost:8080/api/admin/orders";
 const headers = {
     'Content-Type': 'multipart/form-data'
 };
@@ -62,7 +62,9 @@ const orderService = {
     },
 
     updateOrder(order, orderId) {
-        return axios.post(API_URL + "/" + orderId, order, { headers: getAuthorizationHeader() });
+        const headers = getAuthorizationHeader();
+        delete headers['Content-Type'];
+        return axios.post(API_URL + "/" + orderId, order, {headers});
     },
 
     deleteOrder(orderId) {

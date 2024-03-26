@@ -37,7 +37,7 @@ const EntireOrder = (props) => {
 
                     <div className="container shadow" style={{ display: 'grid' }}>
                         <h1 style={{ margin: 'auto', marginTop: '24px' }}>ORDERS</h1>
-                        <Link to={"/orders/entire"} style={{ margin: '24px 0' }}>
+                        <Link to={"/orders"} style={{ margin: '24px 0' }}>
                             <button style={{}} className="btn btn-success">
                                 Confirm Order
                             </button>
@@ -68,7 +68,7 @@ const EntireOrder = (props) => {
                                             <td >{e.address}</td>
                                             <td >{e.email}</td>
                                             <td >{e.phone}</td>
-                                            <td >{e.totalMoney}</td>
+                                            <td >{e.totalMoney}$</td>
                                             <td >{e.createDate}</td>
                                             <td >{e.note}</td>
                                             <td >{e.status}</td>

@@ -48,7 +48,9 @@ const userService = {
 
 
     updateUser(user, userId) {
-        return axios.put(API_URL + "/api/users/" + userId, user, {headers:getAuthorizationHeader()});
+        const headers = getAuthorizationHeader();
+        delete headers['Content-Type'];
+        return axios.put(API_URL + "/api/users/" + userId, user, {headers});
     },
 
     deleteUser(userId) {

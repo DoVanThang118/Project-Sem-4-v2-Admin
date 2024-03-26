@@ -120,7 +120,7 @@ const ActionUser = (props) => {
 
   }
   const cancel = () => {
-    navigate("/brands");
+    navigate("/users");
   };
   console.log("userDetails",user)
 
@@ -168,18 +168,6 @@ const ActionUser = (props) => {
                           onChange={handleChange}
                           name="email"
                           value={user.email || ''}
-                          sx={{gridColumn: "span 2"}}
-                          required
-                      />
-                    </Box>
-                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
-                    <label>Email: </label>
-                      <TextField
-                          variant="filled"
-                          type="password"
-                          onChange={handleChange}
-                          name="password"
-                          value={user.password || ''}
                           sx={{gridColumn: "span 2"}}
                           required
                       />

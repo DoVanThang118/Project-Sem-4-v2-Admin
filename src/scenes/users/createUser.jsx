@@ -8,6 +8,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
 import moment from 'moment';
 import userService from "../../services/userService";
+import Sidebar from "../global/Sidebar";
+import Topbar from "../global/Topbar";
 
 const CreateUser = () => {
   const navigate = useNavigate();
@@ -46,7 +48,9 @@ const CreateUser = () => {
 
   return (
       <div className="app">
+        <Sidebar />
         <main className="content">
+          <Topbar />
           <Box m="20px">
             <div className="container shadow" style={{ display: 'grid' }}>
               <h1 style={{ margin: 'auto', marginTop: '24px' }}>CREATE BRAND</h1>
@@ -148,7 +152,7 @@ const CreateUser = () => {
                   </button>
                   <button
                       className="btn btn-danger"
-                      onClick={() => navigate("/brands")}
+                      onClick={() => navigate("/users")}
                       style={{ marginLeft: "10px" }}
                   >
                     Cancel
