@@ -64,7 +64,7 @@ const orderService = {
     updateOrder(order, orderId) {
         const headers = getAuthorizationHeader();
         delete headers['Content-Type'];
-        return axios.post(API_URL + "/" + orderId, order, {headers});
+        return axios.put(API_URL + "/" + orderId, order, {headers});
     },
 
     deleteOrder(orderId) {
