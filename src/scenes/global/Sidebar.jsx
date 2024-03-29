@@ -17,6 +17,7 @@ import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantity
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import {jwtDecode} from 'jwt-decode';
 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -41,6 +42,21 @@ const Sidebar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [selected, setSelected] = useState("Dashboard");
     const {state,dispatch} = useContext(UserContext);
+
+    //Giai jwt
+
+// Lấy giá trị state từ localStorage
+    const getState = localStorage.getItem('state');
+    const parsedState = JSON.parse(getState);
+    const userLogin = parsedState.userlogin;
+
+    const jwtToken = userLogin.jwt;
+    const decodedToken = jwtDecode(jwtToken);
+    const userRole = decodedToken.role;
+    console.log(userRole)
+
+
+
 
     return (
         <Box sx={{
@@ -121,71 +137,108 @@ const Sidebar = () => {
                     )}
                     {/* Menu items */}
                     <Box padding={isCollapsed ? undefined : "10%"}>
-                        <Item
-                            title={"Dashboard"}
-                            to={"/dashboard"}
-                            icon={<HomeOutlinedIcon />}
-                            selected={selected}
-                            setSelected={setSelected}
-                        />
 
-                        <Typography
-                            variant="h6"
-                            color={colors.grey[300]}
-                            sx={{ m: "15px 0 5px 20px" }}>
-                            Pages
-                        </Typography>
 
-                        <Item
-                            title={"Brand"}
-                            to={"/brands"}
-                            icon={<FastfoodIcon  />}
-                            selected={selected}
-                            setSelected={setSelected}
-                        />
+                        {userRole === 'ROLE_ADMIN'&& (
+                            <>
+                                <Item
+                                    title={"Dashboard"}
+                                    to={"/dashboard"}
+                                    icon={<HomeOutlinedIcon />}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                />
 
-                        <Item
-                            title={"Restaurant"}
-                            to={"/restaurants"}
-                            icon={<TableRestaurantIcon  />}
-                            selected={selected}
-                            setSelected={setSelected}
-                        />
-                        <Item
-                            title={"category"}
-                            to={"/categories"}
-                            icon={<CategoryIcon  />}
-                            selected={selected}
-                            setSelected={setSelected}
-                        />
-                        <Item
-                            title={"Product"}
-                            to={"/products"}
-                            icon={<ProductionQuantityLimitsIcon  />}
-                            selected={selected}
-                            setSelected={setSelected}
-                        />
-                        <Item
-                            title={"Order"}
-                            to={"/orders"}
-                            icon={<AssignmentIcon  />}
-                            selected={selected}
-                            setSelected={setSelected}
-                        />
-                        <Item
-                            title={"Feedback"}
-                            to={"/feedbacks"}
-                            icon={<QuestionAnswerIcon  />}
-                            selected={selected}
-                            setSelected={setSelected}
-                        />
-                        <Item
-                            title={"User"}
-                            to={"/users"}
-                            icon={<PeopleAltIcon  />}
-                            selected={selected}
-                            setSelected={setSelected}
-                        />
+                                <Typography
+                                    variant="h6"
+                                    color={colors.grey[300]}
+                                    sx={{ m: "15px 0 5px 20px" }}>
+                                    Pages
+                                </Typography>
+                                <Item
+                                    title={"Brand"}
+                                    to={"/brands"}
+                                    icon={<FastfoodIcon  />}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                />
+
+                                <Item
+                                    title={"Restaurant"}
+                                    to={"/restaurants"}
+                                    icon={<TableRestaurantIcon  />}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                />
+                                <Item
+                                    title={"category"}
+                                    to={"/categories"}
+                                    icon={<CategoryIcon  />}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                />
+                                <Item
+                                    title={"Product"}
+                                    to={"/products"}
+                                    icon={<ProductionQuantityLimitsIcon  />}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                />
+                                <Item
+                                    title={"User"}
+                                    to={"/users"}
+                                    icon={<PeopleAltIcon  />}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                />
+                            </>
+                        )}
+
+                        {userRole === 'ROLE_ADMIN' && (
+                            <>
+                                <Item
+                                    title={"Order"}
+                                    to={"/orders"}
+                                    icon={<AssignmentIcon />}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                />
+                                <Item
+                                    title={"Feedback"}
+                                    to={"/feedbacks"}
+                                    icon={<QuestionAnswerIcon />}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                />
+                            </>
+                        )}
+
+                        {userRole === 'ROLE_MANAGER' && (
+                            <>
+                                <Item
+                                    title={"Product"}
+                                    to={"/products"}
+                                    icon={<ProductionQuantityLimitsIcon  />}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                />
+                                <Item
+                                    title={"Order"}
+                                    to={"/orders"}
+                                    icon={<AssignmentIcon />}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                />
+                                <Item
+                                    title={"Feedback"}
+                                    to={"/feedbacks"}
+                                    icon={<QuestionAnswerIcon />}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                />
+                            </>
+                        )}
+
 
                     </Box>
                 </Menu>
