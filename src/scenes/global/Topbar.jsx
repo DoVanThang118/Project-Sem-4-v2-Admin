@@ -67,7 +67,7 @@ const Topbar = () => {
          </IconButton> */}
 
           <NavLink to="/" className=" d-flex align-items-center gap-1">
-            <button type="button" onClick={logout} className="btn btn-primary" style={{borderRadius:8, margin:'0 20px'}}> Logout </button>
+            <button type="button" onClick={logout} className="btn btn-warning" style={{borderRadius:8, margin:'0 20px'}}> Logout </button>
           </NavLink>
           
           

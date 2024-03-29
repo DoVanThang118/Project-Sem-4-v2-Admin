@@ -49,7 +49,6 @@ const Sidebar = () => {
     const getState = localStorage.getItem('state');
     const parsedState = JSON.parse(getState);
     const userLogin = parsedState.userlogin;
-
     const jwtToken = userLogin.jwt;
     const decodedToken = jwtDecode(jwtToken);
     const userRole = decodedToken.role;

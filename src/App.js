@@ -39,6 +39,7 @@ import DetailOrder from "./scenes/order/detailOrder";
 import ListUser from "./scenes/users/listUser";
 import CreateUser from "./scenes/users/createUser";
 import ActionUser from "./scenes/users/actionUser";
+import {jwtDecode} from "jwt-decode";
 
 function PrivateRoute({ element }) {
   const localState = localStorage.getItem("state")?JSON.parse(localStorage.getItem("state")):INIT_STATE;
@@ -72,6 +73,14 @@ function App() {
     backgroundPosition:"center center",
     display: state.isLoading?"block":"none"
   }
+
+  // Lấy giá trị state từ localStorage
+  const getState = localStorage.getItem('state');
+  const parsedState = JSON.parse(getState);
+  const userLogin = parsedState.userlogin;
+  const jwtToken = userLogin.jwt;
+  const decodedToken = jwtDecode(jwtToken);
+  const userRole = decodedToken.role;
   return (
       <>
         {(state.userlogin === null)?
@@ -99,7 +108,8 @@ function App() {
                       <Route path="/" element={<Login/>} />
                       <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
                       <Route path="/team" element={<PrivateRoute element={<Team />} />} />
-
+                      {userRole === 'ROLE_ADMIN' && (
+                          <>
                       {/*Brand*/}
                       <Route path="/brands" element={<PrivateRoute element={<ListBrand />} />} />
                       <Route path="/brands/create" element={<PrivateRoute element={<CreateBrand />} />} />
@@ -115,6 +125,15 @@ function App() {
                       <Route path="/categories/create" element={<PrivateRoute element={<CreateCategory />} />} />
                       <Route path='/categories/detail/:id' element={<PrivateRoute element={<ActionCategory />} />} />
 
+                      {/*User*/}
+                      <Route path="/users" element={<PrivateRoute element={<ListUser />} />} />
+                      <Route path="/users/create" element={<PrivateRoute element={<CreateUser />} />} />
+                      <Route path='/users/detail/:id' element={<PrivateRoute element={<ActionUser />} />} />
+                          </>
+                      )}
+
+                      {userRole === 'ROLE_MANAGER' && (
+                          <>
                       {/*Product*/}
                       <Route path="/products" element={<PrivateRoute element={<ListProduct />} />} />
                       <Route path="/products/create" element={<PrivateRoute element={<CreateProduct />} />} />
@@ -125,11 +144,9 @@ function App() {
                       <Route path='/orders/confirm/:id' element={<PrivateRoute element={<ConfirmOrder />} />} />
                       <Route path="/orders/entire" element={<PrivateRoute element={<EntireOrder />} />} />
                       <Route path='/orders/detail/:id' element={<PrivateRoute element={<DetailOrder />} />} />
+                          </>
+                      )}
 
-                      {/*User*/}
-                      <Route path="/users" element={<PrivateRoute element={<ListUser />} />} />
-                      <Route path="/users/create" element={<PrivateRoute element={<CreateUser />} />} />
-                      <Route path='/users/detail/:id' element={<PrivateRoute element={<ActionUser />} />} />
 
 
                     </Routes>
