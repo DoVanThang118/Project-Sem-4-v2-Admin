@@ -8,7 +8,8 @@ import { auth_login } from "../../services/auth.service";
 import UserContext from "../../store/context";
 import api from "../../services/api";
 import '../../vendor/fontawesome-free/css/all.min.css'
-import imgLg from '../../img/login-admin.jpeg'
+import imgLg from '../../img/backGround-Login.jpeg'
+import logo from '../../img/logobrand.png'
 import { useNavigate } from "react-router-dom";
 import Dashboard from "../dashboard";
 
@@ -59,7 +60,9 @@ const Login = () => {
                                         <div className="col-lg-6" style={{display:'grid', alignItems:'center'}}>
                                             <div className="p-5">
                                                 <div className="text-center">
-                                                    <h1 className="h4 text-gray-900 mb-4">Welcome Admin</h1>
+                                                    <img src={logo}/>
+
+                                                    <h1 className="h2 text-gray-900 mb-4">Welcome Admin</h1>
                                                 </div>
                                                 <form className="user" onSubmit={handleSubmit}>
 
@@ -73,9 +76,9 @@ const Login = () => {
                                                         <input type="password" className="form-control form-control-user" name="password" onChange={handleChange}
                                                             id="exampleInputPassword" placeholder="Password"/>
                                                     </div>
-                                                    
-                                                    <button type="submit" className="btn btn-primary btn-user btn-block" variant="contained" >
-                                                    LOGIN
+
+                                                    <button type="submit" className="btn btn-warning btn-user btn-block" variant="contained" >
+                                                    <h6>LOGIN</h6>
                                                     </button>
 
                                                 </form>

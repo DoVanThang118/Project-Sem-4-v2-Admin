@@ -9115,7 +9115,7 @@ a:focus {
     width: 100vw;
     height: 100vh;
   background-color: #4e73df;
-  background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+  background-image: linear-gradient(180deg, #f2af5a  10%, #f6c23e 100%);
   background-size: cover;
   display: flex;
     align-items: center;
