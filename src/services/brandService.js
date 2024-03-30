@@ -16,7 +16,7 @@ const AlertFail = () =>{
     )
 }
 
-const API_URL = "http://localhost:8080/api/brands";
+const API_URL = "http://localhost:8080/api/admin/brands";
 const headers = {
     'Content-Type': 'multipart/form-data',
 };
@@ -66,8 +66,13 @@ const brandService = {
     },
 
     updateBrand(brand, brandId) {
+        const headers = getAuthorizationHeader();
+        delete headers['Content-Type'];
+        return axios.put(API_URL + "/" + brandId, brand, { headers });
+    },
 
-        return axios.put(API_URL + "/" + brandId, brand, { headers: getAuthorizationHeader() });
+    updateAvatar(file, brandId) {
+        return axios.put(API_URL + "/avatar/" + brandId, file, { headers: getAuthorizationHeader() });
     },
 
     deleteBrand(brandId) {

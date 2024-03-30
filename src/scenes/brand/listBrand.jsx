@@ -24,6 +24,17 @@ const ListBrand = (props) => {
         });
   }, []);
 
+  const getStatusText = (status) => {
+    switch (status) {
+      case 1:
+        return "is active";
+      case 0:
+        return "closed";
+      default:
+        return "Unknown";
+    }
+  };
+
   console.log("brand check:",brand);
 
   return (
@@ -49,7 +60,8 @@ const ListBrand = (props) => {
                   <th style={{textAlign: 'center'}}>Name</th>
                   <th style={{textAlign: 'center'}}>Hotline</th>
                   <th style={{textAlign: 'center'}}>Email</th>
-                  <th style={{ textAlign: 'center', width: '30%'}}>Description</th>
+                  <th style={{textAlign: 'center', width: '30%'}}>Description</th>
+                  <th style={{textAlign: 'center'}}>Status</th>
                   <th style={{textAlign: 'center'}}>Action</th>
                 </tr>
               </thead>
@@ -74,6 +86,7 @@ const ListBrand = (props) => {
                         <td >{e.hotline}</td>
                         <td >{e.email}</td>
                         <td >{e.description}</td>
+                        <td>{getStatusText(e.status)}</td>
                         <td style={{}}>
                           <Link to={"/brands/detail/" + e.id}>
                           <button className="btn btn-outline-info">

@@ -20,8 +20,11 @@ const CreateBrand = () => {
     description: '',
     hotline: '',
     email: '',
+    status: '',
     img: ''
   });
+  console.log("brand",brand)
+
   const handleChange = (event) => {
     brand[event.target.name] = event.target.value;
     setBrand(brand);
