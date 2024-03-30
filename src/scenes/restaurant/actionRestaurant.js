@@ -10,54 +10,79 @@ import Topbar from "../global/Topbar";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import BrandService from "../../services/brandService";
-// import {MenuItem} from "react-pro-sidebar";
-import CategoryService from "../../services/categoryService";
 import restaurantService from "../../services/restaurantService";
-import {Box, MenuItem, Select, TextareaAutosize, TextField} from "@mui/material";
+import {Box, MenuItem, Select, TextareaAutosize, TextField, useTheme} from "@mui/material";
+import {TimePicker} from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Chip from "@mui/material/Chip";
+
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+const listMeals = [
+    'Breakfast',
+    'Lunch',
+    'Dinner'
+];
+
+const listCuisines = [
+    'american',
+    'seafood',
+    'steakhouse',
+    'healthy',
+    'vegetarian'
+];
+
+function getStyles(name, personName, theme) {
+    return {
+        fontWeight: personName.indexOf(name) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
+    };
+}
 
 
 const ActionRestaurant = (props) => {
+    const theme = useTheme();
     const isNonMobile = useMediaQuery("(min-width: 600px)");
     const navigate = useNavigate();
 
     const {state, dispatch} = useContext(UserContext);
-    const [img, setFile] = useState(null);
+    const [file, setFile] = useState({
+        img: ''
+    });
     const {id} = useParams();
     const [req] = useState({id: id});
     const [restaurantDetails, setRestaurantDetails] = useState({
-        name: "",
-        address: "",
-        tel: "",
-        brandId: "",
-        img: null,
-        description: "",
-        meals: "",
-        hourStart: "",
-        hourEnd: "",
-        rate: "",
-        cuisines: "",
-        status: ""
+        name: '',
+        description: '',
+        tel: '',
+        address: '',
+        brandId: '',
+        cuisines: [],
+        meals: [],
+        hourStart: '',
+        hourEnd: '',
+        rate: '',
+        status: ''
     });
+    const [openTime, setOpenTime] = useState(dayjs('0000-00-00'));
+    const [closeTime, setCloseTime] = useState(dayjs('0000-00-00'));
 
     useEffect(() => {
         RestaurantService.findRestaurants(req)
             .then((res) => {
                 if (Array.isArray(res.data) && res.data.length > 0) {
-                    const firstRestaurant = res.data[0];
-                    setRestaurantDetails({
-                        name: firstRestaurant.name || "",
-                        address: firstRestaurant.address || "",
-                        tel: firstRestaurant.tel || "",
-                        brandId: firstRestaurant.brandId || "",
-                        img: firstRestaurant.img || "",
-                        description: firstRestaurant.description || "",
-                        meals: firstRestaurant.meals || "",
-                        hourStart: firstRestaurant.hourStart || "",
-                        hourEnd: firstRestaurant.hourEnd || "",
-                        rate: firstRestaurant.rate || "",
-                        cuisines: firstRestaurant.cuisines || "",
-                        status: firstRestaurant.status || ""
-                    });
+                    setRestaurantDetails(res.data[0]);
                 }
             })
             .catch((err) => {
@@ -90,37 +115,17 @@ const ActionRestaurant = (props) => {
     };
 
     const handleFileChange = (event) => {
-        setRestaurantDetails((prevDetails) => ({
-            ...prevDetails,
-            img: event.target.files
-        }));
+        file.img = event.target.files;
+        setFile(file);
     };
 
-    // const handleUpdate = async (e) => {
-    //     // e.preventDefault();
-    //     Swal.fire({
-    //         title: 'Are you sure update?',
-    //         text: "You won't be able to revert this!",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Yes, update it!'
-    //     }).then(async (result) => {
-    //         if (result.isConfirmed) {
-    //             const t = await RestaurantService.updateRestaurant(restaurantDetails, id);
-    //             if (t != null) {
-    //                 await Swal.fire(
-    //                     'Update Success!',
-    //                     'Your file has been update.',
-    //                     'success'
-    //                 )
-    //                 return navigate("/brands");
-    //
-    //             }
-    //         }
-    //     })
-    // }
+    const handleSelectChangeMeals = (event) => {
+        setRestaurantDetails({ ...restaurantDetails, meals: event.target.value });
+    };
+
+    const handleSelectChangeCuisines = (event) => {
+        setRestaurantDetails({ ...restaurantDetails, cuisines: event.target.value });
+    };
 
     const handleUpdate = async (e) => {
         // e.preventDefault();
@@ -147,10 +152,11 @@ const ActionRestaurant = (props) => {
             }
         })
     }
-    const deleteRestaurant = async () => {
+
+    const openRestaurant = async () => {
 
         Swal.fire({
-            title: 'Are you sure delete?',
+            title: 'Are you sure open Restaurant?',
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
@@ -159,9 +165,9 @@ const ActionRestaurant = (props) => {
             confirmButtonText: 'Yes, delete it!'
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const t = await RestaurantService.deleteRestaurant(id);
+                const t = await RestaurantService.updateRestaurant({status: 1},id);
                 if (t != null) {
-                    await Swal.fire(
+                    Swal.fire(
                         'Success!',
                         'Your file has been update.',
                         'success'
@@ -170,13 +176,62 @@ const ActionRestaurant = (props) => {
                 }
             }
         })
-
     }
+
+    const closedRestaurant = async () => {
+
+        Swal.fire({
+            title: 'Are you sure closed Restaurant?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const t = await RestaurantService.updateRestaurant({status: 0},id);
+                if (t != null) {
+                    Swal.fire(
+                        'Success!',
+                        'Your file has been update.',
+                        'success'
+                    )
+                    return navigate("/restaurants");
+                }
+            }
+        })
+    }
+
+    const updateAvatar = async () => {
+
+        Swal.fire({
+            title: 'Are you sure update Image ?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const t = await RestaurantService.updateAvatar(file, id);
+                if (t != null) {
+                    Swal.fire(
+                        'Success!',
+                        'Your file has been update.',
+                        'success'
+                    ).then(() => {
+                        window.location.reload();
+                    });
+                }
+            }
+        })
+    }
+
     const cancel = () => {
         navigate("/restaurants");
     };
-
-
 
     console.log("restaurantDetails", restaurantDetails);
     console.log("restaurantDetails brands", brands);
@@ -187,263 +242,289 @@ const ActionRestaurant = (props) => {
             <main className="content">
                 <Topbar/>
                 <Box m="20px">
-                    <div className="container shadow" style={{display: 'grid'}}>
-                        <h1 style={{margin: 'auto', marginTop: '24px'}}>DETAIL RESTAURANT</h1>
+                    <div className="container shadow" style={{ display: 'grid' }}>
+                        <h1 style={{ margin: 'auto', marginTop: '24px' }}>DETAIL RESTAURANT</h1>
                         <Formik initialValues={restaurantDetails} onSubmit={handleUpdate}>
-                            <Form style={{padding: "40px 24px"}}>
-                                <div>
-                                    <div style={{ display: "flex", flexWrap: "wrap" }}>
-                                        {/*<Box display="grid" width="30%"  marginRight="1rem" marginBottom="1rem">*/}
-                                        {/*    <label>Brand: </label>*/}
-                                        {/*    <select*/}
-                                        {/*        value={restaurantDetails.brandId}*/}
-                                        {/*        onChange={handleBrandSelect}*/}
-                                        {/*        variant="filled"*/}
-                                        {/*        className="form-select form-select-lg mb-3"*/}
-                                        {/*        required*/}
-                                        {/*    >*/}
-                                        {/*        {restaurantDetails.brandId && (*/}
-                                        {/*            <option value={restaurantDetails.brandId} disabled>*/}
-                                        {/*                {brands.find(brand => brand.id === restaurantDetails.brandId)?.name}*/}
-                                        {/*            </option>*/}
-                                        {/*        )}*/}
-                                        {/*        {brands.map((brand) => (*/}
-                                        {/*            <option key={brand.id} value={brand.id}>*/}
-                                        {/*                {brand.name}*/}
-                                        {/*            </option>*/}
-                                        {/*        ))}*/}
-
-                                        {/*    </select>*/}
-                                        {/*</Box>*/}
-
-                                        {/*<Box display="grid" width="30%"  marginRight="1rem">*/}
-                                        {/*    <label htmlFor="brandSelect">Brand: </label>*/}
-                                        {/*    <Select*/}
-                                        {/*        id="brandSelect"*/}
-                                        {/*        value={restaurantDetails.brandId|| ''}*/}
-                                        {/*        onChange={handleBrandSelect}*/}
-                                        {/*        variant="filled"*/}
-                                        {/*        className="form-select form-select-lg mb-3"*/}
-                                        {/*        required*/}
-                                        {/*    >*/}
-                                        {/*        <MenuItem value="" disabled>*/}
-                                        {/*        </MenuItem>*/}
-                                        {/*        {brands.map((brand) => (*/}
-                                        {/*            <MenuItem key={brand.id} value={brand.id}>*/}
-                                        {/*                {brand.name}*/}
-                                        {/*            </MenuItem>*/}
-                                        {/*        ))}*/}
-                                        {/*    </Select>*/}
-                                        {/*</Box>*/}
-
-                                        {/*<Box display="grid" width="30%">*/}
-                                        {/*    <label>Brand: </label>*/}
-                                        {/*    <select*/}
-                                        {/*        value={restaurantDetails.brandId}*/}
-                                        {/*        onChange={handleBrandSelect}*/}
-                                        {/*        variant="filled"*/}
-                                        {/*        className="form-select form-select-lg mb-3"*/}
-                                        {/*        required*/}
-                                        {/*    >*/}
-                                        {/*        <option selected disabled value="">Open this select brand</option>*/}
-                                        {/*        {brands.map((brand) => (*/}
-                                        {/*            <option key={brand.id} value={brand.id}>*/}
-                                        {/*                {brand.name}*/}
-                                        {/*            </option>*/}
-                                        {/*        ))}*/}
-                                        {/*    </select>*/}
-                                        {/*</Box>*/}
-
-                                        <Box display="grid" width="30%" marginRight="1rem">
-                                            <label>Brand: </label>
-                                            <Select
-                                                value={restaurantDetails.brandId}
-                                                onChange={handleBrandSelect}
-                                                variant="filled"
-                                                className="form-select form-select-lg mb-3"
-                                                required
-                                            >
-                                                <MenuItem value="" disabled>Select a restaurant</MenuItem>
-                                                {brands.map((brand) => (
-                                                    <MenuItem key={brand.id} value={brand.id}>
-                                                        {brand.name}
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </Box>
-
-                                        <Box display="grid" width="30%"  marginRight="1rem" marginBottom="1rem">
-                                            <label>Name: </label>
-                                            <TextField
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="name"
-                                                value={restaurantDetails.name|| ''}
-                                                sx={{gridColumn: "span 2"}}
-                                                required
-                                            />
-                                        </Box>
-                                        <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
-                                            <label>Hotline: </label>
-                                            <TextField
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="tel"
-                                                value={restaurantDetails.tel|| ''}
-                                                sx={{gridColumn: "span 2"}}
-                                                required
-                                            />
-                                        </Box>
-
-
-                                        <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
-                                            <label>Open: </label>
-                                            <TextField
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="hourStart"
-                                                value={restaurantDetails.hourStart|| ''}
-                                                sx={{gridColumn: "span 2"}}
-                                                required
-                                            />
-                                        </Box>
-                                        <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
-                                            <label>Close: </label>
-                                            <TextField
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="hourEnd"
-                                                value={restaurantDetails.hourEnd|| ''}
-                                                sx={{gridColumn: "span 2"}}
-                                                required
-                                            />
-                                        </Box>
-
-                                        <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
-                                            <label>Meals: </label>
-                                            <TextField
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="meals"
-                                                value={restaurantDetails.meals|| ''}
-                                                sx={{gridColumn: "span 2"}}
-                                                required
-                                            />
-                                        </Box>
-                                        <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
-                                            <label>Cuisines: </label>
-                                            <TextField
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="cuisines"
-                                                value={restaurantDetails.cuisines|| ''}
-                                                sx={{gridColumn: "span 2"}}
-                                                required
-                                            />
-                                        </Box>
-                                        <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
-                                            <label>Cuisines: </label>
-                                            <TextField
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="cuisines"
-                                                value={restaurantDetails.cuisines|| ''}
-                                                sx={{gridColumn: "span 2"}}
-                                                required
-                                            />
-                                        </Box>
-                                        <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
-                                            <label>Rate: </label>
-                                            <TextField
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="rate"
-                                                value={restaurantDetails.rate|| ''}
-                                                sx={{gridColumn: "span 2"}}
-                                                required
-                                            />
-                                        </Box>
-                                        <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
-                                            <label>Status: </label>
-                                            <TextField
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="cuisines"
-                                                value={restaurantDetails.status|| ''}
-                                                sx={{gridColumn: "span 2"}}
-                                                required
-                                            />
-                                        </Box>
-                                    </div>
-                                    <div style={{marginTop: 40, display: "flex", justifyContent: "space-between"}}>
-                                        <Box display="grid" width="100%">
-                                            <label>Description: </label>
-                                            <TextareaAutosize
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="description"
-                                                value={restaurantDetails.description|| ''}
-                                                sx={{gridColumn: "span 2"}}
-                                                required
-                                            />
-                                        </Box>
-                                    </div>
-                                    <div style={{marginTop: 40, display: 'flex', alignItems: 'flex-end'}}>
-                                        <Box display="grid" width="48%">
-                                            <label htmlFor="avatar" className="form-label">
-                                                Image :
-                                            </label>
-                                            <div style={{display: 'flex', flexDirection: 'row'}}>
-                                                {restaurantDetails.images && restaurantDetails.images.map((image, index) => (
+                            <Form style={{ padding: "40px 24px" }}>
+                                <div className="container rounded">
+                                    <div className="row">
+                                        <div className="col-md-5 ">
+                                            <div className="d-flex flex-column align-items-center text-center p-3 py-5">
+                                                {restaurantDetails.images && restaurantDetails.images.length > 0 ? (
+                                                    restaurantDetails.images.map((image, index) => (
+                                                        <img
+                                                            key={index}
+                                                            src={image.url}
+                                                            id="profile-image"
+                                                            width={225}
+                                                            style={{ objectFit: 'cover', borderRadius: 8, marginRight: 5 }}
+                                                        />
+                                                    ))
+                                                ) : (
                                                     <img
-                                                        key={index}
-                                                        src={image.url}
-                                                        width={90}
-                                                        style={{objectFit: 'cover', borderRadius: 8, marginRight: 10}}
-                                                        alt={`gif-${index}`}
+                                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi9l3x_T90wLTxFRNtGjTcdi-naKnFfjSIsg&usqp=CAU"
+                                                        id="profile-image"
+                                                        style={{ objectFit: 'cover', borderRadius: 8, marginRight: 5 }}
                                                     />
-                                                ))}
+                                                )}
+                                                <br/>
+                                                <div >
+                                                    <div className="input-group">
+                                                        <input
+                                                            type="file"
+                                                            onChange={handleFileChange}
+                                                            name="img"
+                                                            className="form-control"
+                                                            id="inputGroupFile04"
+                                                            aria-describedby="inputGroupFileAddon04"
+                                                            aria-label="Upload"
+                                                            multiple
+                                                        />
+                                                        <button className="btn btn-outline-secondary" type="button" onClick={updateAvatar} id="inputGroupFileAddon04">Button</button>
+                                                    </div>
+
+                                                </div>
                                             </div>
-                                            <input
-                                                type="file"
-                                                onChange={handleFileChange}
-                                                name="img"
-                                                className="form-control"
-                                                id="avatar"
-                                                multiple
-                                            />
-                                        </Box>
+                                        </div>
+                                        <div className="col-md-7 ">
+                                            <div className="p-3 py-5">
+                                                <div className="row mt-2">
+                                                    <div className="col-md-6">
+                                                        <Box display="grid" marginRight="1rem" marginBottom="1rem">
+                                                            <TextField
+                                                                id="outlined-basic"
+                                                                label="Name"
+                                                                variant="outlined"
+                                                                type="text"
+                                                                onChange={handleChange}
+                                                                value={restaurantDetails.name || ""}
+                                                                name="name"
+                                                                sx={{gridColumn: "span 2"}}
+                                                                required
+                                                            />
+                                                        </Box>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <Box display="grid" marginRight="1rem" marginBottom="1rem">
+                                                            <TextField
+                                                                id="outlined-basic"
+                                                                label="Telephone"
+                                                                variant="outlined"
+                                                                type="text"
+                                                                value={restaurantDetails.tel || ""}
+                                                                onChange={handleChange}
+                                                                name="tel"
+                                                                sx={{gridColumn: "span 2"}}
+                                                                required
+                                                            />
+                                                        </Box>
+                                                    </div>
+                                                </div>
+                                                <div className="row mt-2">
+                                                    <div className="col-md-6">
+                                                        <Box display="grid" marginRight="1rem" marginBottom="1rem">
+                                                            <label>Open: {restaurantDetails.hourStart}</label>
+                                                            <TimePicker
+                                                                value={openTime}
+                                                                onChange={(value) => {
+                                                                    const selectedTime = value.$d.toTimeString().split(" ")[0];
+                                                                    setOpenTime(value);
+                                                                    setRestaurantDetails(prevRestaurant => ({
+                                                                        ...prevRestaurant,
+                                                                        hourStart: selectedTime
+                                                                    }));
+                                                                }}
+                                                                ampm={false}
+                                                            />
+                                                        </Box>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <Box display="grid" marginRight="1rem" marginBottom="1rem">
+                                                            <label>Close: {restaurantDetails.hourEnd}</label>
+                                                            <TimePicker
+                                                                value={closeTime}
+                                                                onChange={(value) => {
+                                                                    setCloseTime(value);
+                                                                    const selectedTime = value.$d.toTimeString().split(" ")[0];
+                                                                    setRestaurantDetails(prevRestaurant => ({
+                                                                        ...prevRestaurant,
+                                                                        hourEnd: selectedTime
+                                                                    }));
+                                                                }}
+                                                                defaultValue={restaurantDetails.hourEnd || ''}
+                                                                ampm={false}
+                                                            />
+                                                        </Box>
+                                                    </div>
+                                                </div>
+                                                <div className="row mt-2">
+                                                    <div className="col-md-6">
+                                                        <Box display="grid" marginRight="1rem" marginBottom="1rem">
+                                                            <FormControl>
+                                                                <InputLabel id="demo-multiple-chip-label">Meals</InputLabel>
+                                                                <Select
+                                                                    labelId="demo-multiple-chip-label"
+                                                                    id="demo-multiple-chip"
+                                                                    multiple
+                                                                    value={restaurantDetails.meals}
+                                                                    onChange={handleSelectChangeMeals}
+                                                                    input={<OutlinedInput id="select-multiple-chip" label="Meals" />}
+                                                                    renderValue={(selected) => (
+                                                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                                                            {selected.map((value) => (
+                                                                                <Chip key={value} label={value} />
+                                                                            ))}
+                                                                        </Box>
+                                                                    )}
+                                                                    MenuProps={MenuProps}
+                                                                >
+                                                                    {listMeals.map((name) => (
+                                                                        <MenuItem
+                                                                            key={name}
+                                                                            value={name}
+                                                                            style={getStyles(name, restaurantDetails.meals, theme)}
+                                                                        >
+                                                                            {name}
+                                                                        </MenuItem>
+                                                                    ))}
+                                                                </Select>
+                                                            </FormControl>
+                                                        </Box>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <Box display="grid"  marginRight="1rem" marginBottom="1rem">
+                                                            <FormControl>
+                                                                <InputLabel id="demo-multiple-chip-label">Cuisines</InputLabel>
+                                                                <Select
+                                                                    labelId="demo-multiple-chip-label"
+                                                                    id="demo-multiple-chip"
+                                                                    multiple
+                                                                    value={restaurantDetails.cuisines}
+                                                                    onChange={handleSelectChangeCuisines}
+                                                                    input={<OutlinedInput id="select-multiple-chip" label="Cuisines" />}
+                                                                    renderValue={(selected) => (
+                                                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                                                            {selected.map((value) => (
+                                                                                <Chip key={value} label={value} />
+                                                                            ))}
+                                                                        </Box>
+                                                                    )}
+                                                                    MenuProps={MenuProps}
+                                                                >
+                                                                    {listCuisines.map((name) => (
+                                                                        <MenuItem
+                                                                            key={name}
+                                                                            value={name}
+                                                                            style={getStyles(name, restaurantDetails.cuisines, theme)}
+                                                                        >
+                                                                            {name}
+                                                                        </MenuItem>
+                                                                    ))}
+                                                                </Select>
+                                                            </FormControl>
+                                                        </Box>
+                                                    </div>
+                                                </div>
+                                                <div className="row mt-3">
+                                                    <div className="col-md-12">
+                                                        <Box display="grid"  marginRight="1rem" marginBottom="1rem">
+                                                            <TextField
+                                                                id="outlined-basic"
+                                                                label="Address"
+                                                                variant="outlined"
+                                                                type="text"
+                                                                value={restaurantDetails.address || ""}
+                                                                onChange={handleChange}
+                                                                name="address"
+                                                                sx={{gridColumn: "span 2"}}
+                                                                required
+                                                            />
+                                                        </Box>
+                                                    </div>
+                                                </div>
+                                                <div className="row mt-3">
+                                                    <div className="col-md-12">
+                                                        <Box display="grid"  marginRight="1rem" marginBottom="1rem">
+                                                            <TextField
+                                                                id="outlined-basic"
+                                                                label="Description"
+                                                                variant="outlined"
+                                                                type="text"
+                                                                value={restaurantDetails.description || ""}
+                                                                onChange={handleChange}
+                                                                name="description"
+                                                                sx={{gridColumn: "span 2"}}
+                                                                required
+                                                            />
+                                                        </Box>
+                                                    </div>
+                                                </div>
+                                                <div className="row mt-3">
+                                                    <div className="col-md-6">
+                                                        <Box display="grid" marginRight="1rem">
+                                                            <FormControl>
+                                                                <InputLabel id="demo-simple-select-label">Brand</InputLabel>
+                                                                <Select
+                                                                    labelId="demo-simple-select-label"
+                                                                    id="demo-simple-select"
+                                                                    label="Brand"
+                                                                    value={restaurantDetails.brandId || ''}
+                                                                    onChange={handleBrandSelect}
+                                                                    required
+                                                                >
+                                                                    {brands.map((brand) => (
+                                                                        <MenuItem key={brand.id} value={brand.id}>
+                                                                            {brand.name}
+                                                                        </MenuItem>
+                                                                    ))}
+                                                                </Select>
+                                                            </FormControl>
+                                                        </Box>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <Box display="grid" marginRight="1rem" marginBottom="1rem">
+                                                            <TextField
+                                                                id="outlined-basic"
+                                                                label="Rate"
+                                                                variant="outlined"
+                                                                type="text"
+                                                                value={restaurantDetails.rate || ""}
+                                                                onChange={handleChange}
+                                                                name="rate"
+                                                                sx={{gridColumn: "span 2"}}
+                                                                required
+                                                            />
+                                                        </Box>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <Box
+                                                display="flex"
+                                                justifyContent="end"
+                                                mt="20px"
+                                            >
+                                                <button type="submit" className="btn btn-outline-warning" variant="contained">
+                                                    EDIT
+                                                </button>
+                                                {restaurantDetails.status === 1 ? (
+                                                    <button type="button" style={{ marginLeft: 10 }} onClick={closedRestaurant} className="btn btn-outline-danger" variant="contained">
+                                                        CLOSED
+                                                    </button>
+                                                ) : (
+                                                    <button type="button" style={{ marginLeft: 10 }} onClick={openRestaurant} className="btn btn-outline-success" variant="contained">
+                                                        OPEN
+                                                    </button>
+                                                )}
+                                                <button
+                                                    className="btn btn-outline-secondary"
+                                                    onClick={cancel}
+                                                    style={{ marginLeft: "10px" }}
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </Box>
+                                        </div>
                                     </div>
-                                    <Box
-                                        display="flex"
-                                        justifyContent="end"
-                                        mt="20px"
-                                    >
-                                        <button type="submit" className="btn btn-outline-success" variant="contained">
-                                            EDIT
-                                        </button>
-                                        <button type="button" style={{marginLeft: 10}} onClick={deleteRestaurant}
-                                                className="btn btn-outline-danger" variant="contained">
-                                            DELETE
-                                        </button>
-                                        <button
-                                            className="btn btn-outline-secondary"
-                                            onClick={cancel}
-                                            style={{marginLeft: "10px"}}
-                                        >
-                                            Cancel
-                                        </button>
-                                    </Box>
                                 </div>
                             </Form>
                         </Formik>

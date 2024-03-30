@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/restaurants";
+const API_URL = "http://localhost:8080/api/admin/restaurants";
 const headers = {
     'Content-Type': 'multipart/form-data',
 };
@@ -46,7 +46,13 @@ const restaurantService = {
     },
 
     updateRestaurant(restaurant, restaurantId) {
-        return axios.put(API_URL + "/" + restaurantId, restaurant, {headers:getAuthorizationHeader()});
+        const headers = getAuthorizationHeader();
+        delete headers['Content-Type'];
+        return axios.put(API_URL + "/" + restaurantId, restaurant, {headers});
+    },
+
+    updateAvatar(file, restaurantId) {
+        return axios.put(API_URL + "/avatar/" + restaurantId, file, { headers: getAuthorizationHeader() });
     },
 
     deleteRestaurant(restaurantId) {

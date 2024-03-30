@@ -51,7 +51,7 @@ const ListUser = (props) => {
                               <th style={{textAlign: 'center'}}>Address</th>
                               <th style={{textAlign: 'center'}}>Birth day</th>
                               {/*<th style={{textAlign: 'center'}}>Password</th>*/}
-                              {/*<th style={{textAlign: 'center'}}>Manager Restaurant</th>*/}
+                              <th style={{textAlign: 'center'}}>Manager Restaurant</th>
                               <th style={{textAlign: 'center'}}>Role</th>
                               <th style={{textAlign: 'center'}}>Action</th>
                             </tr>
@@ -60,23 +60,25 @@ const ListUser = (props) => {
                           {user.map((e, k) => {
                                 return (
                                     <tr key={k}>
-                                        <td>{k + 1}</td>
-                                        <td>
+                                        <td style={{textAlign: 'center', width: '5%'}}>{k + 1}</td>
+                                        <td style={{textAlign: 'center', width: '10%'}}>
                                             {e.images && e.images.map((image, index) => (
                                                 <img
                                                     key={index}
                                                     src={image.url}
                                                     width={90}
+                                                    className="rounded-circle"
                                                     style={{objectFit: 'cover', borderRadius: 8, marginRight: 5}}
                                                     alt={`gif-${index}`}
                                                 />
                                             ))}
                                             {(!e.images || e.images.length === 0) && (
                                                 <img
-                                                    width={50}
+                                                    width={90}
                                                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi9l3x_T90wLTxFRNtGjTcdi-naKnFfjSIsg&usqp=CAU"
                                                     id="profile-image"
-                                                    className="rounded-circle mt-5"
+                                                    className="rounded-circle"
+                                                    style={{objectFit: 'cover', borderRadius: 8, marginRight: 5}}
                                                 />
                                             )}
 
@@ -87,7 +89,7 @@ const ListUser = (props) => {
                                         <td>{e.address}</td>
                                         <td>{e.birthday}</td>
                                         {/*<td>{e.password}</td>*/}
-                                        {/*<td>{e.restaurant_id}</td>*/}
+                                        <td>{e.restaurant ? e.restaurant.name : ''}</td>
                                         <td>
                                             {e.roles.map((r, index) => (
                                                 <span key={index}>
@@ -97,7 +99,7 @@ const ListUser = (props) => {
                                             ))}
                                         </td>
 
-                                        <td style={{}}>
+                                        <td style={{textAlign: 'center', width: '5%'}}>
                                         <Link to={"/users/detail/" + e.id}>
                                             <button className="btn btn-outline-info">
                                                     Detail

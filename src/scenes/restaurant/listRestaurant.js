@@ -20,6 +20,17 @@ const ListRestaurant = (props) => {
             });
     }, []);
 
+    const getStatusText = (status) => {
+        switch (status) {
+            case 1:
+                return "is active";
+            case 0:
+                return "closed";
+            default:
+                return "Unknown";
+        }
+    };
+
 console.log("restaurant:", restaurant)
     return (
         <div className="app">
@@ -43,14 +54,11 @@ console.log("restaurant:", restaurant)
                                 <th style={{textAlign: 'center'}}>Logo</th>
                                 <th style={{textAlign: 'center'}}>Name</th>
                                 <th style={{textAlign: 'center'}}>Brand</th>
-                                <th style={{textAlign: 'center'}}>Telephone</th>
                                 <th style={{textAlign: 'center'}}>Cuisines</th>
                                 <th style={{textAlign: 'center'}}>Meals</th>
-                                <th style={{textAlign: 'center'}}>Open</th>
-                                <th style={{textAlign: 'center'}}>Close</th>
+                                <th style={{textAlign: 'center'}}>Hours</th>
                                 <th style={{textAlign: 'center'}}>Rate</th>
                                 <th style={{textAlign: 'center'}}>Address</th>
-                                <th style={{ textAlign: 'center', width: '30%'}}>Description</th>
                                 <th style={{ textAlign: 'center'}}>Status</th>
                                 <th style={{textAlign: 'center'}}>Action</th>
                             </tr>
@@ -60,8 +68,8 @@ console.log("restaurant:", restaurant)
                                 restaurant.map((e, k) => {
                                     return (
                                         <tr key={k}>
-                                            <td >{k + 1}</td>
-                                            <td >
+                                            <td style={{textAlign: 'center', width: '1%'}}>{k + 1}</td>
+                                            <td style={{textAlign: 'center', width: '10%'}}>
                                                 {e.images && e.images.map((image, index) => (
                                                     <img
                                                         key={index}
@@ -74,15 +82,12 @@ console.log("restaurant:", restaurant)
                                             </td>
                                             <td >{e.name}</td>
                                             <td>{e.brand ? e.brand.name : ''}</td>
-                                            <td >{e.tel}</td>
-                                            <td >{e.cuisines}</td>
-                                            <td >{e.meals}</td>
-                                            <td >{e.hourStart}</td>
-                                            <td >{e.hourEnd}</td>
-                                            <td >{e.rate}</td>
+                                            <td style={{textAlign: 'center', width: '10%'}}>{e.cuisines.join(',\n')}</td>
+                                            <td style={{textAlign: 'center', width: '10%'}}>{e.meals.join(',\n')}</td>
+                                            <td >{e.hourStart} - {e.hourEnd}</td>
+                                            <td style={{textAlign: 'center', width: '1%'}}>{e.rate}</td>
                                             <td >{e.address}</td>
-                                            <td >{e.description}</td>
-                                            <td >{e.status}</td>
+                                            <td >{getStatusText(e.status)}</td>
                                             <td style={{}}>
                                                 <Link to={`/restaurants/detail/${e.id}`}>
                                                     <button className="btn btn-outline-info">

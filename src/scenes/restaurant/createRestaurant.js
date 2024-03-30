@@ -139,17 +139,6 @@ const CreateRestaurant = () => {
                         <Formik>
                             <form onSubmit={handleSubmit} style={{padding: "40px 24px"}}>
                                 <div style={{display: "flex", flexWrap: "wrap"}}>
-                                    {/*<Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">*/}
-                                    {/*    <label>Name: </label>*/}
-                                    {/*    <TextField*/}
-                                    {/*        variant="filled"*/}
-                                    {/*        type="text"*/}
-                                    {/*        onChange={handleChange}*/}
-                                    {/*        name="name"*/}
-                                    {/*        sx={{gridColumn: "span 2"}}*/}
-                                    {/*        required*/}
-                                    {/*    />*/}
-                                    {/*</Box>*/}
                                     <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
                                         <TextField
                                             id="outlined-basic"
@@ -162,17 +151,6 @@ const CreateRestaurant = () => {
                                             required
                                         />
                                     </Box>
-                                    {/*<Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">*/}
-                                    {/*    <label>Telephone: </label>*/}
-                                    {/*    <TextField*/}
-                                    {/*        variant="filled"*/}
-                                    {/*        type="text"*/}
-                                    {/*        onChange={handleChange}*/}
-                                    {/*        name="tel"*/}
-                                    {/*        sx={{gridColumn: "span 2"}}*/}
-                                    {/*        required*/}
-                                    {/*    />*/}
-                                    {/*</Box>*/}
                                     <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
                                         <TextField
                                             id="outlined-basic"
@@ -185,17 +163,6 @@ const CreateRestaurant = () => {
                                             required
                                         />
                                     </Box>
-                                    {/*<Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">*/}
-                                    {/*    <label>Address: </label>*/}
-                                    {/*    <TextField*/}
-                                    {/*        variant="filled"*/}
-                                    {/*        type="text"*/}
-                                    {/*        onChange={handleChange}*/}
-                                    {/*        name="address"*/}
-                                    {/*        sx={{gridColumn: "span 2"}}*/}
-                                    {/*        required*/}
-                                    {/*    />*/}
-                                    {/*</Box>*/}
                                     <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
                                         <TextField
                                             id="outlined-basic"
@@ -208,10 +175,7 @@ const CreateRestaurant = () => {
                                             required
                                         />
                                     </Box>
-                                    {/*<Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">*/}
-                                    {/*    <TimePicker label="Basic time picker" />*/}
-                                    {/*</Box>*/}
-                                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
+                                    <Box display="grid" width="45%" marginRight="1rem" marginBottom="1rem">
                                         <label>Open: </label>
                                         <TimePicker
                                             value={openTime}
@@ -226,7 +190,7 @@ const CreateRestaurant = () => {
                                             ampm={false}
                                         />
                                     </Box>
-                                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
+                                    <Box display="grid" width="45%" marginRight="1rem" marginBottom="1rem">
                                         <label>Close: </label>
                                         <TimePicker
                                             value={closeTime}
@@ -241,18 +205,7 @@ const CreateRestaurant = () => {
                                             ampm={false}
                                         />
                                     </Box>
-                                    {/*<Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">*/}
-                                    {/*    <label>Meals: </label>*/}
-                                    {/*    <TextField*/}
-                                    {/*        variant="filled"*/}
-                                    {/*        type="text"*/}
-                                    {/*        onChange={handleChange}*/}
-                                    {/*        name="meals"*/}
-                                    {/*        sx={{gridColumn: "span 2"}}*/}
-                                    {/*        required*/}
-                                    {/*    />*/}
-                                    {/*</Box>*/}
-                                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
+                                    <Box display="grid" width="45%" marginRight="1rem" marginBottom="1rem">
                                         <FormControl>
                                             <InputLabel id="demo-multiple-chip-label">Meals</InputLabel>
                                             <Select
@@ -283,18 +236,7 @@ const CreateRestaurant = () => {
                                             </Select>
                                         </FormControl>
                                     </Box>
-                                    {/*<Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">*/}
-                                    {/*    <label>Cuisines: </label>*/}
-                                    {/*    <TextField*/}
-                                    {/*        variant="filled"*/}
-                                    {/*        type="text"*/}
-                                    {/*        onChange={handleChange}*/}
-                                    {/*        name="cuisines"*/}
-                                    {/*        sx={{gridColumn: "span 2"}}*/}
-                                    {/*        required*/}
-                                    {/*    />*/}
-                                    {/*</Box>*/}
-                                    <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
+                                    <Box display="grid" width="45%" marginRight="1rem" marginBottom="1rem">
                                         <FormControl>
                                             <InputLabel id="demo-multiple-chip-label">Cuisines</InputLabel>
                                             <Select
@@ -325,17 +267,6 @@ const CreateRestaurant = () => {
                                             </Select>
                                         </FormControl>
                                     </Box>
-                                    {/*<Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">*/}
-                                    {/*    <label>Rate: </label>*/}
-                                    {/*    <TextField*/}
-                                    {/*        variant="filled"*/}
-                                    {/*        type="text"*/}
-                                    {/*        onChange={handleChange}*/}
-                                    {/*        name="rate"*/}
-                                    {/*        sx={{gridColumn: "span 2"}}*/}
-                                    {/*        required*/}
-                                    {/*    />*/}
-                                    {/*</Box>*/}
                                     <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
                                         <TextField
                                             id="outlined-basic"
@@ -348,17 +279,6 @@ const CreateRestaurant = () => {
                                             required
                                         />
                                     </Box>
-                                    {/*<Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">*/}
-                                    {/*    <label>Status: </label>*/}
-                                    {/*    <TextField*/}
-                                    {/*        variant="filled"*/}
-                                    {/*        type="number"*/}
-                                    {/*        onChange={handleChange}*/}
-                                    {/*        name="status"*/}
-                                    {/*        sx={{gridColumn: "span 2"}}*/}
-                                    {/*        required*/}
-                                    {/*    />*/}
-                                    {/*</Box>*/}
                                     <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
                                         <TextField
                                             id="outlined-basic"
@@ -391,35 +311,7 @@ const CreateRestaurant = () => {
                                             </Select>
                                         </FormControl>
                                     </Box>
-
                                 </div>
-                                <div style={{marginTop: 10, display: "flex", justifyContent: "space-between"}}>
-                                    {/*<Box display="grid" width="20%">*/}
-                                    {/*    <label htmlFor="brandSelect">Brand: </label>*/}
-                                    {/*    <Select*/}
-                                    {/*        id="brandSelect"*/}
-                                    {/*        value={restaurant.brandId}*/}
-                                    {/*        onChange={handleBrandSelect}*/}
-                                    {/*        variant="filled"*/}
-                                    {/*        className="form-select form-select-lg mb-3"*/}
-                                    {/*        required*/}
-                                    {/*    >*/}
-                                    {/*        <MenuItem value="" disabled>*/}
-                                    {/*            Open this select brand*/}
-                                    {/*        </MenuItem>*/}
-                                    {/*        {brands.map((brand) => (*/}
-                                    {/*            <MenuItem key={brand.id} value={brand.id}>*/}
-                                    {/*                {brand.name}*/}
-                                    {/*            </MenuItem>*/}
-                                    {/*        ))}*/}
-                                    {/*    </Select>*/}
-                                    {/*</Box>*/}
-
-
-
-
-                                </div>
-
                                 <div style={{marginTop: 40, display: "flex", justifyContent: "space-between"}}>
                                     <Box display="grid" width="100%">
                                         <label>Description: </label>

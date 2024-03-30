@@ -36,13 +36,6 @@ const ActionBrand = (props) => {
     BrandService.findBrands(req)
       .then((res) => {
         if (Array.isArray(res.data) && res.data.length > 0) {
-          // const firstBrand = res.data[0];
-          // setBrandDetails({
-          //   name: firstBrand.name || "",
-          //   description: firstBrand.description || "",
-          //   hotline: firstBrand.hotline || "",
-          //   email: firstBrand.email || ""
-          // });
           setBrandDetails(res.data[0])
         }
       })
@@ -212,26 +205,8 @@ const ActionBrand = (props) => {
                           <br/>
                           <span className="text-black-50">{brandDetails.email}</span>
                         </div>
-
                         <br/>
                         <div >
-                          {/*<div className="custom-file">*/}
-                          {/*  <input*/}
-                          {/*      type="file"*/}
-                          {/*      onChange={handleFileChange}*/}
-                          {/*      name="img"*/}
-                          {/*      className="form-control"*/}
-                          {/*      id="avatar" // Đổi id thành "image-upload"*/}
-                          {/*      multiple*/}
-                          {/*  />*/}
-                          {/*  <label*/}
-                          {/*      className="custom-file-label"*/}
-                          {/*      htmlFor="avatar" // Sử dụng cùng một id cho htmlFor*/}
-                          {/*  >*/}
-                          {/*    Choose file*/}
-                          {/*  </label>*/}
-                          {/*</div>*/}
-
                           <div className="input-group">
                             <input
                                 type="file"
@@ -251,9 +226,6 @@ const ActionBrand = (props) => {
                     </div>
                     <div className="col-md-7 ">
                       <div className="p-3 py-5">
-                        <div className="d-flex justify-content-between align-items-center mb-3">
-                          <h4 className="text-right">Profile Settings</h4>
-                        </div>
                         <div className="row mt-2">
                           <div className="col-md-6">
                             <label className="labels">Name</label>
