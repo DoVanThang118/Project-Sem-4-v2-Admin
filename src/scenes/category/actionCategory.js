@@ -17,13 +17,14 @@ const ActionCategory = (props) => {
     const navigate = useNavigate();
 
     const { state, dispatch } = useContext(UserContext);
-    const [img, setFile] = useState(null);
+    const [file, setFile] = useState({
+        img: ''
+    });
     const { id } = useParams();
     const [req] = useState({id: id});
     const [categoryDetails, setCategoryDetails] = useState({
         name: "",
-        description: "",
-        img: null
+        description: ""
     });
 
     console.log(categoryDetails)
@@ -32,11 +33,7 @@ const ActionCategory = (props) => {
         CategoryService.findCategories(req)
             .then((res) => {
                 if (Array.isArray(res.data) && res.data.length > 0) {
-                    const firstCategory = res.data[0];
-                    setCategoryDetails({
-                        name: firstCategory.name || "",
-                        description: firstCategory.description || ""
-                    });
+                    setCategoryDetails(res.data[0]);
                 }
             })
             .catch((err) => {
@@ -52,10 +49,8 @@ const ActionCategory = (props) => {
     };
 
     const handleFileChange = (event) => {
-        setCategoryDetails((prevDetails) => ({
-            ...prevDetails,
-            img: event.target.files
-        }));
+        file.img = event.target.files;
+        setFile(file);
     };
 
     const handleUpdate = async (e) => {
@@ -83,7 +78,7 @@ const ActionCategory = (props) => {
             }
         })
     }
-    const deleteBrand = async () => {
+    const deleteCategory = async () => {
 
         Swal.fire({
             title: 'Are you sure delete?',
@@ -108,6 +103,84 @@ const ActionCategory = (props) => {
         })
 
     }
+
+    const openCategory = async () => {
+
+        Swal.fire({
+            title: 'Are you sure open Category?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const t = await CategoryService.updateCategory({status: 1},id);
+                if (t != null) {
+                    Swal.fire(
+                        'Success!',
+                        'Your file has been update.',
+                        'success'
+                    )
+                    return navigate("/categories");
+                }
+            }
+        })
+    }
+
+    const closedCategory = async () => {
+
+        Swal.fire({
+            title: 'Are you sure closed Category?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const t = await CategoryService.updateCategory({status: 0},id);
+                if (t != null) {
+                    Swal.fire(
+                        'Success!',
+                        'Your file has been update.',
+                        'success'
+                    )
+                    return navigate("/categories");
+                }
+            }
+        })
+    }
+
+    const updateAvatar = async () => {
+
+        Swal.fire({
+            title: 'Are you sure update Image ?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const t = await CategoryService.updateAvatar(file, id);
+                if (t != null) {
+                    Swal.fire(
+                        'Success!',
+                        'Your file has been update.',
+                        'success'
+                    ).then(() => {
+                        // Sau khi hiển thị thông báo thành công, làm mới trang
+                        window.location.reload();
+                    });
+                    // return navigate("/brands/detail/ + e.id");
+                }
+            }
+        })
+    }
     const cancel = () => {
         navigate("/categories");
     };
@@ -122,80 +195,109 @@ const ActionCategory = (props) => {
                         <h1 style={{ margin: 'auto', marginTop: '24px' }}>DETAIL CATEGORY</h1>
                         <Formik initialValues={categoryDetails} onSubmit={handleUpdate}>
                             <Form style={{ padding: "40px 24px" }}>
-                                <div>
-                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                        <Box display="grid" width="30%">
-                                            <label>Name: </label>
-                                            <TextField
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="name"
-                                                value={categoryDetails.name|| ''}
-                                                sx={{ gridColumn: "span 2" }}
-                                                required
-                                            />
-                                        </Box>
-                                    </div>
-                                    <div style={{marginTop: 40, display: "flex", justifyContent: "space-between" }}>
-                                        <Box display="grid" width="100%">
-                                            <label>Description: </label>
-                                            <TextareaAutosize
-                                                variant="filled"
-                                                type="text"
-                                                onChange={handleChange}
-                                                name="description"
-                                                value={categoryDetails.description|| ''}
-                                                sx={{ gridColumn: "span 2" }}
-                                                required
-                                            />
-                                        </Box>
-                                    </div>
-                                    <div style={{marginTop: 40, display:'flex', alignItems:'flex-end'}}>
-                                        <Box display="grid" width="48%">
-                                            <label htmlFor="avatar" className="form-label">
-                                                Image :
-                                            </label>
-                                            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                {categoryDetails.images && categoryDetails.images.map((image, index) => (
+                                <div className="container rounded">
+                                    <div className="row">
+                                        <div className="col-md-5 ">
+                                            <div className="d-flex flex-column align-items-center text-center p-3 py-5">
+                                                {categoryDetails.images && categoryDetails.images.length > 0 ? (
+                                                    categoryDetails.images.map((image, index) => (
+                                                        <img
+                                                            key={index}
+                                                            src={image.url}
+                                                            id="profile-image"
+                                                            width={225}
+                                                            style={{ objectFit: 'cover', borderRadius: 8, marginRight: 5 }}
+                                                        />
+                                                    ))
+                                                ) : (
                                                     <img
-                                                        key={index}
-                                                        src={image.url}
-                                                        width={90}
-                                                        style={{ objectFit: 'cover', borderRadius: 8, marginRight: 10 }}
-                                                        alt={`gif-${index}`}
+                                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi9l3x_T90wLTxFRNtGjTcdi-naKnFfjSIsg&usqp=CAU" // Replace default_image_url_here with the URL of your default image
+                                                        id="profile-image"
+                                                        style={{ objectFit: 'cover', borderRadius: 8, marginRight: 5 }}
                                                     />
-                                                ))}
+                                                )}
+                                                <br/>
+                                                <div >
+                                                    <div className="input-group">
+                                                        <input
+                                                            type="file"
+                                                            onChange={handleFileChange}
+                                                            name="img"
+                                                            className="form-control"
+                                                            id="inputGroupFile04"
+                                                            aria-describedby="inputGroupFileAddon04"
+                                                            aria-label="Upload"
+                                                            multiple
+                                                        />
+                                                        <button className="btn btn-outline-secondary" type="button" onClick={updateAvatar} id="inputGroupFileAddon04">Button</button>
+                                                    </div>
+
+                                                </div>
                                             </div>
-                                            <input
-                                                type="file"
-                                                onChange={handleFileChange}
-                                                name="img"
-                                                className="form-control"
-                                                id="avatar"
-                                                multiple
-                                            />
-                                        </Box>
+                                        </div>
+                                        <div className="col-md-7 ">
+                                            <div className="p-3 py-5">
+                                                <div className="row mt-2">
+                                                    <div className="col-md-12">
+                                                        <label className="labels">Name</label>
+                                                        <input
+                                                            type="text"
+                                                            className="form-control"
+                                                            placeholder="Full name"
+                                                            onChange={handleChange}
+                                                            value={categoryDetails.name || ""}
+                                                            name="name"
+                                                            required
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="row mt-3">
+                                                    <div className="col-md-12">
+                                                        <label className="labels">Description</label>
+                                                        <input
+                                                            onChange={handleChange}
+                                                            value={categoryDetails.description || ""}
+                                                            type="text"
+                                                            className="form-control"
+                                                            placeholder="Description"
+                                                            name="description"
+                                                            required
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <Box
+                                                display="flex"
+                                                justifyContent="end"
+                                                mt="20px"
+                                            >
+                                                <button type="submit" className="btn btn-outline-warning" variant="contained">
+                                                    EDIT
+                                                </button>
+                                                {(categoryDetails.status === 1) ? (
+                                                    <button type="button" style={{ marginLeft: 10 }} onClick={closedCategory} className="btn btn-outline-danger" variant="contained">
+                                                        CLOSED
+                                                    </button>
+                                                ) : null}
+
+                                                {(categoryDetails.status === 0) ?(
+                                                    <button type="button" style={{ marginLeft: 10 }} onClick={openCategory} className="btn btn-outline-success" variant="contained">
+                                                        OPEN
+                                                    </button>
+                                                ) : null}
+                                                <button type="button" style={{ marginLeft: 10 }} onClick={deleteCategory} className="btn btn-outline-danger" variant="contained">
+                                                    DELETE
+                                                </button>
+                                                <button
+                                                    className="btn btn-outline-secondary"
+                                                    onClick={cancel}
+                                                    style={{ marginLeft: "10px" }}
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </Box>
+                                        </div>
                                     </div>
-                                    <Box
-                                        display="flex"
-                                        justifyContent="end"
-                                        mt="20px"
-                                    >
-                                        <button type="submit" className="btn btn-outline-success" variant="contained">
-                                            EDIT
-                                        </button>
-                                        <button type="button" style={{ marginLeft: 10 }} onClick={deleteBrand} className="btn btn-outline-danger" variant="contained">
-                                            DELETE
-                                        </button>
-                                        <button
-                                            className="btn btn-outline-secondary"
-                                            onClick={cancel}
-                                            style={{ marginLeft: "10px" }}
-                                        >
-                                            Cancel
-                                        </button>
-                                    </Box>
                                 </div>
                             </Form>
                         </Formik>

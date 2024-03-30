@@ -93,7 +93,7 @@ const ActionRestaurant = (props) => {
     const [brands, setBrands] = useState([]);
 
     useEffect(() => {
-        BrandService.getBrands()
+        BrandService.findBrands({status: 1})
             .then((res) => {
                 setBrands(res.data);
             })

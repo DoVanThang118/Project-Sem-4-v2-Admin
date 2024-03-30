@@ -24,6 +24,17 @@ const ListCategory = (props) => {
             });
     }, []);
 
+    const getStatusText = (status) => {
+        switch (status) {
+            case 1:
+                return "is active";
+            case 0:
+                return "closed";
+            default:
+                return "Unknown";
+        }
+    };
+
 
     return (
         <div className="app">
@@ -43,10 +54,11 @@ const ListCategory = (props) => {
                         <table className="table  table-bordered" style={{}}>
                             <thead>
                             <tr>
-                                <th style={{textAlign: 'center'}}>STT</th>
-                                <th style={{textAlign: 'center'}}>Logo</th>
+                                <th style={{textAlign: 'center', width: '5%'}}>STT</th>
+                                <th style={{textAlign: 'center', width: '5%'}}>Logo</th>
                                 <th style={{textAlign: 'center'}}>Name</th>
-                                <th style={{ textAlign: 'center', width: '50%'}}>Description</th>
+                                <th style={{textAlign: 'center', width: '50%'}}>Description</th>
+                                <th style={{textAlign: 'center', width: '10%'}}>Status</th>
                                 <th style={{textAlign: 'center'}}>Action</th>
                             </tr>
                             </thead>
@@ -69,7 +81,8 @@ const ListCategory = (props) => {
                                             </td>
                                             <td >{e.name}</td>
                                             <td >{e.description}</td>
-                                            <td style={{}}>
+                                            <td style={{textAlign: 'center', width: '10%'}}>{getStatusText(e.status)}</td>
+                                            <td style={{textAlign: 'center', width: '10%'}}>
                                                 <Link to={"/categories/detail/" + e.id}>
                                                     <button className="btn btn-outline-info">
                                                         Detail

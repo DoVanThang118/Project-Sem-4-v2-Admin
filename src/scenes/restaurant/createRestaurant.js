@@ -79,7 +79,7 @@ const CreateRestaurant = () => {
     console.log(restaurant)
 
     useEffect(() => {
-        BrandService.getBrands()
+        BrandService.findBrands({status: 1})
             .then((res) => {
                 setBrands(res.data);
             })

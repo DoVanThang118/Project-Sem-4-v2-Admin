@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/categories";
+const API_URL = "http://localhost:8080/api/admin/categories";
 const headers = {
     'Content-Type': 'multipart/form-data',
 };
@@ -46,7 +46,13 @@ const categoryService = {
     },
 
     updateCategory(category, categoryId) {
-        return axios.put(API_URL + "/" + categoryId, category, {headers:getAuthorizationHeader()});
+        const headers = getAuthorizationHeader();
+        delete headers['Content-Type'];
+        return axios.put(API_URL + "/" + categoryId, category, {headers});
+    },
+
+    updateAvatar(file, categoryId) {
+        return axios.put(API_URL + "/avatar/" + categoryId, file, { headers: getAuthorizationHeader() });
     },
 
     deleteCategory(categoryId) {
