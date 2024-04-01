@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080";
+const API_URL = "http://localhost:8080/api/admin/users";
 const headers = {
     'Content-Type': 'multipart/form-data',
 };
@@ -23,7 +23,7 @@ const userService = {
 
     getUsers: async () => {
         try {
-            const response = await axios.get(API_URL + "/api/users", {headers:getAuthorizationHeader()});
+            const response = await axios.get(API_URL, {headers:getAuthorizationHeader()});
             return response.data;
         } catch (error) {
             throw error;
@@ -34,7 +34,7 @@ const userService = {
         try {
             const headers = getAuthorizationHeader();
             delete headers['Content-Type'];
-            const response = await axios.post(API_URL + "/api/users/list", user, {headers});
+            const response = await axios.post(API_URL + "/list", user, {headers});
             return response.data;
         } catch (error) {
             throw error;
@@ -42,7 +42,9 @@ const userService = {
     },
 
     createUser(user) {
-        return axios.post(API_URL + "/register", user);
+        const headers = getAuthorizationHeader();
+        delete headers['Content-Type'];
+        return axios.post(API_URL + "/register", user, {headers});
     },
 
 
@@ -50,12 +52,16 @@ const userService = {
     updateUser(user, userId) {
         const headers = getAuthorizationHeader();
         delete headers['Content-Type'];
-        return axios.put(API_URL + "/api/users/" + userId, user, {headers});
+        return axios.put(API_URL + "/" + userId, user, {headers});
     },
 
     deleteUser(userId) {
-        return axios.delete(API_URL + "/api/users/" + userId, {headers:getAuthorizationHeader()});
-    }
+        return axios.delete(API_URL + "/" + userId, {headers:getAuthorizationHeader()});
+    },
+
+    updateAvatar(file, userId) {
+        return axios.put(API_URL + "/avatar/" + userId, file, { headers: getAuthorizationHeader() });
+    },
 }
 
 export default userService;

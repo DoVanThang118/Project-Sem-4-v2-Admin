@@ -20,6 +20,7 @@ const ListRestaurant = (props) => {
             });
     }, []);
 
+
     const getStatusText = (status) => {
         switch (status) {
             case 1:

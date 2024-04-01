@@ -24,6 +24,17 @@ const ListProduct = (props) => {
             });
     }, []);
 
+    const getStatusText = (status) => {
+        switch (status) {
+            case 1:
+                return "is active";
+            case 0:
+                return "closed";
+            default:
+                return "Unknown";
+        }
+    };
+
 console.log(product);
     return (
         <div className="app">
@@ -47,12 +58,13 @@ console.log(product);
                                 <th style={{textAlign: 'center'}}>Image</th>
                                 <th style={{textAlign: 'center'}}>Name</th>
                                 <th style={{textAlign: 'center'}}>Price</th>
-                                <th style={{textAlign: 'center'}}>Quantity</th>
+                                {/*<th style={{textAlign: 'center'}}>Quantity</th>*/}
                                 <th style={{textAlign: 'center'}}>Type</th>
                                 <th style={{textAlign: 'center'}}>rating</th>
                                 <th style={{textAlign: 'center'}}>Category</th>
                                 <th style={{textAlign: 'center'}}>Restaurant</th>
                                 <th style={{ textAlign: 'center', width: '20%'}}>Description</th>
+                                <th style={{ textAlign: 'center'}}>Status</th>
                                 <th style={{textAlign: 'center'}}>Action</th>
                             </tr>
                             </thead>
@@ -75,12 +87,13 @@ console.log(product);
                                             </td>
                                             <td >{e.name}</td>
                                             <td >{e.price}</td>
-                                            <td >{e.qty}</td>
+                                            {/*<td >{e.qty}</td>*/}
                                             <td >{e.type}</td>
                                             <td >{e.rate}</td>
                                             <td >{e.category.name} </td>
                                             <td >{e.restaurant.name}</td>
                                             <td >{e.description}</td>
+                                            <td >{getStatusText(e.status)}</td>
                                             <td style={{}}>
                                                 <Link to={"/products/detail/" + e.id}>
                                                     <button className="btn btn-outline-info">

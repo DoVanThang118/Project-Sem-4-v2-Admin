@@ -17,7 +17,8 @@ const ListUser = (props) => {
     useEffect(() => {
         userService.getUsers()
             .then((res) => {
-                setUser(res.data);
+                const userlist = res.data.filter(user => user.type !== 'user');
+                setUser(userlist);
             })
             .catch((err) => {
                 console.log(err);
@@ -49,9 +50,9 @@ const ListUser = (props) => {
                               <th style={{textAlign: 'center'}}>Name</th>
                               <th style={{textAlign: 'center'}}>Email</th>
                               <th style={{textAlign: 'center'}}>Address</th>
-                              <th style={{textAlign: 'center'}}>Birth day</th>
-                              {/*<th style={{textAlign: 'center'}}>Password</th>*/}
+                              <th style={{textAlign: 'center'}}>Birthday</th>
                               <th style={{textAlign: 'center'}}>Manager Restaurant</th>
+                              <th style={{textAlign: 'center'}}>Type</th>
                               <th style={{textAlign: 'center'}}>Role</th>
                               <th style={{textAlign: 'center'}}>Action</th>
                             </tr>
@@ -88,13 +89,13 @@ const ListUser = (props) => {
                                         <td>{e.email}</td>
                                         <td>{e.address}</td>
                                         <td>{e.birthday}</td>
-                                        {/*<td>{e.password}</td>*/}
                                         <td>{e.restaurant ? e.restaurant.name : ''}</td>
-                                        <td>
+                                        <td>{e.type}</td>
+                                        <td style={{textAlign: 'center', width: '5%'}}>
                                             {e.roles.map((r, index) => (
                                                 <span key={index}>
                                                     {r.name}
-                                                    {index !== e.roles.length - 1 && ", "}
+                                                    {index !== e.roles.length - 1 && ", \n"}
                                                 </span>
                                             ))}
                                         </td>

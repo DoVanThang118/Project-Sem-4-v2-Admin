@@ -51,7 +51,7 @@ const CreateProduct = () => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        CategoryService.getCategories()
+        CategoryService.findCategories({status: 1})
             .then((res) => {
                 setCategories(res.data);
             })
@@ -67,7 +67,7 @@ const CreateProduct = () => {
     const [restaurantsProduct, setRestaurantsProduct] = useState([]);
 
     useEffect(() => {
-        RestaurantService.getRestaurants()
+        RestaurantService.findRestaurants({status: 1})
             .then((res) => {
                 setRestaurantsProduct(res.data);
             })
@@ -128,7 +128,7 @@ const CreateProduct = () => {
                             <form onSubmit={handleSubmit} style={{ padding: "40px 24px" }}>
 
                                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                    <Box display="grid" width="30%">
+                                    <Box display="grid" width="45%">
                                         <label>Name: </label>
                                         <TextField
                                             variant="filled"
@@ -139,7 +139,7 @@ const CreateProduct = () => {
                                             required
                                         />
                                     </Box>
-                                    <Box display="grid" width="30%">
+                                    <Box display="grid" width="45%">
                                         <label>Price: </label>
                                         <TextField
                                             variant="filled"
@@ -150,33 +150,33 @@ const CreateProduct = () => {
                                             required
                                         />
                                     </Box>
-                                    <Box display="grid" width="30%">
-                                        <label>Quantity: </label>
-                                        <TextField
-                                            variant="filled"
-                                            type="number"
-                                            onChange={handleChange}
-                                            name="qty"
-                                            sx={{ gridColumn: "span 2" }}
-                                            required
-                                        />
-                                    </Box>
+                                    {/*<Box display="grid" width="30%">*/}
+                                    {/*    <label>Quantity: </label>*/}
+                                    {/*    <TextField*/}
+                                    {/*        variant="filled"*/}
+                                    {/*        type="number"*/}
+                                    {/*        onChange={handleChange}*/}
+                                    {/*        name="qty"*/}
+                                    {/*        sx={{ gridColumn: "span 2" }}*/}
+                                    {/*        required*/}
+                                    {/*    />*/}
+                                    {/*</Box>*/}
                                 </div>
                                 <div style={{marginTop: 40, display: "flex", justifyContent: "space-between" }}>
                                     <Box display="grid" width="30%">
                                         <label>Type: </label>
-                                        <select
+                                        <Select
                                             value={product.type}
                                             onChange={handleTypeSelect}
                                             variant="filled"
                                             className="form-select form-select-lg mb-3"
                                             required
                                         >
-                                            <option selected disabled value="">Open this select brand</option>
-                                            <option value="Breakfast, Brunch">Breakfast</option>
-                                            <option value="Lunch">Lunch</option>
-                                            <option value="Brunch">Brunch</option>
-                                        </select>
+                                            <MenuItem selected disabled value="">Open this select brand</MenuItem>
+                                            <MenuItem value="Breakfast, Brunch">Breakfast</MenuItem>
+                                            <MenuItem value="Lunch">Lunch</MenuItem>
+                                            <MenuItem value="Brunch">Brunch</MenuItem>
+                                        </Select>
 
 
                                         {/*<Select*/}
@@ -294,14 +294,15 @@ const CreateProduct = () => {
                                 <div style={{marginTop: 40, display: "flex", justifyContent: "space-between" }}>
                                     <Box display="grid" width="100%">
                                         <label>Description: </label>
-                                        <TextareaAutosize
+                                        <textarea
+                                            rows="4"
+                                            cols="50"
                                             variant="filled"
-                                            type="text"
-                                            onChange={handleChange}
                                             name="description"
-                                            sx={{ gridColumn: "span 2" }}
+                                            placeholder="description ..."
+                                            onChange={handleChange}
                                             required
-                                        />
+                                        ></textarea>
                                     </Box>
                                 </div>
                                 <div style={{marginTop: 40, display:'flex', alignItems:'flex-end'}}>

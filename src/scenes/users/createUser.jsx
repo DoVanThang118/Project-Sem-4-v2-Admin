@@ -1,38 +1,50 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import TextField from '@mui/material/TextField';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
 import Box from '@mui/material/Box';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
-import moment from 'moment';
 import userService from "../../services/userService";
 import Sidebar from "../global/Sidebar";
 import Topbar from "../global/Topbar";
+import RestaurantService from "../../services/restaurantService";
+import {MenuItem, Select} from "@mui/material";
 
 const CreateUser = () => {
   const navigate = useNavigate();
   const isNonMobile = useMediaQuery("(min-width: 600px)");
-  const [file, setFile] = useState(null);
   const [user, setUser] = useState({
     name: '',
     address: '',
     birthday: '',
     tel: '',
     email: '',
-    password: ''
-    // img: ''
+    password: '',
+    type: '',
+    restaurantId: ''
   });
+
+  const [restaurants, setRestaurants] = useState([]);
+  useEffect(() => {
+    RestaurantService.findRestaurants({status: 1})
+        .then((res) => {
+          setRestaurants(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, []);
+
+  const handleRestaurantSelect  = (event) => {
+    setUser({ ...user, restaurantId: event.target.value });
+  };
+
+  const handleTypeSelect  = (event) => {
+    setUser({ ...user, type: event.target.value });
+  };
 
   const handleChange = (event) => {
     user[event.target.name] = event.target.value;
     setUser(user);
-  };
-
-  const handleFileChange = (event) => {
-    user.img = event.target.files;
-    setFile(user);
   };
 
   const handleSubmit = async (e) => {
@@ -53,7 +65,7 @@ const CreateUser = () => {
           <Topbar />
           <Box m="20px">
             <div className="container shadow" style={{ display: 'grid' }}>
-              <h1 style={{ margin: 'auto', marginTop: '24px' }}>CREATE BRAND</h1>
+              <h1 style={{ margin: 'auto', marginTop: '24px' }}>CREATE ACCOUNT</h1>
               <form onSubmit={handleSubmit} style={{ padding: "40px 24px" }}>
 
                 <div style={{display: "flex", flexWrap: "wrap"}}>
@@ -116,31 +128,44 @@ const CreateUser = () => {
                     <label>Birthday: </label>
                     <TextField
                         variant="filled"
-                        type="text"
+                        type="date"
                         onChange={handleChange}
                         name="birthday"
                         sx={{ gridColumn: "span 2" }}
                         required
                     />
                   </Box>
+                  <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
+                    <label>Type: </label>
+                    <Select
+                        value={user.type}
+                        onChange={handleTypeSelect}
+                        variant="filled"
+                        className="form-select form-select-lg mb-3"
+                        required
+                    >
+                      <MenuItem value="manager">Manager</MenuItem>
+                      <MenuItem value="shipper">Shipper</MenuItem>
+                      <MenuItem value="admin">Admin</MenuItem>
+                    </Select>
+                  </Box>
+                  <Box display="grid" width="30%" marginRight="1rem" marginBottom="1rem">
+                    <label>Restaurant: </label>
+                    <Select
+                        value={user.restaurantId}
+                        onChange={handleRestaurantSelect}
+                        variant="filled"
+                        className="form-select form-select-lg mb-3"
+                    >
+                      <MenuItem value="" disabled>Select a restaurant</MenuItem>
+                      {restaurants.map((restaurant) => (
+                          <MenuItem key={restaurant.id} value={restaurant.id}>
+                            {restaurant.name}
+                          </MenuItem>
+                      ))}
+                    </Select>
+                  </Box>
                 </div>
-
-                {/*<div style={{marginTop: 40, display:'flex', alignItems:'flex-end'}}>*/}
-                {/*  <Box display="grid" width="48%">*/}
-                {/*    <label htmlFor="avatar" className="form-label">*/}
-                {/*      Image :*/}
-                {/*    </label>*/}
-                {/*    <input*/}
-                {/*        type="file"*/}
-                {/*        onChange={handleFileChange}*/}
-                {/*        name="img"*/}
-                {/*        className="form-control"*/}
-                {/*        id="avatar"*/}
-                {/*        multiple*/}
-                {/*    />*/}
-                {/*  </Box>*/}
-                {/*</div>*/}
-
                 <Box
                     display="flex"
                     justifyContent="end"

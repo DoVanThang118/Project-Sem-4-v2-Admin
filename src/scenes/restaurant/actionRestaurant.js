@@ -280,7 +280,7 @@ const ActionRestaurant = (props) => {
                                                             aria-label="Upload"
                                                             multiple
                                                         />
-                                                        <button className="btn btn-outline-secondary" type="button" onClick={updateAvatar} id="inputGroupFileAddon04">Button</button>
+                                                        <button className="btn btn-outline-secondary" type="button" onClick={updateAvatar} id="inputGroupFileAddon04">Upload</button>
                                                     </div>
 
                                                 </div>
