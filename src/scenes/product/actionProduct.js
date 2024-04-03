@@ -33,7 +33,9 @@ const ActionProduct = () => {
         price: '',
         type: '',
         categoryId: '',
-        restaurantId: ''
+        category: '',
+        restaurantId: '',
+        restaurant: ''
     });
 
     useEffect(() => {
@@ -323,76 +325,20 @@ const ActionProduct = () => {
                                                     </div>
                                                 </div>
                                                 <div className="row mt-2">
-                                                    <div className="col-md-6">
-                                                        <Box display="grid" marginRight="1rem" marginBottom="1rem">
-                                                            <label>Quantity: </label>
-                                                            <TextField
-                                                                variant="filled"
-                                                                type="number"
-                                                                onChange={handleChange}
-                                                                value={productDetails.qty || ''}
-                                                                name="qty"
-                                                                sx={{ gridColumn: "span 2" }}
-                                                                required
-                                                            />
-                                                        </Box>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <Box display="grid" marginRight="1rem" marginBottom="1rem">
-                                                            <label>Rating: </label>
-                                                            <TextField
-                                                                variant="filled"
-                                                                type="number"
-                                                                onChange={handleChange}
-                                                                value={productDetails.rate || ''}
-                                                                name="rate"
-                                                                sx={{ gridColumn: "span 2" }}
-                                                                required
-                                                            />
-                                                        </Box>
-                                                    </div>
-                                                </div>
-                                                <div className="row mt-2">
-                                                    <div className="col-md-6">
-                                                        <Box display="grid" marginRight="1rem" marginBottom="1rem">
-                                                            <label>Category:</label>
-                                                            <Select
-                                                                value={productDetails.categoryId}
-                                                                onChange={handleCategorySelect}
-                                                                variant="filled"
-                                                                className="form-select form-select-lg mb-3"
-                                                                required
-                                                            >
-                                                                <MenuItem value="" disabled>Select a restaurant</MenuItem>
-                                                                {categories.map((category) => (
-                                                                    <MenuItem key={category.id} value={category.id}>
-                                                                        {category.name}
-                                                                    </MenuItem>
-                                                                ))}
-                                                            </Select>
-                                                        </Box>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <Box display="grid" marginRight="1rem" marginBottom="1rem">
-                                                            <label>Restaurant: </label>
-                                                            <Select
-                                                                value={productDetails.restaurantId}
-                                                                onChange={handleRestaurantSelect}
-                                                                variant="filled"
-                                                                className="form-select form-select-lg mb-3"
-                                                                required
-                                                            >
-                                                                <MenuItem value="" disabled>Select a restaurant</MenuItem>
-                                                                {restaurants.map((restaurant) => (
-                                                                    <MenuItem key={restaurant.id} value={restaurant.id}>
-                                                                        {restaurant.name}
-                                                                    </MenuItem>
-                                                                ))}
-                                                            </Select>
-                                                        </Box>
-                                                    </div>
-                                                </div>
-                                                <div className="row mt-2">
+                                                    {/*<div className="col-md-6">*/}
+                                                    {/*    <Box display="grid" marginRight="1rem" marginBottom="1rem">*/}
+                                                    {/*        <label>Quantity: </label>*/}
+                                                    {/*        <TextField*/}
+                                                    {/*            variant="filled"*/}
+                                                    {/*            type="number"*/}
+                                                    {/*            onChange={handleChange}*/}
+                                                    {/*            value={productDetails.qty || ''}*/}
+                                                    {/*            name="qty"*/}
+                                                    {/*            sx={{ gridColumn: "span 2" }}*/}
+                                                    {/*            required*/}
+                                                    {/*        />*/}
+                                                    {/*    </Box>*/}
+                                                    {/*</div>*/}
                                                     <div className="col-md-6">
                                                         <Box display="grid" marginRight="1rem" marginBottom="1rem">
                                                             <label>Type: </label>
@@ -411,6 +357,57 @@ const ActionProduct = () => {
                                                         </Box>
                                                     </div>
                                                     <div className="col-md-6">
+                                                        <Box display="grid" marginRight="1rem" marginBottom="1rem">
+                                                            <label>Rating: </label>
+                                                            <TextField
+                                                                variant="filled"
+                                                                type="number"
+                                                                onChange={handleChange}
+                                                                value={productDetails.rate || '0'}
+                                                                name="rate"
+                                                                sx={{ gridColumn: "span 2" }}
+                                                                inputProps={{ min: 0 , max: 5}}
+                                                                required
+                                                            />
+                                                        </Box>
+                                                    </div>
+                                                </div>
+                                                <div className="row mt-2">
+                                                    <div className="col-md-6">
+                                                        <Box display="grid" marginRight="1rem" marginBottom="1rem">
+                                                            <label>Category:</label>
+                                                            <Select
+                                                                value={productDetails.categoryId}
+                                                                onChange={handleCategorySelect}
+                                                                variant="filled"
+                                                                className="form-select form-select-lg mb-3"
+                                                                required
+                                                            >
+                                                                <MenuItem value="" disabled selected>Select a restaurant</MenuItem>
+                                                                {categories.map((category) => (
+                                                                    <MenuItem key={category.id} value={category.id}>
+                                                                        {category.name}
+                                                                    </MenuItem>
+                                                                ))}
+                                                            </Select>
+                                                        </Box>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <Box display="grid" marginRight="1rem" marginBottom="1rem">
+                                                            <label>Restaurant: </label>
+                                                            <TextField
+                                                                variant="filled"
+                                                                type="text"
+                                                                value={productDetails.restaurant.name || ''}
+                                                                name="restaurant"
+                                                                sx={{ gridColumn: "span 2" }}
+                                                                required
+                                                            />
+                                                        </Box>
+                                                    </div>
+                                                </div>
+                                                <div className="row mt-2">
+                                                    <div className="col-md-12">
                                                         <Box display="grid" marginRight="1rem" marginBottom="1rem">
                                                             <label>Description: </label>
                                                             <textarea

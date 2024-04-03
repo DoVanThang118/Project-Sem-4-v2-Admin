@@ -103,6 +103,8 @@ const CreateBrand = () => {
                         type="text"
                         onChange={handleChange}
                         name="description"
+                        style={{ minHeight: "100px" }}
+                        placeholder="description..."
                         sx={{ gridColumn: "span 2" }}
                         required
                     />

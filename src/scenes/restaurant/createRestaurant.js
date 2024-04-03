@@ -315,12 +315,14 @@ const CreateRestaurant = () => {
                                 <div style={{marginTop: 40, display: "flex", justifyContent: "space-between"}}>
                                     <Box display="grid" width="100%">
                                         <label>Description: </label>
-                                        <TextareaAutosize
-                                            variant="filled"
-                                            type="text"
+                                        <textarea
+                                            rows="4"
+                                            cols="50"
+                                            id="outlined-basic"
+                                            variant="outlined"
+                                            placeholder="Nhập mô tả..."
                                             onChange={handleChange}
                                             name="description"
-                                            sx={{gridColumn: "span 2"}}
                                             required
                                         />
                                     </Box>

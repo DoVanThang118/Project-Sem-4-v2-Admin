@@ -268,16 +268,20 @@ const ActionBrand = (props) => {
                         </div>
                         <div className="row mt-3">
                           <div className="col-md-12">
-                            <label className="labels">Description</label>
-                            <input
-                                onChange={handleChange}
-                                value={brandDetails.description || ""}
-                                type="text"
-                                className="form-control"
-                                placeholder="Description"
-                                name="description"
-                                required
-                            />
+                            <Box display="grid" width="100%">
+                              <label>Description: </label>
+                              <TextareaAutosize
+                                  variant="filled"
+                                  type="text"
+                                  value={brandDetails.description || ""}
+                                  onChange={handleChange}
+                                  name="description"
+                                  style={{ minHeight: "100px" }}
+                                  placeholder="description..."
+                                  sx={{ gridColumn: "span 2" }}
+                                  required
+                              />
+                            </Box>
                           </div>
                         </div>
                       </div>

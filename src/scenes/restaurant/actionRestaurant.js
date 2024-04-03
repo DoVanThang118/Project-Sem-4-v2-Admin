@@ -443,23 +443,6 @@ const ActionRestaurant = (props) => {
                                                     </div>
                                                 </div>
                                                 <div className="row mt-3">
-                                                    <div className="col-md-12">
-                                                        <Box display="grid"  marginRight="1rem" marginBottom="1rem">
-                                                            <TextField
-                                                                id="outlined-basic"
-                                                                label="Description"
-                                                                variant="outlined"
-                                                                type="text"
-                                                                value={restaurantDetails.description || ""}
-                                                                onChange={handleChange}
-                                                                name="description"
-                                                                sx={{gridColumn: "span 2"}}
-                                                                required
-                                                            />
-                                                        </Box>
-                                                    </div>
-                                                </div>
-                                                <div className="row mt-3">
                                                     <div className="col-md-6">
                                                         <Box display="grid" marginRight="1rem">
                                                             <FormControl>
@@ -487,11 +470,29 @@ const ActionRestaurant = (props) => {
                                                                 id="outlined-basic"
                                                                 label="Rate"
                                                                 variant="outlined"
-                                                                type="text"
+                                                                type="number"
                                                                 value={restaurantDetails.rate || ""}
                                                                 onChange={handleChange}
                                                                 name="rate"
                                                                 sx={{gridColumn: "span 2"}}
+                                                                inputProps={{ min: 0 , max: 5}}
+                                                                required
+                                                            />
+                                                        </Box>
+                                                    </div>
+                                                </div>
+                                                <div className="row mt-3">
+                                                    <div className="col-md-12">
+                                                        <Box display="grid"  marginRight="1rem" marginBottom="1rem">
+                                                            <label>Description: </label>
+                                                            <textarea
+                                                                rows="4"
+                                                                cols="50"
+                                                                id="outlined-basic"
+                                                                variant="outlined"
+                                                                value={restaurantDetails.description || ""}
+                                                                onChange={handleChange}
+                                                                name="description"
                                                                 required
                                                             />
                                                         </Box>

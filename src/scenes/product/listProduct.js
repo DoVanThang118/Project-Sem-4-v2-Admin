@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import {Box, TextField, Typography, useTheme} from "@mui/material";
 import { tokens } from "../../theme";
 import UserContext from "../../store/context";
 import React, { useContext, useState, useEffect } from "react";
@@ -7,8 +7,17 @@ import Sidebar from "../global/Sidebar";
 import Topbar from "../global/Topbar";
 import '../../css/product.css';
 import ProductService from "../../services/productService";
+import {jwtDecode} from "jwt-decode";
 
 const ListProduct = (props) => {
+
+    const getState = localStorage.getItem('state');
+    const parsedState = JSON.parse(getState);
+    const userLogin = parsedState.userlogin;
+    const jwtToken = userLogin.jwt;
+    const decodedToken = jwtDecode(jwtToken);
+    const userRole = decodedToken.role;
+
     const theme = useTheme();
     const colors = tokens(theme.palette.mode)
     const { state, dispatch } = useContext(UserContext);
@@ -35,6 +44,34 @@ const ListProduct = (props) => {
         }
     };
 
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchEmail, setSearchEmail] = useState('');
+
+    useEffect(() => {
+        if (searchTerm === '' && searchEmail === '') {
+            setFilteredUsers(product);
+        } else if (searchEmail === '') {
+            const filtered = product.filter(product =>
+                product.restaurant && product.restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredUsers(filtered);
+        } else if (searchTerm === '') {
+            const filtered = product.filter(product =>
+                product.name && product.name.toLowerCase().includes(searchEmail.toLowerCase())
+            );
+            setFilteredUsers(filtered);
+        }
+    }, [searchTerm, searchEmail, product]);
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const handleEmailChange = (event) => {
+        setSearchEmail(event.target.value);
+    };
+
 console.log(product);
     return (
         <div className="app">
@@ -45,11 +82,36 @@ console.log(product);
 
                     <div className="container shadow" style={{ display: 'grid' }}>
                         <h1 style={{ margin: 'auto', marginTop: '24px' }}>PRODUCT</h1>
-                        <Link to={"/products/create"} style={{ margin: '24px 0' }}>
-                            <button style={{}} className="btn btn-success">
-                                Create New Product
-                            </button>
-                        </Link>
+                        <nav className="navbar bg-body-tertiary">
+                            <div>
+                                {userRole === 'ROLE_MANAGER'&& (
+                                    <Link to={"/products/create"} style={{ margin: '24px 0' }}>
+                                        <button style={{}} className="btn btn-success">
+                                            Create New Product
+                                        </button>
+                                    </Link>
+                                )}
+                            </div>
+                            <div className="d-flex">
+
+                                {userRole === 'ROLE_ADMIN'&& (
+                                    <TextField
+                                        label="Search by restaurant name"
+                                        value={searchTerm}
+                                        onChange={handleSearchChange}
+                                        variant="outlined"
+                                        style={{ margin: '24px 0' }}
+                                    />
+                                )}
+                                <TextField
+                                    label="Search by name"
+                                    value={searchEmail}
+                                    onChange={handleEmailChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                            </div>
+                        </nav>
 
                         <table className="table  table-bordered" style={{}}>
                             <thead>
@@ -70,7 +132,7 @@ console.log(product);
                             </thead>
                             <tbody>
                             {
-                                product.map((e, k) => {
+                                filteredUsers.map((e, k) => {
                                     return (
                                         <tr key={k}>
                                             <td >{k + 1}</td>

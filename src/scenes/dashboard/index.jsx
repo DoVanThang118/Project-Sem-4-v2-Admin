@@ -42,7 +42,7 @@ const Dashboard = () => {
         });
   }, []);
 
-  console.log("totalRevenue" , notify)
+  console.log("check notify:" , notify)
 
   const getDa = async ()=>{
     dispatch({type:"SHOW_LOADING"});
@@ -78,7 +78,10 @@ const Dashboard = () => {
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+
+
       </Box>
+
       {/* GRID & CHARTS */}
       <Box
         display="grid"
@@ -86,6 +89,8 @@ const Dashboard = () => {
         gridAutoRows="140px"
         gap="10px"
       >
+
+
         {/* ROW 2 */}
         <Box
           gridColumn="span 8"
@@ -106,14 +111,14 @@ const Dashboard = () => {
 
               >
                  Total Contract Active 
-                 <p className="h1" > {notify.totalOrder} </p>
+                 <p className="h1" > {acti.length} </p>
               </Typography>
               <Typography
                 variant="h3"
                 fontWeight="bold"
               >
                  Total Contract Not Active 
-                 <p className="h1" > {notify.totalRevenue} </p>
+                 <p className="h1" > {notacti.length} </p>
                 
               </Typography>
             </Box>
