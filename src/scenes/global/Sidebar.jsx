@@ -236,17 +236,18 @@ const Sidebar = () => {
                                     selected={selected}
                                     setSelected={setSelected}
                                 />
+                                <Item
+                                    title={"Shipper"}
+                                    to={"/shippers"}
+                                    icon={<RoomServiceIcon />}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                />
                             </>
                         )}
                         {userRole === 'ROLE_SHIPPER' && (
                             <>
-                                <Item
-                                title={"Shipper"}
-                                to={"/shippers"}
-                                icon={<RoomServiceIcon />}
-                                selected={selected}
-                                setSelected={setSelected}
-                                />
+
                             </>
                         )}
 
