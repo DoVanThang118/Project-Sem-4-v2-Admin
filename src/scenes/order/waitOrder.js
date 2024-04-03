@@ -41,6 +41,27 @@ const WaitOrder = (props) => {
             });
     }, []);
 
+    const getStatusText = (status) => {
+        switch (status) {
+            case 1:
+                return "Order Waiting, payment Waiting";
+            case 2:
+                return "Order Waiting, payment completely";
+            case 3:
+                return "Order confirmed, payment Waiting";
+            case 4:
+                return "Order confirmed, payment completely";
+            case 5:
+                return "Shipping";
+            case 6:
+                return "Completed";
+            case 0:
+                return "Cancelled";
+            default:
+                return "Unknown";
+        }
+    };
+
     return (
         <div className="app">
             <Sidebar />
@@ -67,6 +88,7 @@ const WaitOrder = (props) => {
                                 <th style={{textAlign: 'center', width: '5%'}}>Total</th>
                                 <th style={{textAlign: 'center', width: '15%'}}>Create Date</th>
                                 <th style={{textAlign: 'center'}}>Note</th>
+                                <th style={{textAlign: 'center'}}>Status</th>
                                 <th style={{textAlign: 'center', width: '5%'}}>Action</th>
                             </tr>
                             </thead>
@@ -83,6 +105,7 @@ const WaitOrder = (props) => {
                                             <td style={{textAlign: 'center', width: '5%'}}>{e.totalMoney}$</td>
                                             <td style={{textAlign: 'center', width: '15%'}}>{e.createDate}</td>
                                             <td >{e.note}</td>
+                                            <td >{getStatusText(e.status)}</td>
                                             <td style={{textAlign: 'center'}}>
                                                 <Link to={"/orders/confirm/" + e.id}>
                                                     <button className="btn btn-outline-info">

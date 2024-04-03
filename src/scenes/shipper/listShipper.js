@@ -1,73 +1,32 @@
 import {Box, TextField, Typography, useTheme} from "@mui/material";
-import {tokens} from "../../theme";
+import { tokens } from "../../theme";
 import UserContext from "../../store/context";
-import React, {useContext, useState, useEffect} from "react";
-import {Link} from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Sidebar from "../global/Sidebar";
 import Topbar from "../global/Topbar";
 import '../../css/product.css';
+import ProductService from "../../services/productService";
 import userService from "../../services/userService";
-import dashboardService from "../../services/dashboardService";
+import {format} from "date-fns";
 
-const ListUser = (props) => {
+const ListShipper = (props) => {
+
     const theme = useTheme();
     const colors = tokens(theme.palette.mode)
     const {state, dispatch} = useContext(UserContext);
+    const [req, setReq] = useState({type: 'shipper'})
     const [user, setUser] = useState([]);
 
     useEffect(() => {
-        userService.getUsers()
+        userService.findUsers(req)
             .then((res) => {
-                const userlist = res.data.filter(user => user.type !== 'user');
-                setUser(userlist);
+                setUser(res.data);
             })
             .catch((err) => {
                 console.log(err);
             });
     }, []);
-
-    const[notify, setNotify] = useState([])
-    useEffect(() => {
-        dashboardService.getNotify()
-            .then((res) => {
-                setNotify(res.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
-
-    console.log("totalRevenue" , notify)
-
-    const [filteredUsers, setFilteredUsers] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [searchEmail, setSearchEmail] = useState('');
-
-    useEffect(() => {
-        if (searchTerm === '' && searchEmail === '') {
-            setFilteredUsers(user);
-        } else if (searchEmail === '') {
-            const filtered = user.filter(user =>
-                user.restaurant && user.restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setFilteredUsers(filtered);
-        } else if (searchTerm === '') {
-            const filtered = user.filter(user =>
-                user.email && user.email.toLowerCase().includes(searchEmail.toLowerCase())
-            );
-            setFilteredUsers(filtered);
-        }
-    }, [searchTerm, searchEmail, user]);
-
-    const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
-    };
-
-    const handleEmailChange = (event) => {
-        setSearchEmail(event.target.value);
-    };
-
-    console.log("user check:", user);
 
     const getStatusText = (status) => {
         switch (status) {
@@ -80,6 +39,26 @@ const ListUser = (props) => {
         }
     };
 
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [searchEmail, setSearchEmail] = useState('');
+
+    useEffect(() => {
+        if (searchEmail === '') {
+            setFilteredUsers(user);
+        } else {
+            const filtered = user.filter(user =>
+                user.email && user.email.toLowerCase().includes(searchEmail.toLowerCase())
+            );
+            setFilteredUsers(filtered);
+        }
+    }, [searchEmail, user]);
+
+
+
+    const handleEmailChange = (event) => {
+        setSearchEmail(event.target.value);
+    };
+
     return (
         <div className="app">
             <Sidebar/>
@@ -89,49 +68,30 @@ const ListUser = (props) => {
 
                     <div className="container shadow" style={{display: 'grid'}}>
                         <h1 style={{margin: 'auto', marginTop: '24px'}}>USERS</h1>
-                        <nav className="navbar bg-body-tertiary">
-                            <div>
-                                <Link to={"/users/create"} style={{margin: '24px 0'}}>
-                                    <button style={{}} className="btn btn-success">
-                                        Create New User
-                                    </button>
-                                </Link>
-                            </div>
-                            <div className="d-flex">
-                                <TextField
-                                    label="Search by restaurant name"
-                                    value={searchTerm}
-                                    onChange={handleSearchChange}
-                                    variant="outlined"
-                                    style={{ margin: '24px 0' }}
-                                />
-                                <TextField
-                                    label="Search by email"
-                                    value={searchEmail}
-                                    onChange={handleEmailChange}
-                                    variant="outlined"
-                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
-                                />
-                            </div>
-                        </nav>
-
+                        <TextField
+                            label="Search by email"
+                            value={searchEmail}
+                            onChange={handleEmailChange}
+                            variant="outlined"
+                            style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                        />
                         <table className="table  table-bordered" style={{}}>
                             <thead>
                             <tr>
-                              <th style={{textAlign: 'center'}}>STT</th>
-                              <th style={{textAlign: 'center'}}>Image</th>
-                              <th style={{textAlign: 'center'}}>Name</th>
-                              <th style={{textAlign: 'center'}}>Email</th>
-                              <th style={{textAlign: 'center'}}>Address</th>
-                              <th style={{textAlign: 'center'}}>Birthday</th>
-                              <th style={{textAlign: 'center'}}>Manager Restaurant</th>
-                              <th style={{textAlign: 'center'}}>Type</th>
-                              <th style={{textAlign: 'center'}}>Role</th>
-                              <th style={{textAlign: 'center'}}>Action</th>
+                                <th style={{textAlign: 'center'}}>STT</th>
+                                <th style={{textAlign: 'center'}}>Image</th>
+                                <th style={{textAlign: 'center'}}>Name</th>
+                                <th style={{textAlign: 'center'}}>Email</th>
+                                <th style={{textAlign: 'center'}}>Address</th>
+                                <th style={{textAlign: 'center'}}>Birthday</th>
+                                <th style={{textAlign: 'center'}}>Type</th>
+                                <th style={{textAlign: 'center'}}>Role</th>
+                                <th style={{textAlign: 'center'}}>Status</th>
+                                <th style={{textAlign: 'center'}}>Action</th>
                             </tr>
                             </thead>
-                          <tbody>
-                          {filteredUsers.map((e, k) => {
+                            <tbody>
+                            {filteredUsers.map((e, k) => {
                                 return (
                                     <tr key={k}>
                                         <td style={{textAlign: 'center', width: '5%'}}>{k + 1}</td>
@@ -161,8 +121,7 @@ const ListUser = (props) => {
                                         <td>{e.name}</td>
                                         <td>{e.email}</td>
                                         <td>{e.address}</td>
-                                        <td>{e.birthday}</td>
-                                        <td>{e.restaurant ? e.restaurant.name : ''}</td>
+                                        <td>{format(new Date(e.birthday), 'dd/MM/yyyy')}</td>
                                         <td>{e.type}</td>
                                         <td style={{textAlign: 'center', width: '5%'}}>
                                             {e.roles.map((r, index) => (
@@ -174,8 +133,8 @@ const ListUser = (props) => {
                                         </td>
                                         <td >{getStatusText(e.status)}</td>
                                         <td style={{textAlign: 'center', width: '5%'}}>
-                                        <Link to={"/users/detail/" + e.id}>
-                                            <button className="btn btn-outline-info">
+                                            <Link to={"/shippers/detail/" + e.id}>
+                                                <button className="btn btn-outline-info">
                                                     Detail
                                                 </button>
                                             </Link>
@@ -192,5 +151,4 @@ const ListUser = (props) => {
         </div>
     )
 }
-
-export default ListUser;
+export default ListShipper;

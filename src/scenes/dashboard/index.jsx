@@ -17,6 +17,8 @@ import { blueGrey, pink } from "@mui/material/colors";
 import Sidebar from "../global/Sidebar";
 import Topbar from "../global/Topbar";
 import { getactive, getnotactive } from "../../services/contract.service";
+import userService from "../../services/userService";
+import dashboardService from "../../services/dashboardService";
 
 
 
@@ -25,10 +27,22 @@ const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {state,dispatch} = useContext(UserContext);
-  const [tong, setTong] = useState(0);
-  const [user,setUser]= useState([]);
   const[acti, setActi] = useState({});
   const[notacti, setNotacti] = useState({})
+
+  const[notify, setNotify] = useState([])
+
+  useEffect(() => {
+    dashboardService.getNotify()
+        .then((res) => {
+          setNotify(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, []);
+
+  console.log("totalRevenue" , notify)
 
   const getDa = async ()=>{
     dispatch({type:"SHOW_LOADING"});
@@ -64,10 +78,7 @@ const Dashboard = () => {
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
-        
       </Box>
-
       {/* GRID & CHARTS */}
       <Box
         display="grid"
@@ -75,8 +86,6 @@ const Dashboard = () => {
         gridAutoRows="140px"
         gap="10px"
       >
-       
-
         {/* ROW 2 */}
         <Box
           gridColumn="span 8"
@@ -94,63 +103,53 @@ const Dashboard = () => {
               <Typography
                  variant="h3"
                  fontWeight="bold"
-                color={colors.greenAccent[500]}
+
               >
                  Total Contract Active 
-                 <p className="h1 text-success" > {acti.length} </p>
+                 <p className="h1" > {notify.totalOrder} </p>
               </Typography>
               <Typography
                 variant="h3"
                 fontWeight="bold"
-                color={colors.grey[300]}
               >
                  Total Contract Not Active 
-                 <p className="h1 text-success" > {notacti.length} </p>
+                 <p className="h1" > {notify.totalRevenue} </p>
                 
               </Typography>
             </Box>
-            <Box>
-              {/* <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton> */}
-            </Box>
+            {/*<Box>*/}
+            {/*  <IconButton>*/}
+            {/*    <DownloadOutlinedIcon*/}
+            {/*      sx={{ fontSize: "26px", color: colors.greenAccent[500] }}*/}
+            {/*    />*/}
+            {/*  </IconButton>*/}
+            {/*</Box>*/}
           </Box>
-          <Box height="250px" m="-20px 0 0 0" style={{marginTop:30,marginLeft:30}}>
-            
-          {/* <h3>Revenue In Month</h3> */}
-
-          {/* <table className="table" style={{border:"1px solid white", marginTop:20}}>
-                    <thead>
-                      {
-                        da.map((e,k)=>{
-                          return(
-                            <th style={{padding:5,border:"1px solid white"}} key={k}>Month {e.mnth}/{e.yr}</th>
-                          )
-                        })
-                      }
-                        
-                        
-                    </thead>
-                    <tbody>
-                    <tr >
-                        {
-                            da.map((e,k)=>{
-                                return (
-                                   
-                                        <td style={{padding:5,border:"1px solid white"}} key={k}>${e.tCharge}</td>
-                                   
-                                    )
-                            })
-                        }
-                         </tr>
-                        
-                    </tbody>
-                </table> */}
-
-
-          </Box>
+          {/*<Box height="250px" m="-20px 0 0 0" style={{marginTop:30,marginLeft:30}}>*/}
+          {/*<h3>Revenue In Month</h3>*/}
+          {/*<table className="table" style={{border:"1px solid white", marginTop:20}}>*/}
+          {/*  <thead>*/}
+          {/*    {*/}
+          {/*      da.map((e,k)=>{*/}
+          {/*        return(*/}
+          {/*          <th style={{padding:5,border:"1px solid white"}} key={k}>Month {e.mnth}/{e.yr}</th>*/}
+          {/*        )*/}
+          {/*      })*/}
+          {/*    }*/}
+          {/*  </thead>*/}
+          {/*  <tbody>*/}
+          {/*  <tr >*/}
+          {/*    {*/}
+          {/*        da.map((e,k)=>{*/}
+          {/*            return (*/}
+          {/*                    <td style={{padding:5,border:"1px solid white"}} key={k}>${e.tCharge}</td>*/}
+          {/*                )*/}
+          {/*        })*/}
+          {/*    }*/}
+          {/*     </tr>*/}
+          {/*  </tbody>*/}
+          {/*  </table>*/}
+          {/*</Box>*/}
         </Box>
         <Box
           gridColumn="span 4"

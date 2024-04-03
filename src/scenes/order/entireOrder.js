@@ -1,13 +1,22 @@
-import {Box, useTheme} from "@mui/material";
+import {Box, TextField, useTheme} from "@mui/material";
 import {tokens} from "../../theme";
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import UserContext from "../../store/context";
 import OrderService from "../../services/orderService";
 import Sidebar from "../global/Sidebar";
 import Topbar from "../global/Topbar";
 import {Link} from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
 
 const EntireOrder = (props) => {
+
+    const getState = localStorage.getItem('state');
+    const parsedState = JSON.parse(getState);
+    const userLogin = parsedState.userlogin;
+    const jwtToken = userLogin.jwt;
+    const decodedToken = jwtDecode(jwtToken);
+    const userRole = decodedToken.role;
+
     const theme = useTheme();
     const colors = tokens(theme.palette.mode)
     const { state, dispatch } = useContext(UserContext);
@@ -28,6 +37,55 @@ const EntireOrder = (props) => {
             });
     }, []);
 
+    const getStatusText = (status) => {
+        switch (status) {
+            case 1:
+                return "Order Waiting, payment Waiting";
+            case 2:
+                return "Order Waiting, payment completely";
+            case 3:
+                return "Order confirmed, payment Waiting";
+            case 4:
+                return "Order confirmed, payment completely";
+            case 5:
+                return "Shipping";
+            case 6:
+                return "Completed";
+            case 0:
+                return "Cancelled";
+            default:
+                return "Unknown";
+        }
+    };
+
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchEmail, setSearchEmail] = useState('');
+
+    useEffect(() => {
+        if (searchTerm === '' && searchEmail === '') {
+            setFilteredUsers(order);
+        } else if (searchEmail === '') {
+            const filtered = order.filter(order =>
+                order.restaurant && order.restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredUsers(filtered);
+        } else if (searchTerm === '') {
+            const filtered = order.filter(order =>
+                order.email && order.email.toLowerCase().includes(searchEmail.toLowerCase())
+            );
+            setFilteredUsers(filtered);
+        }
+    }, [searchTerm, searchEmail, order]);
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const handleEmailChange = (event) => {
+        setSearchEmail(event.target.value);
+    };
+
     return (
         <div className="app">
             <Sidebar />
@@ -37,11 +95,36 @@ const EntireOrder = (props) => {
 
                     <div className="container shadow" style={{ display: 'grid' }}>
                         <h1 style={{ margin: 'auto', marginTop: '24px' }}>ORDERS</h1>
-                        <Link to={"/orders"} style={{ margin: '24px 0' }}>
-                            <button style={{}} className="btn btn-success">
-                                Confirm Order
-                            </button>
-                        </Link>
+                        <nav className="navbar bg-body-tertiary">
+                            <div>
+                                {userRole === 'ROLE_MANAGER'&& (
+                                    <Link to={"/orders"} style={{ margin: '24px 0' }}>
+                                        <button style={{}} className="btn btn-success">
+                                            Confirm Order
+                                        </button>
+                                    </Link>
+                                )}
+                            </div>
+                            <div className="d-flex">
+
+                                {userRole === 'ROLE_ADMIN'&& (
+                                    <TextField
+                                        label="Search by restaurant name"
+                                        value={searchTerm}
+                                        onChange={handleSearchChange}
+                                        variant="outlined"
+                                        style={{ margin: '24px 0' }}
+                                    />
+                                )}
+                                <TextField
+                                    label="Search by email"
+                                    value={searchEmail}
+                                    onChange={handleEmailChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                            </div>
+                        </nav>
 
                         <table className="table  table-bordered" style={{}}>
                             <thead>
@@ -54,13 +137,16 @@ const EntireOrder = (props) => {
                                 <th style={{textAlign: 'center'}}>Total</th>
                                 <th style={{textAlign: 'center'}}>Create Date</th>
                                 <th style={{textAlign: 'center'}}>Note</th>
+                                {userRole === 'ROLE_ADMIN'&& (
+                                    <th style={{textAlign: 'center'}}>Restaurant</th>
+                                )}
                                 <th style={{textAlign: 'center'}}>Status</th>
                                 <th style={{textAlign: 'center'}}>Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             {
-                                order.map((e, k) => {
+                                filteredUsers.map((e, k) => {
                                     return (
                                         <tr key={k}>
                                             <td >{k + 1}</td>
@@ -71,7 +157,10 @@ const EntireOrder = (props) => {
                                             <td >{e.totalMoney}$</td>
                                             <td >{e.createDate}</td>
                                             <td >{e.note}</td>
-                                            <td >{e.status}</td>
+                                            {userRole === 'ROLE_ADMIN'&& (
+                                                <td >{e.restaurant.name}</td>
+                                            )}
+                                            <td >{getStatusText(e.status)}</td>
                                             <td style={{textAlign: 'center'}}>
                                                 <Link to={"/orders/detail/" + e.id}>
                                                     <button className="btn btn-outline-info">

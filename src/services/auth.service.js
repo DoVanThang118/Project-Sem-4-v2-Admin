@@ -33,7 +33,7 @@ const getAuthorizationHeader = () => {
 };
 
 export const auth_login = async (user) => {
-    const url = "/authenticate";
+    const url = "/api/admin/auth/authenticate";
     try {
         const headers = getAuthorizationHeader();
         delete headers['Content-Type'];
@@ -41,7 +41,7 @@ export const auth_login = async (user) => {
         // const token = rs.data.token;
         //   alert("Đăng nhập thành công");
         console.log("check rs:", rs);
-        Alert();
+        // Alert();
 
         return rs.data;
     } catch (error) {

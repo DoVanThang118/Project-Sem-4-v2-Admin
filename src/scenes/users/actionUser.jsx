@@ -60,10 +60,8 @@ const ActionUser = (props) => {
   };
 
   const handleFileChange = (event) => {
-    setUser((prevDetails) => ({
-      ...prevDetails,
-      img: event.target.files
-    }));
+    file.img = event.target.files;
+    setFile(file);
   };
 
   const handleUpdate = async (e) => {
@@ -143,7 +141,55 @@ const ActionUser = (props) => {
         }
       }
     })
+  }
+  const openUser = async () => {
 
+    Swal.fire({
+      title: 'Are you sure open ?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, open it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const t = await userService.updateUser({status: 1},id);
+        if (t != null) {
+          Swal.fire(
+              'Success!',
+              'Your file has been update.',
+              'success'
+          )
+          return navigate("/shippers");
+        }
+      }
+    })
+  }
+
+  const lockUser = async () => {
+
+    Swal.fire({
+      title: 'Are you sure lock ?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, lock it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const t = await userService.updateUser({status: 0},id);
+        if (t != null) {
+          Swal.fire(
+              'Success!',
+              'Your file has been update.',
+              'success'
+          )
+          return navigate("/shippers");
+        }
+      }
+    })
   }
   const cancel = () => {
     navigate("/users");
@@ -285,9 +331,15 @@ const ActionUser = (props) => {
                         <button type="submit" className="btn btn-outline-warning" variant="contained">
                           EDIT
                         </button>
-                        <button type="button" style={{ marginLeft: 10 }} onClick={deleteUser} className="btn btn-outline-danger" variant="contained">
-                          DELETE
-                        </button>
+                        {user.status === 1 ? (
+                            <button type="button" style={{ marginLeft: 10 }} onClick={lockUser} className="btn btn-outline-danger" variant="contained">
+                              LOCK
+                            </button>
+                        ) : (
+                            <button type="button" style={{ marginLeft: 10 }} onClick={openUser} className="btn btn-outline-success" variant="contained">
+                              OPEN
+                            </button>
+                        )}
                         <button
                             className="btn btn-outline-secondary"
                             onClick={cancel}
