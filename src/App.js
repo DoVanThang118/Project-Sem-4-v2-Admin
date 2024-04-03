@@ -40,6 +40,7 @@ import ListUser from "./scenes/users/listUser";
 import CreateUser from "./scenes/users/createUser";
 import ActionUser from "./scenes/users/actionUser";
 import {jwtDecode} from "jwt-decode";
+import ListShiper from "./scenes/shipper/listShiper";
 
 function PrivateRoute({ element }) {
   const localState = localStorage.getItem("state")?JSON.parse(localStorage.getItem("state")):INIT_STATE;
@@ -139,6 +140,12 @@ function App() {
                       <Route path='/orders/confirm/:id' element={<PrivateRoute element={<ConfirmOrder />} />} />
                       <Route path="/orders/entire" element={<PrivateRoute element={<EntireOrder />} />} />
                       <Route path='/orders/detail/:id' element={<PrivateRoute element={<DetailOrder />} />} />
+
+                      {/*Shipper*/}
+                      <Route path="/shippers" element={<PrivateRoute element={<ListShiper />} />} />
+                      {/*<Route path='/orders/confirm/:id' element={<PrivateRoute element={<ConfirmOrder />} />} />*/}
+                      {/*<Route path="/orders/entire" element={<PrivateRoute element={<EntireOrder />} />} />*/}
+                      {/*<Route path='/orders/detail/:id' element={<PrivateRoute element={<DetailOrder />} />} />*/}
 
 
 

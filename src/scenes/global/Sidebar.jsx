@@ -18,6 +18,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import {jwtDecode} from 'jwt-decode';
+import RoomServiceIcon from '@mui/icons-material/RoomService';
 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -237,7 +238,17 @@ const Sidebar = () => {
                                 />
                             </>
                         )}
-
+                        {userRole === 'ROLE_SHIPPER' && (
+                            <>
+                                <Item
+                                title={"Shipper"}
+                                to={"/shippers"}
+                                icon={<RoomServiceIcon />}
+                                selected={selected}
+                                setSelected={setSelected}
+                                />
+                            </>
+                        )}
 
                     </Box>
                 </Menu>
