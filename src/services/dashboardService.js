@@ -26,6 +26,7 @@ const dashboardService = {
             const headers = getAuthorizationHeader();
             delete headers['Content-Type'];
             const response = await axios.get(API_URL + '/restaurants/total_revenue' , {headers});
+            console.log("Response data:", response.data);
             return response.data;
         } catch (error) {
             throw error;

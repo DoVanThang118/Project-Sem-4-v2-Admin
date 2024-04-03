@@ -28,14 +28,18 @@ const Dashboard = () => {
   const colors = tokens(theme.palette.mode);
   const {state,dispatch} = useContext(UserContext);
   const[acti, setActi] = useState({});
-  const[notacti, setNotacti] = useState({})
+  const[notacti, setNotacti] = useState([])
 
   const[notify, setNotify] = useState([])
 
   useEffect(() => {
     dashboardService.getNotify()
         .then((res) => {
-          setNotify(res.data);
+          if (res.totalOrder > 0 || res.totalRevenue > 0) {
+            setNotify([res]);
+          } else {
+            console.log("NO Data notify");
+          }
         })
         .catch((err) => {
           console.log(err);
