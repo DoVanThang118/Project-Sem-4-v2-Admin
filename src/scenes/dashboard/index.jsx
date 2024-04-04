@@ -30,13 +30,13 @@ const Dashboard = () => {
   const[acti, setActi] = useState({});
   const[notacti, setNotacti] = useState([])
 
-  const[notify, setNotify] = useState([])
+  const[notify, setNotify] = useState({})
 
   useEffect(() => {
     dashboardService.getNotify()
         .then((res) => {
           if (res.totalOrder > 0 || res.totalRevenue > 0) {
-            setNotify([res]);
+            setNotify(res);
           } else {
             console.log("NO Data notify");
           }
@@ -114,15 +114,17 @@ const Dashboard = () => {
                  fontWeight="bold"
 
               >
-                 Total Contract Active 
-                 <p className="h1" > {acti.length} </p>
+                 Total Revenue
+                 <p className="h1" >
+                   {notify.totalRevenue}
+                 </p>
               </Typography>
               <Typography
                 variant="h3"
                 fontWeight="bold"
               >
-                 Total Contract Not Active 
-                 <p className="h1" > {notacti.length} </p>
+                 Total Order
+                 <p className="h1" > {notify.totalOrder} </p>
                 
               </Typography>
             </Box>
