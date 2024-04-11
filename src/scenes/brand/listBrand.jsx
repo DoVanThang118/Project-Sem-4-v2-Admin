@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import {Box, TextField, Typography, useTheme} from "@mui/material";
 import { tokens } from "../../theme";
 import UserContext from "../../store/context";
 import React, { useContext, useState, useEffect } from "react";
@@ -37,6 +37,20 @@ const ListBrand = (props) => {
 
   console.log("brand check:",brand);
 
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    const filtered = brand.filter(c =>
+        (searchTerm === '' || (c.name && c.name.toLowerCase().includes(searchTerm.toLowerCase())))
+    );
+    setFilteredUsers(filtered);
+  }, [searchTerm, brand]);
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   return (
     <div className="app">
       <Sidebar />
@@ -46,11 +60,25 @@ const ListBrand = (props) => {
 
           <div className="container shadow" style={{ display: 'grid' }}>
             <h1 style={{ margin: 'auto', marginTop: '24px' }}>BRANDS</h1>
-            <Link to={"/brands/create"} style={{ margin: '24px 0' }}>
-              <button style={{}} className="btn btn-success">
-                Create New Brand
-              </button>
-            </Link>
+
+            <nav className="navbar bg-body-tertiary">
+              <div>
+                <Link to={"/brands/create"} style={{ margin: '24px 0' }}>
+                  <button style={{}} className="btn btn-success">
+                    Create New Brand
+                  </button>
+                </Link>
+              </div>
+              <div className="d-flex">
+                <TextField
+                    label="Search by name"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    variant="outlined"
+                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                />
+              </div>
+            </nav>
 
             <table className="table  table-bordered" style={{}}>
               <thead>
@@ -67,7 +95,7 @@ const ListBrand = (props) => {
               </thead>
               <tbody>
                 {
-                  brand.map((e, k) => {
+                  filteredUsers.map((e, k) => {
                     return (
                       <tr key={k}>
                         <td >{k + 1}</td>

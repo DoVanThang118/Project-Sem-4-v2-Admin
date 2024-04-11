@@ -61,29 +61,39 @@ const EntireOrder = (props) => {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchEmail, setSearchEmail] = useState('');
+    const [searchName, setSearchName] = useState('');
+    const [searchAddress, setSearchAddress] = useState('');
+    const [searchPhone, setSearchPhone] = useState('');
 
     useEffect(() => {
-        if (searchTerm === '' && searchEmail === '') {
-            setFilteredUsers(order);
-        } else if (searchEmail === '') {
-            const filtered = order.filter(order =>
-                order.restaurant && order.restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setFilteredUsers(filtered);
-        } else if (searchTerm === '') {
-            const filtered = order.filter(order =>
-                order.email && order.email.toLowerCase().includes(searchEmail.toLowerCase())
-            );
-            setFilteredUsers(filtered);
-        }
-    }, [searchTerm, searchEmail, order]);
+        const filtered = order.filter(order =>
+            (searchTerm === '' || (order.restaurant && order.restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()))) &&
+            (searchEmail === '' || (order.email && order.email.toLowerCase().includes(searchEmail.toLowerCase()))) &&
+            (searchName === '' || (order.name && order.name.toLowerCase().includes(searchName.toLowerCase()))) &&
+            (searchAddress === '' || (order.address && order.address.toLowerCase().includes(searchAddress.toLowerCase()))) &&
+            (searchPhone === '' || (order.phone && order.phone.toLowerCase().includes(searchPhone.toLowerCase())))
+        );
+        setFilteredUsers(filtered);
+    }, [searchTerm, searchEmail, searchName, searchAddress, searchPhone, order]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
 
+    const handleNameChange = (event) => {
+        setSearchName(event.target.value);
+    };
+
+    const handleAddressChange = (event) => {
+        setSearchAddress(event.target.value);
+    };
+
     const handleEmailChange = (event) => {
         setSearchEmail(event.target.value);
+    };
+
+    const handlePhoneChange = (event) => {
+        setSearchPhone(event.target.value);
     };
 
     return (
@@ -117,9 +127,30 @@ const EntireOrder = (props) => {
                                     />
                                 )}
                                 <TextField
+                                    label="Search by name"
+                                    value={searchName}
+                                    onChange={handleNameChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                                <TextField
                                     label="Search by email"
                                     value={searchEmail}
                                     onChange={handleEmailChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                                <TextField
+                                    label="Search by address"
+                                    value={searchAddress}
+                                    onChange={handleAddressChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                                <TextField
+                                    label="Search by phone"
+                                    value={searchPhone}
+                                    onChange={handlePhoneChange}
                                     variant="outlined"
                                     style={{ margin: '24px 0' ,marginLeft: '24px' }}
                                 />

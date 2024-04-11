@@ -19,6 +19,8 @@ import Topbar from "../global/Topbar";
 import { getactive, getnotactive } from "../../services/contract.service";
 import userService from "../../services/userService";
 import dashboardService from "../../services/dashboardService";
+import {Link} from "react-router-dom";
+import OrderService from "../../services/orderService";
 
 
 
@@ -46,31 +48,84 @@ const Dashboard = () => {
         });
   }, []);
 
+  const[notifyByMonth, setNotifyByMonth] = useState({})
+
+  useEffect(() => {
+    dashboardService.getNotifyByMonth()
+        .then((res) => {
+          if (res.totalOrder > 0 || res.totalRevenue > 0) {
+            setNotifyByMonth(res);
+          } else {
+            console.log("NO Data notify");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, []);
+
   console.log("check notify:" , notify)
 
-  const getDa = async ()=>{
-    dispatch({type:"SHOW_LOADING"});
+  const statusFilter = [1, 2];
+  const [req] = useState({});
+  const [order, setOrder] = useState([]);
+  useEffect(() => {
+    OrderService.findOrders(req)
+        .then((res) => {
+          if (Array.isArray(res.data) && res.data.length > 0) {
+            const filteredOrders = res.data.filter(order => statusFilter.includes(order.status));
+            setOrder(filteredOrders);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, []);
 
-    const acti = await getactive();
-    const notacti = await getnotactive();
-    setActi(acti);
-    setNotacti(notacti);
+  const getStatusText = (status) => {
+    switch (status) {
+      case 1:
+        return "Order Waiting, payment Waiting";
+      case 2:
+        return "Order Waiting, payment completely";
+      case 3:
+        return "Order confirmed, payment Waiting";
+      case 4:
+        return "Order confirmed, payment completely";
+      case 5:
+        return "Shipping";
+      case 6:
+        return "Completed";
+      case 0:
+        return "Cancelled";
+      default:
+        return "Unknown";
+    }
+  };
 
-   
-   
-    dispatch({type:"HIDE_LOADING"});
-
-  }
+  // const getDa = async ()=>{
+  //   dispatch({type:"SHOW_LOADING"});
+  //
+  //   const acti = await getactive();
+  //   const notacti = await getnotactive();
+  //   setActi(acti);
+  //   setNotacti(notacti);
+  //
+  //
+  //
+  //   dispatch({type:"HIDE_LOADING"});
+  //
+  // }
 
  
 
-  useEffect(()=>{
-    getDa();
-     
-    },[]);
-    const tableStyle = {
-      "border": "1px solid white"
-   };
+  // useEffect(()=>{
+  //   getDa();
+  //
+  //   },[]);
+  //   const tableStyle = {
+  //     "border": "1px solid white"
+  //  };
 
 
   return (
@@ -96,124 +151,121 @@ const Dashboard = () => {
 
 
         {/* ROW 2 */}
+        <Box gridColumn="span 8" gridRow="span 2" backgroundColor={colors.primary[400]}>
+          <Box mt="20px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
+              <div className="col-md-6">
+                <Box height="250px" m="-20px 0 0 0" style={{marginTop:30,marginLeft:30}}>
+                  <h3>Total Statistics</h3>
+                  <Typography
+                      variant="h3"
+                      fontWeight="bold"
+                  >
+                    Total Revenue
+                    <p className="h1" >
+                      {notify.totalRevenue}
+                    </p>
+                  </Typography>
+                  <Typography
+                      variant="h3"
+                      fontWeight="bold"
+                  >
+                    Total Order
+                    <p className="h1" > {notify.totalOrder} </p>
+
+                  </Typography>
+                </Box>
+              </div>
+              <div className="col-md-6">
+                <Box height="250px" m="-20px 0 0 0" style={{marginTop:30,marginLeft:30}}>
+                  <h3>Revenue In Month</h3>
+                  <Box
+                      mt="20px"
+                      p="0 30px"
+                      display="flex "
+                      justifyContent="space-between"
+                      alignItems="center"
+                  >
+                    <Box>
+                      <Typography
+                          variant="h3"
+                          fontWeight="bold"
+
+                      >
+                        Total Revenue
+                        <p className="h1" >
+                          {notifyByMonth.totalRevenue}
+                        </p>
+                      </Typography>
+                      <Typography
+                          variant="h3"
+                          fontWeight="bold"
+                      >
+                        Total Order
+                        <p className="h1" > {notifyByMonth.totalOrder} </p>
+
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+              </div>
+          </Box>
+        </Box>
         <Box
-          gridColumn="span 8"
+          gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
+          overflow="auto"
         >
           <Box
-            mt="20px"
-            p="0 30px"
-            display="flex "
+            display="flex"
             justifyContent="space-between"
             alignItems="center"
+            borderBottom={`4px solid ${colors.primary[500]}`}
+            colors={colors.grey[100]}
+            p="15px"
           >
-            <Box>
-              <Typography
-                 variant="h3"
-                 fontWeight="bold"
-
-              >
-                 Total Revenue
-                 <p className="h1" >
-                   {notify.totalRevenue}
-                 </p>
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-              >
-                 Total Order
-                 <p className="h1" > {notify.totalOrder} </p>
-                
-              </Typography>
-            </Box>
-            {/*<Box>*/}
-            {/*  <IconButton>*/}
-            {/*    <DownloadOutlinedIcon*/}
-            {/*      sx={{ fontSize: "26px", color: colors.greenAccent[500] }}*/}
-            {/*    />*/}
-            {/*  </IconButton>*/}
-            {/*</Box>*/}
+          <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+            Orders need confirmation
+          </Typography>
           </Box>
-          {/*<Box height="250px" m="-20px 0 0 0" style={{marginTop:30,marginLeft:30}}>*/}
-          {/*<h3>Revenue In Month</h3>*/}
-          {/*<table className="table" style={{border:"1px solid white", marginTop:20}}>*/}
-          {/*  <thead>*/}
-          {/*    {*/}
-          {/*      da.map((e,k)=>{*/}
-          {/*        return(*/}
-          {/*          <th style={{padding:5,border:"1px solid white"}} key={k}>Month {e.mnth}/{e.yr}</th>*/}
-          {/*        )*/}
-          {/*      })*/}
-          {/*    }*/}
-          {/*  </thead>*/}
-          {/*  <tbody>*/}
-          {/*  <tr >*/}
-          {/*    {*/}
-          {/*        da.map((e,k)=>{*/}
-          {/*            return (*/}
-          {/*                    <td style={{padding:5,border:"1px solid white"}} key={k}>${e.tCharge}</td>*/}
-          {/*                )*/}
-          {/*        })*/}
-          {/*    }*/}
-          {/*     </tr>*/}
-          {/*  </tbody>*/}
-          {/*  </table>*/}
-          {/*</Box>*/}
+          {order.map((e, i) => (
+            <Link key={i} to={"/orders/confirm/" + e.id}>
+              <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  borderBottom={`4px solid ${colors.primary[500]}`}
+                  p="15px"
+              >
+                <Box>
+                  <Typography
+                      color={colors.greenAccent[500]}
+                      variant="h5"
+                      fontWeight="600"
+                  >
+                    {e.name}
+                  </Typography>
+                  <Typography color={colors.grey[100]}>
+                    {e.email}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Box color={colors.grey[100]}>{e.createDate}</Box>
+                  <Box color={colors.grey[100]}>{getStatusText(e.status)}</Box>
+                </Box>
+                <Box
+                    backgroundColor={colors.greenAccent[500]}
+                    p="5px 10px"
+                    borderRadius="4px"
+                >
+                  ${e.totalMoney}
+                </Box>
+              </Box>
+            </Link>
+          ))}
         </Box>
-        {/*<Box*/}
-        {/*  gridColumn="span 4"*/}
-        {/*  gridRow="span 2"*/}
-        {/*  backgroundColor={colors.primary[400]}*/}
-        {/*  overflow="auto"*/}
-        {/*>*/}
-        {/*  <Box*/}
-        {/*    display="flex"*/}
-        {/*    justifyContent="space-between"*/}
-        {/*    alignItems="center"*/}
-        {/*    borderBottom={`4px solid ${colors.primary[500]}`}*/}
-        {/*    colors={colors.grey[100]}*/}
-        {/*    p="15px"*/}
-        {/*  >*/}
-        {/*    <Typography color={colors.grey[100]} variant="h5" fontWeight="600">*/}
-        {/*      Recent Transactions*/}
-        {/*    </Typography>*/}
-        {/*  </Box>*/}
-        {/*  {mockTransactions.map((transaction, i) => (*/}
-        {/*    <Box*/}
-        {/*      key={`${transaction.txId}-${i}`}*/}
-        {/*      display="flex"*/}
-        {/*      justifyContent="space-between"*/}
-        {/*      alignItems="center"*/}
-        {/*      borderBottom={`4px solid ${colors.primary[500]}`}*/}
-        {/*      p="15px"*/}
-        {/*    >*/}
-        {/*      <Box>*/}
-        {/*        <Typography*/}
-        {/*          color={colors.greenAccent[500]}*/}
-        {/*          variant="h5"*/}
-        {/*          fontWeight="600"*/}
-        {/*        >*/}
-        {/*          {transaction.txId}*/}
-        {/*        </Typography>*/}
-        {/*        <Typography color={colors.grey[100]}>*/}
-        {/*          {transaction.user}*/}
-        {/*        </Typography>*/}
-        {/*      </Box>*/}
-        {/*      <Box color={colors.grey[100]}>{transaction.date}</Box>*/}
-        {/*      <Box*/}
-        {/*        backgroundColor={colors.greenAccent[500]}*/}
-        {/*        p="5px 10px"*/}
-        {/*        borderRadius="4px"*/}
-        {/*      >*/}
-        {/*        ${transaction.cost}*/}
-        {/*      </Box>*/}
-        {/*    </Box>*/}
-        {/*  ))}*/}
-        {/*</Box>*/}
 
-        {/* ROW 3 */}
+         {/*ROW 3*/}
         {/*<Box*/}
         {/*  gridColumn="span 4"*/}
         {/*  gridRow="span 2"*/}

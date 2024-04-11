@@ -46,30 +46,31 @@ const ListProduct = (props) => {
 
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [searchEmail, setSearchEmail] = useState('');
+    const [searchName, setSearchName] = useState('');
+    const [searchType, setSearchType] = useState('');
+    const [searchCate, setSearchCate] = useState('');
 
     useEffect(() => {
-        if (searchTerm === '' && searchEmail === '') {
-            setFilteredUsers(product);
-        } else if (searchEmail === '') {
-            const filtered = product.filter(product =>
-                product.restaurant && product.restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setFilteredUsers(filtered);
-        } else if (searchTerm === '') {
-            const filtered = product.filter(product =>
-                product.name && product.name.toLowerCase().includes(searchEmail.toLowerCase())
-            );
-            setFilteredUsers(filtered);
-        }
-    }, [searchTerm, searchEmail, product]);
+        const filtered = product.filter(product =>
+            (searchTerm === '' || (product.restaurant && product.restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()))) &&
+            (searchName === '' || (product.name && product.name.toLowerCase().includes(searchName.toLowerCase()))) &&
+            (searchType === '' || (product.type && product.type.toLowerCase().includes(searchType.toLowerCase()))) &&
+            (searchCate === '' || (product.category.name && product.category.name.toLowerCase().includes(searchCate.toLowerCase())))
+        );
+        setFilteredUsers(filtered);
+    }, [searchTerm, searchName, searchType, searchCate, product]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
-
-    const handleEmailChange = (event) => {
-        setSearchEmail(event.target.value);
+    const handleNameChange = (event) => {
+        setSearchName(event.target.value);
+    };
+    const handleTypeChange = (event) => {
+        setSearchType(event.target.value);
+    };
+    const handleCateChange = (event) => {
+        setSearchCate(event.target.value);
     };
 
 console.log(product);
@@ -96,7 +97,7 @@ console.log(product);
 
                                 {userRole === 'ROLE_ADMIN'&& (
                                     <TextField
-                                        label="Search by restaurant name"
+                                        label="Search by restaurant"
                                         value={searchTerm}
                                         onChange={handleSearchChange}
                                         variant="outlined"
@@ -105,8 +106,22 @@ console.log(product);
                                 )}
                                 <TextField
                                     label="Search by name"
-                                    value={searchEmail}
-                                    onChange={handleEmailChange}
+                                    value={searchName}
+                                    onChange={handleNameChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                                <TextField
+                                    label="Search by type"
+                                    value={searchType}
+                                    onChange={handleTypeChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                                <TextField
+                                    label="Search by category"
+                                    value={searchCate}
+                                    onChange={handleCateChange}
                                     variant="outlined"
                                     style={{ margin: '24px 0' ,marginLeft: '24px' }}
                                 />

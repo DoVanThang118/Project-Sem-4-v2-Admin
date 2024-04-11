@@ -32,6 +32,18 @@ const dashboardService = {
             throw error;
         }
     },
+
+    getNotifyByMonth: async () => {
+        try {
+            const headers = getAuthorizationHeader();
+            delete headers['Content-Type'];
+            const response = await axios.get(API_URL + '/orders/total_revenue_by_month' , {headers});
+            console.log("Response data:", response.data);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 }
 
 export default dashboardService;

@@ -40,20 +40,20 @@ const ListShipper = (props) => {
     };
 
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const [searchEmail, setSearchEmail] = useState('');
 
     useEffect(() => {
-        if (searchEmail === '') {
-            setFilteredUsers(user);
-        } else {
-            const filtered = user.filter(user =>
-                user.email && user.email.toLowerCase().includes(searchEmail.toLowerCase())
-            );
-            setFilteredUsers(filtered);
-        }
-    }, [searchEmail, user]);
+        const filtered = user.filter(user =>
+            (searchTerm === '' || (user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase()))) &&
+            (searchEmail === '' || ( user.email && user.email.toLowerCase().includes(searchEmail.toLowerCase())))
+        );
+        setFilteredUsers(filtered);
+    }, [searchEmail, searchTerm, user]);
 
-
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
 
     const handleEmailChange = (event) => {
         setSearchEmail(event.target.value);
@@ -68,13 +68,23 @@ const ListShipper = (props) => {
 
                     <div className="container shadow" style={{display: 'grid'}}>
                         <h1 style={{margin: 'auto', marginTop: '24px'}}>USERS</h1>
-                        <TextField
-                            label="Search by email"
-                            value={searchEmail}
-                            onChange={handleEmailChange}
-                            variant="outlined"
-                            style={{ margin: '24px 0' ,marginLeft: '24px' }}
-                        />
+
+                        <nav className="nav justify-content-end">
+                            <TextField
+                                label="Search by name"
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                variant="outlined"
+                                style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                            />
+                            <TextField
+                                label="Search by email"
+                                value={searchEmail}
+                                onChange={handleEmailChange}
+                                variant="outlined"
+                                style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                            />
+                        </nav>
                         <table className="table  table-bordered" style={{}}>
                             <thead>
                             <tr>

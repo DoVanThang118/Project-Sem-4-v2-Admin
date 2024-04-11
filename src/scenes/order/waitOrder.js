@@ -1,4 +1,4 @@
-import {Box, useTheme} from "@mui/material";
+import {Box, TextField, useTheme} from "@mui/material";
 import {tokens} from "../../theme";
 import React, {useContext, useEffect, useState} from "react";
 import UserContext from "../../store/context";
@@ -6,8 +6,17 @@ import OrderService from "../../services/orderService";
 import Sidebar from "../global/Sidebar";
 import Topbar from "../global/Topbar";
 import {Link} from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
 
 const WaitOrder = (props) => {
+
+    const getState = localStorage.getItem('state');
+    const parsedState = JSON.parse(getState);
+    const userLogin = parsedState.userlogin;
+    const jwtToken = userLogin.jwt;
+    const decodedToken = jwtDecode(jwtToken);
+    const userRole = decodedToken.role;
+
     const theme = useTheme();
     const colors = tokens(theme.palette.mode)
     const { state, dispatch } = useContext(UserContext);
@@ -39,7 +48,7 @@ const WaitOrder = (props) => {
             .catch((err) => {
                 console.log(err);
             });
-    }, []);
+    }, [req]);
 
     const getStatusText = (status) => {
         switch (status) {
@@ -62,6 +71,44 @@ const WaitOrder = (props) => {
         }
     };
 
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchEmail, setSearchEmail] = useState('');
+    const [searchName, setSearchName] = useState('');
+    const [searchAddress, setSearchAddress] = useState('');
+    const [searchPhone, setSearchPhone] = useState('');
+
+    useEffect(() => {
+        const filtered = order.filter(order =>
+            (searchTerm === '' || (order.restaurant && order.restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()))) &&
+            (searchEmail === '' || (order.email && order.email.toLowerCase().includes(searchEmail.toLowerCase()))) &&
+            (searchName === '' || (order.name && order.name.toLowerCase().includes(searchName.toLowerCase()))) &&
+            (searchAddress === '' || (order.address && order.address.toLowerCase().includes(searchAddress.toLowerCase()))) &&
+            (searchPhone === '' || (order.phone && order.phone.toLowerCase().includes(searchPhone.toLowerCase())))
+        );
+        setFilteredUsers(filtered);
+    }, [searchTerm, searchEmail, searchName, searchAddress, searchPhone, order]);
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const handleNameChange = (event) => {
+        setSearchName(event.target.value);
+    };
+
+    const handleAddressChange = (event) => {
+        setSearchAddress(event.target.value);
+    };
+
+    const handleEmailChange = (event) => {
+        setSearchEmail(event.target.value);
+    };
+
+    const handlePhoneChange = (event) => {
+        setSearchPhone(event.target.value);
+    };
+
     return (
         <div className="app">
             <Sidebar />
@@ -71,11 +118,57 @@ const WaitOrder = (props) => {
 
                     <div className="container shadow" style={{ display: 'grid' }}>
                         <h1 style={{ margin: 'auto', marginTop: '24px' }}>ORDERS WAITING</h1>
-                        <Link to={"/orders/entire"} style={{ margin: '24px 0' }}>
-                            <button style={{}} className="btn btn-success">
-                                Entire Order
-                            </button>
-                        </Link>
+                        <nav className="navbar bg-body-tertiary">
+                            <div>
+                                {userRole === 'ROLE_MANAGER'&& (
+                                    <Link to={"/orders/entire"} style={{ margin: '24px 0' }}>
+                                        <button style={{}} className="btn btn-success">
+                                            Entire Order
+                                        </button>
+                                    </Link>
+                                )}
+                            </div>
+                            <div className="d-flex">
+
+                                {userRole === 'ROLE_ADMIN'&& (
+                                    <TextField
+                                        label="Search by restaurant name"
+                                        value={searchTerm}
+                                        onChange={handleSearchChange}
+                                        variant="outlined"
+                                        style={{ margin: '24px 0' }}
+                                    />
+                                )}
+                                <TextField
+                                    label="Search by name"
+                                    value={searchName}
+                                    onChange={handleNameChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                                <TextField
+                                    label="Search by email"
+                                    value={searchEmail}
+                                    onChange={handleEmailChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                                <TextField
+                                    label="Search by address"
+                                    value={searchAddress}
+                                    onChange={handleAddressChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                                <TextField
+                                    label="Search by phone"
+                                    value={searchPhone}
+                                    onChange={handlePhoneChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                            </div>
+                        </nav>
 
                         <table className="table  table-bordered" style={{}}>
                             <thead>
@@ -94,7 +187,7 @@ const WaitOrder = (props) => {
                             </thead>
                             <tbody>
                             {
-                                order.map((e, k) => {
+                                filteredUsers.map((e, k) => {
                                     return (
                                         <tr key={k}>
                                             <td style={{textAlign: 'center'}}>{k + 1}</td>

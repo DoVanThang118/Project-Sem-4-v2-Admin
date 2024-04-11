@@ -42,29 +42,25 @@ const ListUser = (props) => {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchEmail, setSearchEmail] = useState('');
+    const [searchName, setSearchName] = useState('');
 
     useEffect(() => {
-        if (searchTerm === '' && searchEmail === '') {
-            setFilteredUsers(user);
-        } else if (searchEmail === '') {
-            const filtered = user.filter(user =>
-                user.restaurant && user.restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setFilteredUsers(filtered);
-        } else if (searchTerm === '') {
-            const filtered = user.filter(user =>
-                user.email && user.email.toLowerCase().includes(searchEmail.toLowerCase())
-            );
-            setFilteredUsers(filtered);
-        }
-    }, [searchTerm, searchEmail, user]);
+        const filtered = user.filter(user =>
+            (searchTerm === '' || (user.restaurant && user.restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()))) &&
+            (searchEmail === '' || (user.email && user.email.toLowerCase().includes(searchEmail.toLowerCase()))) &&
+            (searchName === '' || (user.name && user.name.toLowerCase().includes(searchName.toLowerCase())))
+        );
+        setFilteredUsers(filtered);
+    }, [searchTerm, searchEmail, searchName, user]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
-
     const handleEmailChange = (event) => {
         setSearchEmail(event.target.value);
+    };
+    const handleNameChange = (event) => {
+        setSearchName(event.target.value);
     };
 
     console.log("user check:", user);
@@ -99,11 +95,18 @@ const ListUser = (props) => {
                             </div>
                             <div className="d-flex">
                                 <TextField
-                                    label="Search by restaurant name"
+                                    label="Search by restaurant"
                                     value={searchTerm}
                                     onChange={handleSearchChange}
                                     variant="outlined"
-                                    style={{ margin: '24px 0' }}
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                                <TextField
+                                    label="Search by name"
+                                    value={searchName}
+                                    onChange={handleNameChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
                                 />
                                 <TextField
                                     label="Search by email"

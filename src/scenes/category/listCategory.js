@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import {Box, TextField, Typography, useTheme} from "@mui/material";
 import { tokens } from "../../theme";
 import UserContext from "../../store/context";
 import React, { useContext, useState, useEffect } from "react";
@@ -35,6 +35,20 @@ const ListCategory = (props) => {
         }
     };
 
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        const filtered = category.filter(c =>
+            (searchTerm === '' || (c.name && c.name.toLowerCase().includes(searchTerm.toLowerCase())))
+        );
+        setFilteredUsers(filtered);
+    }, [searchTerm, category]);
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
 
     return (
         <div className="app">
@@ -45,11 +59,24 @@ const ListCategory = (props) => {
 
                     <div className="container shadow" style={{ display: 'grid' }}>
                         <h1 style={{ margin: 'auto', marginTop: '24px' }}>CATEGORIES</h1>
-                        <Link to={"/categories/create"} style={{ margin: '24px 0' }}>
-                            <button style={{}} className="btn btn-success">
-                                Create New Category
-                            </button>
-                        </Link>
+                        <nav className="navbar bg-body-tertiary">
+                            <div>
+                                <Link to={"/categories/create"} style={{ margin: '24px 0' }}>
+                                    <button style={{}} className="btn btn-success">
+                                        Create New Category
+                                    </button>
+                                </Link>
+                            </div>
+                            <div className="d-flex">
+                                <TextField
+                                    label="Search by name"
+                                    value={searchTerm}
+                                    onChange={handleSearchChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                            </div>
+                        </nav>
 
                         <table className="table  table-bordered" style={{}}>
                             <thead>
@@ -64,7 +91,7 @@ const ListCategory = (props) => {
                             </thead>
                             <tbody>
                             {
-                                category.map((e, k) => {
+                                filteredUsers.map((e, k) => {
                                     return (
                                         <tr key={k}>
                                             <td >{k + 1}</td>

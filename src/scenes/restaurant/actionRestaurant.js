@@ -18,6 +18,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Chip from "@mui/material/Chip";
+import dashboardService from "../../services/dashboardService";
 
 
 const ITEM_HEIGHT = 48;
@@ -75,8 +76,6 @@ const ActionRestaurant = (props) => {
         rate: '',
         status: ''
     });
-    const [openTime, setOpenTime] = useState(dayjs('0000-00-00'));
-    const [closeTime, setCloseTime] = useState(dayjs('0000-00-00'));
 
     useEffect(() => {
         RestaurantService.findRestaurants(req)
@@ -96,6 +95,22 @@ const ActionRestaurant = (props) => {
         BrandService.findBrands({status: 1})
             .then((res) => {
                 setBrands(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
+
+    const[notify, setNotify] = useState({})
+
+    useEffect(() => {
+        dashboardService.getNotify()
+            .then((res) => {
+                if (res.totalOrder > 0 || res.totalRevenue > 0) {
+                    setNotify(res);
+                } else {
+                    console.log("NO Data notify");
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -282,7 +297,39 @@ const ActionRestaurant = (props) => {
                                                         />
                                                         <button className="btn btn-outline-secondary" type="button" onClick={updateAvatar} id="inputGroupFileAddon04">Upload</button>
                                                     </div>
-
+                                                </div>
+                                            </div>
+                                            <div className="row mt-2">
+                                                <div className="col-md-12">
+                                                    <h3 style={{ display: "grid", marginRight: "1rem", marginBottom: "1rem" }}>
+                                                        total statistics
+                                                    </h3>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <Box display="grid" marginRight="1rem" marginBottom="1rem">
+                                                        <TextField
+                                                            id="outlined-basic"
+                                                            label="Total Order"
+                                                            variant="outlined"
+                                                            type="number"
+                                                            value={notify.totalOrder || "0"}
+                                                            sx={{gridColumn: "span 2"}}
+                                                            required
+                                                        />
+                                                    </Box>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <Box display="grid" marginRight="1rem" marginBottom="1rem">
+                                                        <TextField
+                                                            id="outlined-basic"
+                                                            label="Total Revenue"
+                                                            variant="outlined"
+                                                            type="number"
+                                                            value={notify.totalRevenue || "0"}
+                                                            sx={{gridColumn: "span 2"}}
+                                                            required
+                                                        />
+                                                    </Box>
                                                 </div>
                                             </div>
                                         </div>
@@ -323,36 +370,31 @@ const ActionRestaurant = (props) => {
                                                 <div className="row mt-2">
                                                     <div className="col-md-6">
                                                         <Box display="grid" marginRight="1rem" marginBottom="1rem">
-                                                            <label>Open: {restaurantDetails.hourStart}</label>
-                                                            <TimePicker
-                                                                value={openTime}
-                                                                onChange={(value) => {
-                                                                    const selectedTime = value.$d.toTimeString().split(" ")[0];
-                                                                    setOpenTime(value);
-                                                                    setRestaurantDetails(prevRestaurant => ({
-                                                                        ...prevRestaurant,
-                                                                        hourStart: selectedTime
-                                                                    }));
-                                                                }}
-                                                                ampm={false}
+                                                            <TextField
+                                                                id="outlined-basic"
+                                                                label="Open"
+                                                                variant="outlined"
+                                                                type="time"
+                                                                value={restaurantDetails.hourStart || ""}
+                                                                onChange={handleChange}
+                                                                name="hourStart"
+                                                                sx={{gridColumn: "span 2"}}
+                                                                required
                                                             />
                                                         </Box>
                                                     </div>
                                                     <div className="col-md-6">
                                                         <Box display="grid" marginRight="1rem" marginBottom="1rem">
-                                                            <label>Close: {restaurantDetails.hourEnd}</label>
-                                                            <TimePicker
-                                                                value={closeTime}
-                                                                onChange={(value) => {
-                                                                    setCloseTime(value);
-                                                                    const selectedTime = value.$d.toTimeString().split(" ")[0];
-                                                                    setRestaurantDetails(prevRestaurant => ({
-                                                                        ...prevRestaurant,
-                                                                        hourEnd: selectedTime
-                                                                    }));
-                                                                }}
-                                                                defaultValue={restaurantDetails.hourEnd || ''}
-                                                                ampm={false}
+                                                            <TextField
+                                                                id="outlined-basic"
+                                                                label="Close"
+                                                                variant="outlined"
+                                                                type="time"
+                                                                value={restaurantDetails.hourEnd || ""}
+                                                                onChange={handleChange}
+                                                                name="hourEnd"
+                                                                sx={{gridColumn: "span 2"}}
+                                                                required
                                                             />
                                                         </Box>
                                                     </div>

@@ -1,4 +1,4 @@
-import { Box} from "@mui/material";
+import {Box, TextField} from "@mui/material";
 import React, {useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../global/Sidebar";
@@ -33,6 +33,21 @@ const ListRestaurant = (props) => {
     };
 
 console.log("restaurant:", restaurant)
+
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        const filtered = restaurant.filter(c =>
+            (searchTerm === '' || (c.name && c.name.toLowerCase().includes(searchTerm.toLowerCase())))
+        );
+        setFilteredUsers(filtered);
+    }, [searchTerm, restaurant]);
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
     return (
         <div className="app">
             <Sidebar />
@@ -42,11 +57,25 @@ console.log("restaurant:", restaurant)
 
                     <div className="container shadow" style={{ display: 'grid' }}>
                         <h1 style={{ margin: 'auto', marginTop: '24px' }}>RESTAURANT</h1>
-                        <Link to={"/restaurants/create"} style={{ margin: '24px 0' }}>
-                            <button style={{}} className="btn btn-success">
-                                Create New Restaurant
-                            </button>
-                        </Link>
+
+                        <nav className="navbar bg-body-tertiary">
+                            <div>
+                                <Link to={"/restaurants/create"} style={{ margin: '24px 0' }}>
+                                    <button style={{}} className="btn btn-success">
+                                        Create New Restaurant
+                                    </button>
+                                </Link>
+                            </div>
+                            <div className="d-flex">
+                                <TextField
+                                    label="Search by name"
+                                    value={searchTerm}
+                                    onChange={handleSearchChange}
+                                    variant="outlined"
+                                    style={{ margin: '24px 0' ,marginLeft: '24px' }}
+                                />
+                            </div>
+                        </nav>
 
                         <table className="table  table-bordered" style={{}}>
                             <thead>
@@ -66,7 +95,7 @@ console.log("restaurant:", restaurant)
                             </thead>
                             <tbody>
                             {
-                                restaurant.map((e, k) => {
+                                filteredUsers.map((e, k) => {
                                     return (
                                         <tr key={k}>
                                             <td style={{textAlign: 'center', width: '1%'}}>{k + 1}</td>
